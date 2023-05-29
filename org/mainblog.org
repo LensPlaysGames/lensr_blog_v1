@@ -3,6 +3,26 @@
 #+description: A blog for all things Lens_r.
 #+created: <2023-05-29 Mon>
 
+* HOW TO WRITE POSTS
+
+First of all, a kind of overview of how this works. Each top-level heading (one star) with the "blogpost" tag will be exported by the publishing system to it's own file, and have it's own webpage on the website that will be linked to from the main blog page. Everything else /does/ get exported to HTML, but only within the (not linked) =mainblog.html=. Which means readers of the blog won't see it :^).
+
+Here's an example blog post. It's quite simple. It has a title (the headline of the top-level org heading). It has a =blogpost= tag. It has a unique =CUSTOM_ID= property and the date published (inserted with =M-x org-time-stamp-inactive=, or at least in the format of it).
+
+Anything within this subtree will then be a part of the blog post. For now, there aren't any fancy CSS things going on, except for code being syntax highlighted. In the future I may add more properties so that certain pieces of text may be marked up in unique ways, but for now, we're going bare org-mode.
+
+#+begin_src org
+  \* Ooops, out of order! :blogpost:
+    :PROPERTIES:
+    :CUSTOM_ID: outofordertest
+    :PUBLISHED: [2023-05-29 Mon 12:40]
+    :MODIFIED: [2023-05-29 Mon 12:40]
+    :END:
+
+    Hmm, will this be in order?
+#+end_src
+
+
 * What /is/ a Program? :blogpost:
 :PROPERTIES:
 :CUSTOM_ID: whatsaprogram
@@ -43,3 +63,4 @@ To me, there /isn't/ a clear-cut definition of program. No matter which one you 
 What if "program" actually equates to "instructions that tell a computer to do computations". While this /is/ incredibly vague, it is also just specific enough. For example, when you write C code, you are attempting to instruct the computer on how to do execution/computation in order to give you the result you want. And when you compile that C code into an executable, the executable also contains instructions that tells a computer how to do computations, just in a different format.
 
 As with every definition of program, there are imperfect corner cases, but this is one I'm okay with: the /source code/ and the /executable produced from that source code/ are entirely separate programs that happen to have instructions within them that produce the same result (assuming a well-written compiler).
+

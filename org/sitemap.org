@@ -2,3 +2,4 @@
 
 - [[file:index.org][Main Page of Lens_r Blog Website]]
 - [[file:mainblog.org][Main Blog]]
+- [[file:posts/whatsaprogram.org][whatsaprogram]]
