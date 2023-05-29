@@ -121,9 +121,22 @@ A class that is simply attached at the highest level
 in a document to switch to a dark color theme.
 
 #+begin_src css :mkdirp yes :tangle css/style.css
+  :root {
+      --light-fg: #161718;
+      --light-bg: #ffffff;
+
+      --dark-fg: #ffffff;
+      --dark-bg: #161718;
+
+      --fg: var(--light-fg);
+      --bg: var(--light-bg);
+  }
+
   .dark-mode {
-      color: #fff;
-      background-color: #161718;
+      --fg: var(--dark-fg);
+      --bg: var(--dark-bg);
+      color: var(--fg);
+      background-color: var(--bg);
   }
 
   .dark-mode a {
@@ -132,134 +145,6 @@ in a document to switch to a dark color theme.
 
   .dark-mode a:visited {
       color: #9f85ff;
-  }
-#+end_src
-
-** Navigation Bar at Top of Site
-
-#+begin_src css :mkdirp yes :tangle css/style.css
-  #navbar {
-      width: 100%;
-      height: 100%;
-      vertical-align: middle;
-      margin: 0;
-      padding: 0;
-      color: #161718;
-      background-color: #fff;
-      border-bottom: .2ex solid gray;
-  }
-
-  .dark-mode #navbar {
-      color: #fff;
-      background: #161718;
-  }
-
-  #navbar a {
-      height: max(5ex, 4vmin);
-      font-size: max(1.8vh, 12pt);
-  }
-
-  #navbar a:hover {
-      color: #fff;
-      background-color: #000;
-      transition: color 0.7s;
-      cursor: pointer; /* Some navbar anchors don't have an href */
-  }
-
-  .dark-mode #navbar a:hover {
-      color: #000;
-      background-color: #fff;
-  }
-
-  #navbar + header > h1 {
-      margin-top: 0;
-  }
-
-  #navbar + h1 {
-      margin-top: 0;
-  }
-#+end_src
-
-*** Responsive Hamburger menu
-
-This allows the site to not look as amateur on smaller devices, like phones.
-
-Thanks to [[https://code-boxx.com/simple-responsive-pure-css-hamburger-menu/][this guide]].
-
-#+begin_src css :mkdirp yes :tangle css/style.css
-  #navbar label, #hamburger {
-      font-size: max(8vw, 12pt);
-      margin: 0.2em;
-      display: none;
-  }
-
-  #hamburger-items {
-      max-width: 60%;
-      display: flex;
-  }
-
-
-  #hamburger-items a {
-      display: block;
-      overflow: hidden;
-
-      color: #161718;
-      background-color: inherit;
-      border: none;
-
-      height: max(5ex, 4vmin);
-      line-height: max(5ex, 4vmin);
-
-      min-width: 4em;
-      width: min-content;
-      max-width: 8vw;
-
-      flex-grow: 1;
-      flex-basis: 0;
-
-      text-decoration: none;
-      text-align: center;
-      white-space: nowrap;
-
-      font-size: max(1.8vh, 12pt);
-  }
-
-  .dark-mode #hamburger-items a {
-      color: #fff;
-  }
-
-  @media only screen and (max-width: 1366px) {
-      #hamburger-items {
-          max-width: 100%;
-      }
-      #hamburger-items a {
-          max-width: none;
-      }
-  }
-
-  @media only screen and (max-width: 600px) {
-      #hamburger-items {
-          max-width: 100%;
-      }
-
-      #hamburger-items a {
-          box-sizing: border-box;
-          display: block;
-          width: 100%;
-          max-width: none;
-          border-top: 1px solid #333;
-      }
-
-      #navbar label {
-          display: inline-block;
-      }
-      #navbar input:checked ~ #hamburger-items { display: block; }
-      #navbar input:checked ~ #hamburger-items a {
-          height: max(7ex, 6vmin); /* height: max(5ex, 4vmin); */
-          line-height: max(7ex, 6vmin); /* line-height: max(5ex, 4vmin); */
-          font-size: max(2.12vh, 14pt); /* font-size: max(1.8vh, 12pt); */
-      }
-      #hamburger-items { display: none; }
   }
 #+end_src
 
@@ -283,8 +168,8 @@ setup :eyes:.
   html {
       font-family: sans-serif;
       font-size: max(2.4vh, 8pt);
-      color: #161a1f;
-      background-color: #ffffff;
+      color: var(--fg);
+      background-color: var(--bg);
       margin: 0 auto;
       transition:         none;
       -moz-transition:    none;
@@ -353,7 +238,7 @@ setup :eyes:.
 
   .org-src-container {
       color: #1a1b1c;
-      background-color: #e4ebe8;
+      background-color: #f0f0f0;
 
       border: 2px solid #444;
       border-radius: 4px;
@@ -557,4 +442,123 @@ setup :eyes:.
   }
 #+end_src
 
+
+** Navigation Bar at Top of Site
+
+#+begin_src css :mkdirp yes :tangle css/style.css
+  #navbar {
+      width: 100%;
+      height: 100%;
+      vertical-align: middle;
+      margin: 0;
+      padding: 0;
+      color: var(--fg);
+      background-color: var(--bg);
+      border-bottom: .2ex solid gray;
+  }
+
+  #navbar a {
+      height: max(5ex, 4vmin);
+      font-size: max(1.8vh, 12pt);
+  }
+
+  #navbar a:hover {
+      color: #fff;
+      background-color: #000;
+      transition: color 0.7s;
+      cursor: pointer; /* Some navbar anchors don't have an href */
+  }
+
+  .dark-mode #navbar a:hover {
+      color: #000;
+      background-color: #fff;
+  }
+
+  #navbar + header > h1 {
+      margin-top: 0;
+  }
+
+  #navbar + h1 {
+      margin-top: 0;
+  }
+#+end_src
+
+*** Responsive Hamburger menu
+
+This allows the site to not look as amateur on smaller devices, like phones.
+
+Thanks to [[https://code-boxx.com/simple-responsive-pure-css-hamburger-menu/][this guide]].
+
+#+begin_src css :mkdirp yes :tangle css/style.css
+  #navbar label, #hamburger {
+      font-size: max(8vw, 12pt);
+      margin: 0.2em;
+      display: none;
+  }
+
+  #hamburger-items {
+      max-width: 60%;
+      display: flex;
+  }
+
+
+  #hamburger-items a {
+      display: block;
+      overflow: hidden;
+
+      color: var(--fg);
+      background-color: var(--bg);
+      border: none;
+
+      height: max(5ex, 4vmin);
+      line-height: max(5ex, 4vmin);
+
+      min-width: 4em;
+      width: min-content;
+      max-width: 8vw;
+
+      flex-grow: 1;
+      flex-basis: 0;
+
+      text-decoration: none;
+      text-align: center;
+      white-space: nowrap;
+
+      font-size: max(1.8vh, 12pt);
+  }
+
+  @media only screen and (max-width: 1366px) {
+      #hamburger-items {
+          max-width: 100%;
+      }
+      #hamburger-items a {
+          max-width: none;
+      }
+  }
+
+  @media only screen and (max-width: 600px) {
+      #hamburger-items {
+          max-width: 100%;
+      }
+
+      #hamburger-items a {
+          box-sizing: border-box;
+          display: block;
+          width: 100%;
+          max-width: none;
+          border-top: 1px solid #333;
+      }
+
+      #navbar label {
+          display: inline-block;
+      }
+      #navbar input:checked ~ #hamburger-items { display: block; }
+      #navbar input:checked ~ #hamburger-items a {
+          height: max(7ex, 6vmin); /* height: max(5ex, 4vmin); */
+          line-height: max(7ex, 6vmin); /* line-height: max(5ex, 4vmin); */
+          font-size: max(2.12vh, 14pt); /* font-size: max(1.8vh, 12pt); */
+      }
+      #hamburger-items { display: none; }
+  }
+#+end_src
 
