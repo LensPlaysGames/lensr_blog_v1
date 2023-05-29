@@ -1,0 +1,482 @@
+***** JavaScript and CSS for Lensor Radii Website
+
+It is recommended to use [[file:c:/Emacs/2022/lensor_site/publish.el][the publish script]], but resources can also be generated manually.
+
+First, from Emacs, open this file in org-mode, then detangle
+using org-babel with ~M-x org-babel-tangle RET~, or ~C-c C-v t~.
+
+This will generate the corresponding files in ~css~ and ~js~ subdirectories.
+
+#+begin_src emacs-lisp :dir . :results none
+  (org-babel-tangle-file (buffer-name))
+#+end_src
+
+-----
+
+* Javascript
+
+** Dark-mode toggle
+
+Toggle a dark-mode CSS class for the entire page
+
+Cookies are very handy, simply tools. Basically a client-side config file per-user, per-site. I wonder how many cookies have been sent over HTTPS, ever? Either way, it would be useful for users if the site remembered dark mode, so I've done that.
+
+#+begin_src js :mkdirp yes :tangle js/main.js
+  function toggle_dark_mode() {
+      var element = document.getElementsByTagName("html")[0];
+      var dark_button = document.getElementById("dark-mode");
+      element.classList.toggle("dark-mode");
+      const d = new Date();
+      d.setTime(d.getTime() + (28*24*60*60*1000))
+      if (element.classList.contains("dark-mode")) {
+          document.cookie = "dark_mode=true; expires=" + d.toUTCString() + "; path=/";
+          dark_button.innerHTML = "Light Mode";
+      } else {
+          document.cookie = "dark_mode=false; expires=" + d.toUTCString() + "; path=/";
+          dark_button.innerHTML = "Dark Mode";
+      }
+  }
+#+end_src
+
+** Insert top-of-page banner
+
+This doesn't have to be done programatically at all,
+but I like handling it this way for some reason.
+
+#+begin_src js :mkdirp yes :tangle js/main.js
+  function insert_top_banner() {
+      var new_html = "<nav class=\"navbar\" id=\"navbar\">";
+      new_html += "<label for=\"hamburger\">&#9776;</label>";
+      new_html += "<input type=\"checkbox\" id=\"hamburger\"/>";
+      new_html += "<div id=\"hamburger-items\">";
+
+      new_html += "<button onClick=\"window.location.href='/'\">Home</button>";
+      new_html += "<button onClick=\"window.location.href='https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG'\">Donate</button>";
+      new_html += "<button onClick=\"window.location.href='https://www.youtube.com/@Lensr'\">YouTube</button>";
+      new_html += "<button onClick=\"window.location.href='https://www.twitch.tv/lens_r'\">Twitch</button>";
+      new_html += "<button onClick=\"window.location.href='https://discord.gg/FTQsgqQEM4'\">Discord</button>";
+
+      new_html += "<button id=\"dark-mode\" onClick={toggle_dark_mode();}>Dark Mode</button>";
+
+      new_html += "</div></nav>";
+      let old_html = "<div class=\"main-body\" id=\"main-body\">"
+          + document.body.innerHTML
+          + "</div>";
+      document.body.innerHTML = new_html + old_html;
+  }
+#+end_src
+
+** Main
+
+Everything has to start somewhere, right? Might as well copy the well-known convention of a main function being the entry point.
+
+#+begin_src js :mkdirp yes :tangle js/main.js
+  function main() {
+      // Insert the Navbar.
+      insert_top_banner();
+      // Custom collapsible sections.
+      //setup_collapsibles();
+      // Toggle dark mode if cookie is present with true value.
+      let cookies = decodeURIComponent(document.cookie).split(';');
+      for(let i = 0; i < cookies.length; i++) {
+          while (cookies[i].charAt(0) == ' ') {
+              cookies[i].substring(1);
+          }
+          if (cookies[i].indexOf("dark_mode") == 0) {
+              let cookie_value = cookies[i]
+                  .substring(name.length, cookies[i].length)
+                  .split('=')[1];
+              if (cookie_value == "true") {
+                  toggle_dark_mode();
+              }
+          }
+      }
+      // Add #top link to table of contents
+      /*let toc_text = document.getElementById("text-table-of-contents");
+      if (toc_text) {
+          let to_top_ul = document.createElement("ul");
+          let to_top_li = document.createElement("li");
+          let link_top = document.createElement("a");
+          link_top.appendChild(document.createTextNode("Top"));
+          link_top.title = "Top of page";
+          link_top.href = "#top";
+          to_top_li.appendChild(link_top);
+          to_top_ul.appendChild(to_top_li);
+          toc_text.prepend(to_top_ul);
+      }*/
+  }
+
+  /* Attach main() function to run when window is loaded (page is rendered). */
+  window.onload = main;
+#+end_src
+
+
+* CSS
+
+Style, pizass, umph, whatever you want to call it, we need it.
+
+** Dark mode
+
+A class that is simply attached at the highest level
+in a document to switch to a dark color theme.
+
+#+begin_src css :mkdirp yes :tangle css/style.css
+  .dark-mode {
+      color: #fff;
+      background-color: #161718;
+  }
+
+  .dark-mode a {
+      color: #33ccee;
+  }
+
+  .dark-mode a:visited {
+      color: #9f85ff;
+  }
+#+end_src
+
+** Navigation Bar at Top of Site
+
+#+begin_src css :mkdirp yes :tangle css/style.css
+  .navbar {
+      width: 100%;
+      height: 100%;
+      min-height: 4vmin;
+      vertical-align: middle;
+      margin: 0;
+      padding: 0;
+      color: #161718;
+      background-color: #fff;
+      border-bottom: .2ex solid gray;
+  }
+
+  .dark-mode .navbar {
+      color: #fff;
+      background: #161718;
+  }
+
+  .navbar button {
+      height: auto;
+      font-size: max(1.8vh, 12pt);
+      padding: 1vw 1vh 1vw 1vh;
+  }
+
+  .navbar button:hover {
+      color: #fff;
+      background-color: #000;
+      transition: color 0.7s;
+  }
+
+  .dark-mode .navbar button:hover {
+      color: #000;
+      background-color: #fff;
+  }
+
+  .navbar + header > h1 {
+      margin-top: 0;
+  }
+
+  .navbar + h1 {
+      margin-top: 0;
+  }
+#+end_src
+
+*** Responsive Hamburger menu
+
+This allows the site to not look as amateur on smaller devices, like phones.
+
+Thanks to [[https://code-boxx.com/simple-responsive-pure-css-hamburger-menu/][this guide]].
+
+#+begin_src css :mkdirp yes :tangle css/style.css
+  .navbar label, #hamburger {
+      font-size: max(8vw, 12pt);
+      margin: 0.2em;
+      display: none;
+  }
+
+  #hamburger-items {
+      max-width: 60%;
+      display: flex;
+  }
+
+  #hamburger-items button {
+      min-width: 4em;
+      width: min-content;
+      max-width: 8vw;
+      flex-grow: 1;
+      flex-basis: 0;
+      white-space: nowrap;
+      overflow: hidden;
+  }
+
+  @media screen and (max-width: 1280px) {
+      #hamburger-items {
+          max-width: 100%;
+      }
+      #hamburger-items button {
+          max-width: none;
+      }
+
+  }
+
+  @media screen and (max-width: 480px) {
+      #hamburger-items {
+          max-width: 100%;
+      }
+
+      #hamburger-items button {
+          box-sizing: border-box;
+          display: block;
+          width: 100%;
+          max-width: none;
+          border-top: 1px solid #333;
+      }
+
+      .navbar label {
+          display: inline-block;
+      }
+      .navbar input:checked ~ #hamburger-items { display: block; }
+      .navbar input:checked ~ #hamburger-items button {
+          padding-top: 0.6em;
+          margin-bottom: 0.4em;
+      }
+      #hamburger-items { display: none; }
+  }
+#+end_src
+
+** Tag Overrides
+
+Because the HTML is generated by Pandoc, and I'm
+not yet in the mood to learn Haskell and develop a writer,
+there aren't really many custom classes to style other
+than what is added programatically with JS.
+
+For now, this also contains the websites responsiveness to resizing;
+in the future I imagine there will be different CSS files produces
+for different media queries.
+
+#+begin_src css :mkdirp yes :tangle css/style.css
+  html {
+      font-family:serif;
+      font-size: max(2.4vh, 8pt);
+      color: #161a1f;
+      background-color: #ffffff;
+      margin: 0 auto;
+      transition:         color 1s;
+      -moz-transition:    color 1s;
+      -o-transition:      color 1s;
+      -webkit-transition: color 1s;
+      -ms-text-size-adjust:     100%;
+      -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+      margin: 0;
+      padding: 0;
+  }
+
+  div {
+      padding: 0;
+      margin: 0;
+  }
+
+  h1 {
+      margin-top: 0.6rem;
+      margin-bottom: 0.6rem;
+  }
+
+  h2 {
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+  }
+
+  h3 {
+      margin-top: 0.4rem;
+      margin-bottom: 0.4rem;
+  }
+
+  h4 {
+      margin-top: 0.36rem;
+      margin-bottom: 0.36rem;
+  }
+
+  h5 {
+      margin-top: 0.33rem;
+      margin-bottom: 0.33rem;
+  }
+
+  h6 {
+      margin-top: 0.3rem;
+      margin-bottom: 0.3rem;
+  }
+
+  .small {
+      font-size: max(1.6vh, 6pt);
+      color: #2a2e33;
+  }
+
+  .dark-mode .small {
+      color: #716f70;
+  }
+
+  .org-src-container {
+      border: 2px solid #444;
+      border-radius: 2px;
+      margin: 1vw;
+      padding-left: 1vw;
+      padding-right: 1vw;
+      /* Hide horizontal overflow, add scroll-bar */
+      overflow-x: auto;
+  }
+
+  .dark-mode .org-src-container {
+      border-color: #bbb;
+  }
+
+  .src {
+      font-size: max(1.95vh, 8pt);
+  }
+
+  pre.example {
+      border: 2px solid #444;
+      border-radius: 2px;
+      margin: 1vw;
+      padding: 1vw;
+      /* Hide horizontal overflow, add scroll-bar */
+      overflow-x: auto;
+  }
+
+  .org-comment-delimiter,.org-comment {
+      color: #7f8388;
+  }
+
+  .org-builtin,.org-keyword {
+      color: #dd64f4;
+  }
+
+  .org-string {
+      color: #f0a000;
+  }
+
+  .dark-mode .org-string {
+      color: #ffee20;
+  }
+
+  code span.co {
+      color: #308093;
+  }
+
+  code span.fu {
+      color: #132e72
+  }
+
+  .dark-mode code span.fu {
+      color: #2963f5
+  }
+
+  button {
+      height: 100%;
+      color: inherit;
+      background-color: inherit;
+      border: none;
+  }
+
+  .title {
+      margin-top: 0;
+      text-align: center;
+  }
+
+  .content {
+      margin: 0;
+  }
+
+  .author {
+      text-align: center;
+  }
+
+  .postamble {
+      font-size: max(1.2vh, 6pt);
+  }
+
+  .main-body {
+      margin-left: 26vw;
+      margin-right: 26vw;
+  }
+
+  @media only screen and (max-width: 1920px) {
+      html {
+          font-size: max(2.12vh, 8pt);
+      }
+
+      .src {
+          font-size: max(1.8vh, 8pt);
+      }
+
+      .main-body {
+          margin-left: 22vw;
+          margin-right: 22vw;
+      }
+  }
+
+  @media only screen and (max-width: 1280px) {
+      html {
+          font-size: max(1.95vh, 8pt);
+      }
+
+      .src {
+          font-size: max(1.6vh, 8pt);
+      }
+
+      .main-body {
+          margin-left: 18vw;
+          margin-right: 18vw;
+      }
+  }
+
+  @media only screen and (max-width: 800px) {
+      html {
+          font-size: max(1.8vh, 8pt);
+      }
+
+      .src {
+          font-size: max(1.6vh, 8pt);
+      }
+
+      .main-body {
+          margin-left: 14vw;
+          margin-right: 14vw;
+      }
+  }
+
+  @media only screen and (max-width: 480px) {
+      html {
+          font-size: max(2.4vh, 8pt);
+      }
+
+      .src {
+          font-size: max(1.8vh, 8pt);
+      }
+
+      .main-body {
+          margin-left: 8vw;
+          margin-right: 8vw;
+      }
+  }
+
+  @media only screen and (max-width: 256px) {
+      html {
+          font-size: max(1.95vh, 8pt);
+      }
+
+      .src {
+          font-size: max(1.6vh, 8pt);
+      }
+
+      .main-body {
+          margin-left: 4vw;
+          margin-right: 4vw;
+      }
+  }
+#+end_src
+
+

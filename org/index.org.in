@@ -1,0 +1,10 @@
+#+title: Lens_r's Blog
+#+author: Rylan Lens Kellogg
+#+description: An index of the available files on the Lensor Radii website
+#+created: <2023-05-29 Mon>
+#+OPTIONS: ^:{}
+# "^:{}" makes subscripts and superscripts require curly braces. Lens_r stays as is, but S_{a} will be subscripted.
+
+Welcome to the home page of Lens_r's blog website. If you don't already know, I create educational programming content.
+
+# NOTE: List of links to blog posts will be inserted at the end of this file by `publish.el`

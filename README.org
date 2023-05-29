@@ -1,0 +1,32 @@
+#+title: Lens_r Blog Website
+#+author: Rylan Lens Kellogg
+#+description: Lens_r made a blogging website.
+#+created: <2022-05-27 Fri>
+#+OPTIONS: ^:{}
+
+Lens_r's blog website is created within GNU Emacs. Most content is written in ~org-mode~, an outline document format, and converted to HTML using ~org-publish~, an Emacs package.
+
+The source of the website may be found in the ~org~ subdirectory.
+
+** Building
+
+The included ~publish.el~ will populate the ~web~ subdirectory with servable contents.
+
+Run it using the following shell command:
+#+begin_src sh
+  emacs --chdir path/to/this/folder --script publish.el
+#+end_src
+
+*** Testing
+
+NOTE: Use any port, there is nothing special about ~8000~ other than that it probably won't be used by anything important.
+
+For local testing, I recommend Python's =http.server=.
+#+begin_src sh
+  python -m http.server 8000
+#+end_src
+
+It is also fairly simple to get a PHP server up and running.
+#+begin_src sh
+  php -S localhost:8000
+#+end_src

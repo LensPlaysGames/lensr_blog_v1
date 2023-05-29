@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2023-05-29 Mon 10:45 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Main Blog</title>
+<meta name="author" content="Rylan Lens Kellogg" />
+<meta name="description" content="A blog for all things Lens_r." />
+<meta name="generator" content="Org Mode" />
+<style>.dark-mode{color:#fff;background-color:#161718}.dark-mode a{color:#3ce}.dark-mode a:visited{color:#9f85ff}.navbar{width:100%;height:100%;min-height:4vmin;vertical-align:middle;margin:0;padding:0;color:#161718;background-color:#fff;border-bottom:.2ex solid gray}.dark-mode .navbar{color:#fff;background:#161718}.navbar button{height:auto;font-size:max(1.8vh, 12pt);padding:1vw 1vh 1vw 1vh}.navbar button:hover{color:#fff;background-color:#000;transition:color .7s}.dark-mode .navbar button:hover{color:#000;background-color:#fff}.navbar+header>h1{margin-top:0}.navbar+h1{margin-top:0}#hamburger,.navbar label{font-size:max(8vw, 12pt);margin:.2em;display:none}#hamburger-items{max-width:60%;display:flex}#hamburger-items button{min-width:4em;width:min-content;max-width:8vw;flex-grow:1;flex-basis:0;white-space:nowrap;overflow:hidden}@media screen and (max-width:1280px){#hamburger-items{max-width:100%}#hamburger-items button{max-width:none}}@media screen and (max-width:480px){#hamburger-items{max-width:100%}#hamburger-items button{box-sizing:border-box;display:block;width:100%;max-width:none;border-top:1px solid #333}.navbar label{display:inline-block}.navbar input:checked~#hamburger-items{display:block}.navbar input:checked~#hamburger-items button{padding-top:.6em;margin-bottom:.4em}#hamburger-items{display:none}}html{font-family:serif;font-size:max(2.4vh, 8pt);color:#161a1f;background-color:#fff;margin:0 auto;transition:color 1s;-moz-transition:color 1s;-o-transition:color 1s;-webkit-transition:color 1s;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0;padding:0}div{padding:0;margin:0}h1{margin-top:.6rem;margin-bottom:.6rem}h2{margin-top:.5rem;margin-bottom:.5rem}h3{margin-top:.4rem;margin-bottom:.4rem}h4{margin-top:.36rem;margin-bottom:.36rem}h5{margin-top:.33rem;margin-bottom:.33rem}h6{margin-top:.3rem;margin-bottom:.3rem}.small{font-size:max(1.6vh, 6pt);color:#2a2e33}.dark-mode .small{color:#716f70}.org-src-container{border:2px solid #444;border-radius:2px;margin:1vw;padding-left:1vw;padding-right:1vw;overflow-x:auto}.dark-mode .org-src-container{border-color:#bbb}.src{font-size:max(1.95vh, 8pt)}pre.example{border:2px solid #444;border-radius:2px;margin:1vw;padding:1vw;overflow-x:auto}.org-comment,.org-comment-delimiter{color:#7f8388}.org-builtin,.org-keyword{color:#dd64f4}.org-string{color:#f0a000}.dark-mode .org-string{color:#ffee20}code span.co{color:#308093}code span.fu{color:#132e72}.dark-mode code span.fu{color:#2963f5}button{height:100%;color:inherit;background-color:inherit;border:none}.title{margin-top:0;text-align:center}.content{margin:0}.author{text-align:center}.postamble{font-size:max(1.2vh, 6pt)}.main-body{margin-left:26vw;margin-right:26vw}@media only screen and (max-width:1920px){html{font-size:max(2.12vh, 8pt)}.src{font-size:max(1.8vh, 8pt)}.main-body{margin-left:22vw;margin-right:22vw}}@media only screen and (max-width:1280px){html{font-size:max(1.95vh, 8pt)}.src{font-size:max(1.6vh, 8pt)}.main-body{margin-left:18vw;margin-right:18vw}}@media only screen and (max-width:800px){html{font-size:max(1.8vh, 8pt)}.src{font-size:max(1.6vh, 8pt)}.main-body{margin-left:14vw;margin-right:14vw}}@media only screen and (max-width:480px){html{font-size:max(2.4vh, 8pt)}.src{font-size:max(1.8vh, 8pt)}.main-body{margin-left:8vw;margin-right:8vw}}@media only screen and (max-width:256px){html{font-size:max(1.95vh, 8pt)}.src{font-size:max(1.6vh, 8pt)}.main-body{margin-left:4vw;margin-right:4vw}}</style>
+<script>function toggle_dark_mode(){var element=document.getElementsByTagName("html")[0],dark_button=document.getElementById("dark-mode");element.classList.toggle("dark-mode");const d=new Date;d.setTime(d.getTime()+24192e5),element.classList.contains("dark-mode")?(document.cookie="dark_mode=true; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Light Mode"):(document.cookie="dark_mode=false; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Dark Mode")}function insert_top_banner(){var new_html='<nav class="navbar" id="navbar">',new_html=(new_html+'<label for="hamburger">&#9776;</label>'+'<input type="checkbox" id="hamburger"/>'+'<div id="hamburger-items">'+"<button onClick=\"window.location.href='/'\">Home</button>"+"<button onClick=\"window.location.href='https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG'\">Donate</button>"+"<button onClick=\"window.location.href='https://www.youtube.com/@Lensr'\">YouTube</button>"+"<button onClick=\"window.location.href='https://www.twitch.tv/lens_r'\">Twitch</button>"+"<button onClick=\"window.location.href='https://discord.gg/FTQsgqQEM4'\">Discord</button>"+'<button id="dark-mode" onClick={toggle_dark_mode();}>Dark Mode</button>'+"</div></nav>",'<div class="main-body" id="main-body">'+document.body.innerHTML+"</div>");document.body.innerHTML='<nav class="navbar" id="navbar"><label for="hamburger">&#9776;</label><input type="checkbox" id="hamburger"/><div id="hamburger-items"><button onClick="window.location.href=\'/\'">Home</button><button onClick="window.location.href=\'https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG\'">Donate</button><button onClick="window.location.href=\'https://www.youtube.com/@Lensr\'">YouTube</button><button onClick="window.location.href=\'https://www.twitch.tv/lens_r\'">Twitch</button><button onClick="window.location.href=\'https://discord.gg/FTQsgqQEM4\'">Discord</button><button id="dark-mode" onClick={toggle_dark_mode();}>Dark Mode</button></div></nav>'+new_html}function main(){insert_top_banner();let cookies=decodeURIComponent(document.cookie).split(";");for(let i=0;i<cookies.length;i++){for(;" "==cookies[i].charAt(0);)cookies[i].substring(1);0==cookies[i].indexOf("dark_mode")&&"true"==cookies[i].substring(name.length,cookies[i].length).split("=")[1]&&toggle_dark_mode()}}window.onload=main;</script>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Main Blog</h1>
+
+<div id="outline-container-whatsaprogram" class="outline-2">
+<h2 id="whatsaprogram">What <i>is</i> a Program?</h2>
+<div class="outline-text-2" id="text-whatsaprogram">
+<p>
+This may seem obvious, but it turns out to be quite &#x2026; complex.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c"><span class="org-type">int</span> <span class="org-function-name">main</span>() {
+  <span class="org-keyword">return</span> 69;
+}
+</pre>
+</div>
+
+<p>
+Is the above code a "program"? Most will say yes, in my experience. This immediately throws a wrench into most <i>obvious</i> definitions of program.
+</p>
+
+<p>
+The code above is not executable; it's simply plain-text within a file. Well, then maybe a program <i>isn't</i> necessarily executable, but <i>some</i> programs <i>may</i> be executed. So "something executable on a computer" isn't really a valid definition of "program".
+</p>
+
+<p>
+Some, from here, may expand the definition to "something that may be eventually executable on a computer (after some set of transformations)". Another issue arises, however, if we look at the following example.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c"><span class="org-type">int</span> <span class="org-function-name">main</span>() {
+  <span class="org-keyword">return</span> 69
+}
+</pre>
+</div>
+
+<p>
+Is the above code a "program"? If we follow the "eventually executable" definition, it <i>isn't</i>. There is a syntax error, as the <code>return</code> statement is not terminated with a semi-colon. This code, therefore, isn't compileable; it's an "ill-formed program" according to the C standard. So, as we can see, some programs (without changing the source) are not <b>ever</b> executable.
+</p>
+</div>
+
+<div id="outline-container-orge57b748" class="outline-3">
+<h3 id="orge57b748"><span class="todo TODO">TODO</span> Etymology of "program"</h3>
+<div class="outline-text-3" id="text-orge57b748">
+<p>
+Where did the word come from? Why do we use it to describe computery things?
+</p>
+</div>
+</div>
+
+<div id="outline-container-org135024b" class="outline-3">
+<h3 id="org135024b"><b>My</b> Definition of "program"</h3>
+<div class="outline-text-3" id="text-org135024b">
+<p>
+To me, there <i>isn't</i> a clear-cut definition of program. No matter which one you choose, there are unintuitive corner-cases. However! That does not stop me from <i>choosing</i> a definition that I am comfortable with.
+</p>
+
+<p>
+What if "program" actually equates to "instructions that tell a computer to do computations". While this <i>is</i> incredibly vague, it is also just specific enough. For example, when you write C code, you are attempting to instruct the computer on how to do execution/computation in order to give you the result you want. And when you compile that C code into an executable, the executable also contains instructions that tells a computer how to do computations, just in a different format.
+</p>
+
+<p>
+As with every definition of program, there are imperfect corner cases, but this is one I'm okay with: the <i>source code</i> and the <i>executable produced from that source code</i> are entirely separate programs that happen to have instructions within them that produce the same result (assuming a well-written compiler).
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p><small>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6)</small></p>
+</div>
+</body>
+</html>

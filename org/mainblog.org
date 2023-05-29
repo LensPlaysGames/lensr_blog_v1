@@ -1,0 +1,45 @@
+#+title: Main Blog
+#+author: Rylan Lens Kellogg
+#+description: A blog for all things Lens_r.
+#+created: <2023-05-29 Mon>
+
+* What /is/ a Program? :blogpost:
+:PROPERTIES:
+:CUSTOM_ID: whatsaprogram
+:PUBLISHED: [2023-05-29 Mon 08:41]
+:MODIFIED: [2023-05-29 Mon 09:11]
+:END:
+
+This may seem obvious, but it turns out to be quite ... complex.
+
+#+begin_src c
+  int main() {
+    return 69;
+  }
+#+end_src
+
+Is the above code a "program"? Most will say yes, in my experience. This immediately throws a wrench into most /obvious/ definitions of program.
+
+The code above is not executable; it's simply plain-text within a file. Well, then maybe a program /isn't/ necessarily executable, but /some/ programs /may/ be executed. So "something executable on a computer" isn't really a valid definition of "program".
+
+Some, from here, may expand the definition to "something that may be eventually executable on a computer (after some set of transformations)". Another issue arises, however, if we look at the following example.
+
+#+begin_src c
+  int main() {
+    return 69
+  }
+#+end_src
+
+Is the above code a "program"? If we follow the "eventually executable" definition, it /isn't/. There is a syntax error, as the ~return~ statement is not terminated with a semi-colon. This code, therefore, isn't compileable; it's an "ill-formed program" according to the C standard. So, as we can see, some programs (without changing the source) are not *ever* executable.
+
+** TODO Etymology of "program"
+
+Where did the word come from? Why do we use it to describe computery things?
+
+** *My* Definition of "program"
+
+To me, there /isn't/ a clear-cut definition of program. No matter which one you choose, there are unintuitive corner-cases. However! That does not stop me from /choosing/ a definition that I am comfortable with.
+
+What if "program" actually equates to "instructions that tell a computer to do computations". While this /is/ incredibly vague, it is also just specific enough. For example, when you write C code, you are attempting to instruct the computer on how to do execution/computation in order to give you the result you want. And when you compile that C code into an executable, the executable also contains instructions that tells a computer how to do computations, just in a different format.
+
+As with every definition of program, there are imperfect corner cases, but this is one I'm okay with: the /source code/ and the /executable produced from that source code/ are entirely separate programs that happen to have instructions within them that produce the same result (assuming a well-written compiler).
