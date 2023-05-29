@@ -54,6 +54,7 @@ but I like handling it this way for some reason.
       new_html += "<button onClick=\"window.location.href='https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG'\">Donate</button>";
       new_html += "<button onClick=\"window.location.href='https://www.youtube.com/@Lensr'\">YouTube</button>";
       new_html += "<button onClick=\"window.location.href='https://www.twitch.tv/lens_r'\">Twitch</button>";
+      new_html += "<button onClick=\"window.location.href='https://www.github.com/LensPlaysGames'\">GitHub</button>";
       new_html += "<button onClick=\"window.location.href='https://discord.gg/FTQsgqQEM4'\">Discord</button>";
 
       new_html += "<button id=\"dark-mode\" onClick={toggle_dark_mode();}>Dark Mode</button>";
@@ -254,6 +255,11 @@ than what is added programatically with JS.
 For now, this also contains the websites responsiveness to resizing;
 in the future I imagine there will be different CSS files produces
 for different media queries.
+
+TODO: I don't even know if this is possible, but if we could somehow
+insert the result of getting the foreground color of the font-lock-*
+faces, the syntax highlighting would automatically match your Emacs
+setup :eyes:.
 
 #+begin_src css :mkdirp yes :tangle css/style.css
   html {
