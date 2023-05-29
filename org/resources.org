@@ -228,7 +228,7 @@ Thanks to [[https://code-boxx.com/simple-responsive-pure-css-hamburger-menu/][th
       color: #fff;
   }
 
-  @media screen and (max-width: 1366px) {
+  @media only screen and (max-width: 1366px) {
       #hamburger-items {
           max-width: 100%;
       }
@@ -237,7 +237,7 @@ Thanks to [[https://code-boxx.com/simple-responsive-pure-css-hamburger-menu/][th
       }
   }
 
-  @media screen and (max-width: 600px) {
+  @media only screen and (max-width: 600px) {
       #hamburger-items {
           max-width: 100%;
       }
@@ -356,7 +356,7 @@ setup :eyes:.
       background-color: #e4ebe8;
 
       border: 2px solid #444;
-      border-radius: 2px;
+      border-radius: 4px;
       margin: 1vw;
       padding-left: 1vw;
       padding-right: 1vw;
@@ -377,7 +377,7 @@ setup :eyes:.
 
   pre.example {
       border: 2px solid #444;
-      border-radius: 2px;
+      border-radius: 4px;
       margin: 1vw;
       padding: 1vw;
       /* Hide horizontal overflow, add scroll-bar */
@@ -500,6 +500,10 @@ setup :eyes:.
   }
 
   @media only screen and (max-width: 800px) {
+      .org-src-container {
+          border-radius: 5px;
+      }
+
       html {
           font-size: max(1.8vh, 8pt);
       }
@@ -515,6 +519,10 @@ setup :eyes:.
   }
 
   @media only screen and (max-width: 600px) {
+      .org-src-container {
+          border-radius: 6px;
+      }
+
       html {
           font-size: max(2.4vh, 8pt);
       }
@@ -530,6 +538,10 @@ setup :eyes:.
   }
 
   @media only screen and (max-width: 256px) {
+      .org-src-container {
+          border-radius: 6px;
+      }
+
       html {
           font-size: max(1.95vh, 8pt);
       }
