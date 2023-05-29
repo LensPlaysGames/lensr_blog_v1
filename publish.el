@@ -70,12 +70,7 @@ If APPEND is non-nil, concatenate to the file at FILEPATH."
   (let ((package-load-list '((htmlize t))))
     (package-initialize)))
 
-;; Generate JavaScript and CSS with org-babel.
-(require 'ob-tangle)
-;; This populates org/js and org/css subdirectories.
-(org-babel-tangle-file "org/resources.org")
-
-;;; Links to each blog post
+;;; Create pages/links for each blog post.
 (let ((blog-links nil))
   (with-current-buffer (find-file-noselect "org/mainblog.org")
     ;; Ensure "org/posts/" is a valid, empty directory.
@@ -144,6 +139,12 @@ If APPEND is non-nil, concatenate to the file at FILEPATH."
   ;; point after the last paren and doing `C-x C-e` will evaluate the whole
   ;; thing, generating `index.org` and all the blog post files in `org/posts/`.
   nil)
+
+;;; Generate JavaScript and CSS with org-babel.
+
+(require 'ob-tangle)
+;; This populates org/js and org/css subdirectories.
+(org-babel-tangle-file "org/resources.org")
 
 ;;; JS and CSS Minification
 
