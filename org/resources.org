@@ -50,7 +50,7 @@ but I like handling it this way for some reason.
       new_html += "<input type=\"checkbox\" id=\"hamburger\"/>";
       new_html += "<div id=\"hamburger-items\">";
 
-      new_html += "<button onClick=\"window.location.href='/'\">Home</button>";
+      new_html += "<button onClick=\"window.location.href='/lensr_blog_v1/'\">Home</button>";
       new_html += "<button onClick=\"window.location.href='https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG'\">Donate</button>";
       new_html += "<button onClick=\"window.location.href='https://www.youtube.com/@Lensr'\">YouTube</button>";
       new_html += "<button onClick=\"window.location.href='https://www.twitch.tv/lens_r'\">Twitch</button>";
@@ -268,10 +268,10 @@ setup :eyes:.
       color: #161a1f;
       background-color: #ffffff;
       margin: 0 auto;
-      transition:         color 1s;
-      -moz-transition:    color 1s;
-      -o-transition:      color 1s;
-      -webkit-transition: color 1s;
+      transition:         none;
+      -moz-transition:    none;
+      -o-transition:      none;
+      -webkit-transition: none;
       -ms-text-size-adjust:     100%;
       -webkit-text-size-adjust: 100%;
   }
