@@ -346,20 +346,60 @@ for different media queries.
       overflow-x: auto;
   }
 
-  .org-comment-delimiter,.org-comment {
-      color: #7f8388;
+  .dark-mode .src {
+      color: inherit;
   }
 
-  .org-builtin,.org-keyword {
+  .dark-mode .org-builtin,.dark-mode .org-keyword {
       color: #dd64f4;
   }
 
-  .org-string {
-      color: #f0a000;
+  .dark-mode .org-function-name {
+      color: #ffebbb;
+  }
+
+  .dark-mode .org-type {
+      color: #2cabff;
   }
 
   .dark-mode .org-string {
       color: #ffee20;
+  }
+
+  .dark-mode .org-comment-delimiter,.org-comment {
+      color: #7f8388;
+  }
+
+  .dark-mode code span.co {
+      color: #308093;
+  }
+
+  .dark-mode code span.fu {
+      color: #2963f5
+  }
+
+  .src {
+      color: #242323;
+  }
+
+  .org-function-name {
+      color: #c26d3b;
+  }
+
+  .org-builtin,.org-keyword {
+      color: #6f42c1;
+  }
+
+  .org-type {
+      color: #007bff;
+  }
+
+  .org-string {
+      color: #dc3545;
+  }
+
+  .org-comment-delimiter,.org-comment {
+      color: #444343;
   }
 
   code span.co {
@@ -367,11 +407,7 @@ for different media queries.
   }
 
   code span.fu {
-      color: #132e72
-  }
-
-  .dark-mode code span.fu {
-      color: #2963f5
+      color: #007bff
   }
 
   button {

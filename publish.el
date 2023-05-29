@@ -78,23 +78,44 @@ If APPEND is non-nil, concatenate to the file at FILEPATH."
 ;;; Links to each blog post
 (let ((blog-links nil))
   (with-current-buffer (find-file-noselect "org/mainblog.org")
+    ;; Ensure "org/posts/" is a valid, empty directory.
+    (delete-directory "posts" t)
+    (make-directory "posts" t)
     (org-map-entries
      ;; FUNC: Function that will be called when cursor is at beginning of each
      ;; entry's headline. No need to preserve point, but if you want to set a
      ;; custom continuation point set the variable 'org-map-continue-from' to
      ;; the desired point.
      (lambda ()
-       (when (= 1 (org-current-level))
-         (push `(,(format "[[file:mainblog.org::#%s][%s]]"
-                          (org-entry-get (point) "CUSTOM_ID")
-                          (org-get-heading t))
-                 ,(org-entry-get (point) "PUBLISHED"))
-               blog-links)))
+       (let* ((heading-components (org-heading-components))
+              (level (nth 0 heading-components)) ;; fallback: (org-current-level)
+              (headline (nth 4 heading-components)) ;; fallback: (org-get-heading)
+              (tags-string (nth 5 heading-components)) ;; I have no clue how else to get tags.
+              (custom-id    (org-entry-get (point) "CUSTOM_ID"))
+              (publish-date (org-entry-get (point) "PUBLISHED"))
+              (post-file-name (format "posts/%s.org" custom-id)))
+         (when (and (= 1 level)
+                    (when (stringp tags-string) (string-match "blogpost" tags-string)))
+           ;; Copy the post into it's own file, that way readers won't get confused
+           ;; as to which post is which; one web page per post.
+           ;; The next thing we yank will be the contents of this subtree (the post).
+           (org-copy-subtree)
+           (with-current-buffer (find-file-noselect post-file-name t)
+             (erase-buffer)
+             (yank)
+             (save-buffer))
 
-     ;; MATCH: tags/property/todo match as it is used in the agenda tags view.
-     ;; Only headlines that are matched by this query will be considered during
-     ;; the iteration. When nil or t, all headlines will be visited.
-     "blogpost"))
+           ;; Push a link to this newly-created post file, along with it's publish
+           ;; date, to the list of blog links.
+           (push `(,(format "[[file:%s][%s]]" post-file-name headline)
+                   ,publish-date)
+                 blog-links))))))
+
+  ;; Sort links by publish date
+  (sort blog-links (lambda (a b)
+                     (not (time-less-p
+                           (org-timestamp-to-time (org-timestamp-from-string (cadr a)))
+                           (org-timestamp-to-time (org-timestamp-from-string (cadr b)))))))
 
   ;; Save list of links to blog posts in an org file.
   (with-current-buffer (find-file-noselect "org/index.org")
@@ -119,6 +140,9 @@ If APPEND is non-nil, concatenate to the file at FILEPATH."
               ))
           blog-links)
     (save-buffer))
+  ;; return nil simply because this bit of code is freestanding, so placing
+  ;; point after the last paren and doing `C-x C-e` will evaluate the whole
+  ;; thing, generating `index.org` and all the blog post files in `org/posts/`.
   nil)
 
 ;;; JS and CSS Minification
