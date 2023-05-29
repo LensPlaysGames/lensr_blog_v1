@@ -93,10 +93,16 @@ If APPEND is non-nil, concatenate to the file at FILEPATH."
                     (when (stringp tags-string) (string-match "blogpost" tags-string)))
            ;; Copy the post into it's own file, that way readers won't get confused
            ;; as to which post is which; one web page per post.
+
+
            ;; The next thing we yank will be the contents of this subtree (the post).
            (org-copy-subtree)
            (with-current-buffer (find-file-noselect post-file-name t)
              (erase-buffer)
+             (insert (format "#+title: Lens_r | %s\n" headline) ;; this shows in browser tab
+                     (format "#+created: %s\n" publish-date)
+                     "#+options: title:nil\n\n")
+             ;; This inserts the actual blog post, copied with 'org-copy-subtree' above.
              (yank)
              (save-buffer))
 
