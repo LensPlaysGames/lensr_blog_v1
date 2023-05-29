@@ -501,7 +501,7 @@ setup :eyes:.
 
   @media only screen and (max-width: 800px) {
       .org-src-container {
-          border-radius: 5px;
+          border-radius: 6px;
       }
 
       html {
@@ -520,7 +520,7 @@ setup :eyes:.
 
   @media only screen and (max-width: 600px) {
       .org-src-container {
-          border-radius: 6px;
+          border-radius: 8px;
       }
 
       html {
