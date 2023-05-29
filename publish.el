@@ -16,15 +16,7 @@
 ;; M-x eval-buffer RET
 ;; (eval-buffer)
 
-;; Use the following org-capture template to write new blog posts easily.
-;; ("w" "Lens' Website Templates")
-;; ("wp" "Blog-post template" entry
-;;  (file+datetree lens/org-blogs/general)
-;;  "* %^{Topic}\n%<%Y-%m-%d>\n\n%?"
-;;  :tree-type month
-;;  :prepend t
-;;  :empty-lines-before 1
-;;  :empty-lines-after 2)
+;; See =org/mainblog.org=.
 
 ;;; Code:
 
@@ -219,7 +211,7 @@ If APPEND is non-nil, concatenate to the file at FILEPATH."
       '(("export-org"
          :publishing-function
          org-html-publish-to-html
-         :publishing-directory "web"
+         :publishing-directory "docs"
          :recursive t
          :base-directory "org"
          :base-extension "org"
@@ -238,7 +230,7 @@ If APPEND is non-nil, concatenate to the file at FILEPATH."
         ("copy"
          :publishing-function
          org-publish-attachment
-         :publishing-directory "web"
+         :publishing-directory "docs"
          :recursive t
          :base-directory "org"
          :base-extension "png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|svg"
