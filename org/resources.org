@@ -163,6 +163,7 @@ in a document to switch to a dark color theme.
       color: #fff;
       background-color: #000;
       transition: color 0.7s;
+      cursor: pointer; /* Some navbar anchors don't have an href */
   }
 
   .dark-mode #navbar a:hover {
@@ -254,9 +255,9 @@ Thanks to [[https://code-boxx.com/simple-responsive-pure-css-hamburger-menu/][th
       }
       #navbar input:checked ~ #hamburger-items { display: block; }
       #navbar input:checked ~ #hamburger-items a {
-          height: max(7ex, 6vmin); // height: max(5ex, 4vmin);
-          line-height: max(7ex, 6vmin); // line-height: max(5ex, 4vmin);
-          font-size: max(2.12vh, 14pt); // font-size: max(1.8vh, 12pt);
+          height: max(7ex, 6vmin); /* height: max(5ex, 4vmin); */
+          line-height: max(7ex, 6vmin); /* line-height: max(5ex, 4vmin); */
+          font-size: max(2.12vh, 14pt); /* font-size: max(1.8vh, 12pt); */
       }
       #hamburger-items { display: none; }
   }
