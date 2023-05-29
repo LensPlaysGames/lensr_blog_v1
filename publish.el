@@ -2,7 +2,7 @@
 
 ;; Author: Rylan Lens Kellogg
 ;; Maintainer: Rylan Lens Kellogg
-;; Version: 0.0.1
+;; Version: 0.1.0
 ;; Package-Requires: ((emacs "27.1"))
 ;; Homepage: TODO
 ;; Keywords: org, publish, html, web
@@ -233,7 +233,7 @@ If APPEND is non-nil, concatenate to the file at FILEPATH."
          :publishing-directory "docs"
          :recursive t
          :base-directory "org"
-         :base-extension "png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|svg"
+         :base-extension "png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|svg\\|ico"
          :exclude "backup\\|backup/\\|tmp\\|tmp/"
          ;; :include ("emacs-init.org")
          )

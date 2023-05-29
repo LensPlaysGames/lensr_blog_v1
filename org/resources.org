@@ -50,14 +50,13 @@ but I like handling it this way for some reason.
       new_html += "<input type=\"checkbox\" id=\"hamburger\"/>";
       new_html += "<div id=\"hamburger-items\">";
 
-      new_html += "<button onClick=\"window.location.href='/lensr_blog_v1/'\">Home</button>";
-      new_html += "<button onClick=\"window.location.href='https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG'\">Donate</button>";
-      new_html += "<button onClick=\"window.location.href='https://www.youtube.com/@Lensr'\">YouTube</button>";
-      new_html += "<button onClick=\"window.location.href='https://www.twitch.tv/lens_r'\">Twitch</button>";
-      new_html += "<button onClick=\"window.location.href='https://www.github.com/LensPlaysGames'\">GitHub</button>";
-      new_html += "<button onClick=\"window.location.href='https://discord.gg/FTQsgqQEM4'\">Discord</button>";
-
-      new_html += "<button id=\"dark-mode\" onClick={toggle_dark_mode();}>Dark Mode</button>";
+      new_html += "<a href='/lensr_blog_v1/'\">Home</a>";
+      new_html += "<a target=\"_blank\" href='https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG'\">Donate</a>";
+      new_html += "<a target=\"_blank\" href='https://www.youtube.com/@Lensr'\">YouTube</a>";
+      new_html += "<a target=\"_blank\" href='https://www.twitch.tv/lens_r'\">Twitch</a>";
+      new_html += "<a target=\"_blank\" href='https://www.github.com/LensPlaysGames'\">GitHub</a>";
+      new_html += "<a target=\"_blank\" href='https://discord.gg/FTQsgqQEM4'\">Discord</a>";
+      new_html += "<a id=\"dark-mode\" onClick={toggle_dark_mode();}>Dark Mode</a>";
 
       new_html += "</div></nav>";
       let old_html = "<div class=\"main-body\" id=\"main-body\">"
@@ -139,10 +138,9 @@ in a document to switch to a dark color theme.
 ** Navigation Bar at Top of Site
 
 #+begin_src css :mkdirp yes :tangle css/style.css
-  .navbar {
+  #navbar {
       width: 100%;
       height: 100%;
-      min-height: 4vmin;
       vertical-align: middle;
       margin: 0;
       padding: 0;
@@ -151,33 +149,32 @@ in a document to switch to a dark color theme.
       border-bottom: .2ex solid gray;
   }
 
-  .dark-mode .navbar {
+  .dark-mode #navbar {
       color: #fff;
       background: #161718;
   }
 
-  .navbar button {
-      height: auto;
+  #navbar a {
+      height: max(5ex, 4vmin);
       font-size: max(1.8vh, 12pt);
-      padding: 1vw 1vh 1vw 1vh;
   }
 
-  .navbar button:hover {
+  #navbar a:hover {
       color: #fff;
       background-color: #000;
       transition: color 0.7s;
   }
 
-  .dark-mode .navbar button:hover {
+  .dark-mode #navbar a:hover {
       color: #000;
       background-color: #fff;
   }
 
-  .navbar + header > h1 {
+  #navbar + header > h1 {
       margin-top: 0;
   }
 
-  .navbar + h1 {
+  #navbar + h1 {
       margin-top: 0;
   }
 #+end_src
@@ -189,7 +186,7 @@ This allows the site to not look as amateur on smaller devices, like phones.
 Thanks to [[https://code-boxx.com/simple-responsive-pure-css-hamburger-menu/][this guide]].
 
 #+begin_src css :mkdirp yes :tangle css/style.css
-  .navbar label, #hamburger {
+  #navbar label, #hamburger {
       font-size: max(8vw, 12pt);
       margin: 0.2em;
       display: none;
@@ -200,33 +197,51 @@ Thanks to [[https://code-boxx.com/simple-responsive-pure-css-hamburger-menu/][th
       display: flex;
   }
 
-  #hamburger-items button {
+
+  #hamburger-items a {
+      display: block;
+      overflow: hidden;
+
+      color: #161718;
+      background-color: inherit;
+      border: none;
+
+      height: max(5ex, 4vmin);
+      line-height: max(5ex, 4vmin);
+
       min-width: 4em;
       width: min-content;
       max-width: 8vw;
+
       flex-grow: 1;
       flex-basis: 0;
-      white-space: nowrap;
-      overflow: hidden;
+
       text-decoration: none;
+      text-align: center;
+      white-space: nowrap;
+
+      font-size: max(1.8vh, 12pt);
   }
 
-  @media screen and (max-width: 1280px) {
+  .dark-mode #hamburger-items a {
+      color: #fff;
+  }
+
+  @media screen and (max-width: 1366px) {
       #hamburger-items {
           max-width: 100%;
       }
-      #hamburger-items button {
+      #hamburger-items a {
           max-width: none;
       }
-
   }
 
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 600px) {
       #hamburger-items {
           max-width: 100%;
       }
 
-      #hamburger-items button {
+      #hamburger-items a {
           box-sizing: border-box;
           display: block;
           width: 100%;
@@ -234,13 +249,14 @@ Thanks to [[https://code-boxx.com/simple-responsive-pure-css-hamburger-menu/][th
           border-top: 1px solid #333;
       }
 
-      .navbar label {
+      #navbar label {
           display: inline-block;
       }
-      .navbar input:checked ~ #hamburger-items { display: block; }
-      .navbar input:checked ~ #hamburger-items button {
-          padding-top: 0.6em;
-          margin-bottom: 0.4em;
+      #navbar input:checked ~ #hamburger-items { display: block; }
+      #navbar input:checked ~ #hamburger-items a {
+          height: max(7ex, 6vmin); // height: max(5ex, 4vmin);
+          line-height: max(7ex, 6vmin); // line-height: max(5ex, 4vmin);
+          font-size: max(2.12vh, 14pt); // font-size: max(1.8vh, 12pt);
       }
       #hamburger-items { display: none; }
   }
@@ -335,6 +351,9 @@ setup :eyes:.
   }
 
   .org-src-container {
+      color: #1a1b1c;
+      background-color: #e4ebe8;
+
       border: 2px solid #444;
       border-radius: 2px;
       margin: 1vw;
@@ -345,6 +364,9 @@ setup :eyes:.
   }
 
   .dark-mode .org-src-container {
+      color: #e4ebe8;
+      background-color: #1a1b1c;
+
       border-color: #bbb;
   }
 
@@ -359,10 +381,6 @@ setup :eyes:.
       padding: 1vw;
       /* Hide horizontal overflow, add scroll-bar */
       overflow-x: auto;
-  }
-
-  .dark-mode .src {
-      color: inherit;
   }
 
   .dark-mode .org-builtin,.dark-mode .org-keyword {
@@ -391,10 +409,6 @@ setup :eyes:.
 
   .dark-mode code span.fu {
       color: #2963f5
-  }
-
-  .src {
-      color: #242323;
   }
 
   .org-function-name {
@@ -469,7 +483,7 @@ setup :eyes:.
       }
   }
 
-  @media only screen and (max-width: 1280px) {
+  @media only screen and (max-width: 1366px) {
       html {
           font-size: max(1.95vh, 8pt);
       }
@@ -499,7 +513,7 @@ setup :eyes:.
       }
   }
 
-  @media only screen and (max-width: 480px) {
+  @media only screen and (max-width: 600px) {
       html {
           font-size: max(2.4vh, 8pt);
       }
