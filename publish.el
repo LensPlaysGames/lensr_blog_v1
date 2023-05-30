@@ -2,11 +2,10 @@
 
 ;; Author: Rylan Lens Kellogg
 ;; Maintainer: Rylan Lens Kellogg
-;; Version: 0.1.0
+;; Version: 0.1.2
 ;; Package-Requires: ((emacs "27.1"))
-;; Homepage: TODO
+;; Homepage: https://lensplaysgames.github.io/lensr_blog_v1/
 ;; Keywords: org, publish, html, web
-
 
 ;; This file is not part of GNU Emacs
 
@@ -17,6 +16,9 @@
 ;; (eval-buffer)
 
 ;; See =org/mainblog.org=.
+
+;; TODO: Put a link to RSS feed somewhere accessible but not in the way
+;; (maybe a good-looking footer would be perfect for this).
 
 ;;; Code:
 
@@ -174,7 +176,7 @@ Passing nil will give the current time (as with any time object)."
     (erase-buffer)
     (insert "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n"
             "  <channel>\n"
-            "    <title>Lens_r Blog</title>\n"
+            "    <title>Lens_r's Blog</title>\n"
             "    <link>https://lensplaysgames.github.io/lensr_blog_v1/</link>\n"
             "    <description>Lens_r sometimes writes things down.</description>\n"
             "    <language>en-us</language>\n"
