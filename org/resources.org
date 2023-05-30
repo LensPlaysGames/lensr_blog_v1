@@ -55,24 +55,30 @@ but I like handling it this way for some reason.
 
 #+begin_src js :mkdirp yes :tangle js/main.js
   function insert_top_banner() {
-      var new_html = "<nav class=\"navbar\" id=\"navbar\">";
-      new_html += "<label for=\"hamburger\">&#9776;</label>";
-      new_html += "<input type=\"checkbox\" id=\"hamburger\"/>";
-      new_html += "<div id=\"hamburger-items\">";
+      var navbar_html = "<nav class=\"navbar\" id=\"navbar\">";
+      navbar_html += "<label for=\"hamburger\">&#9776;</label>";
+      navbar_html += "<input type=\"checkbox\" id=\"hamburger\"/>";
+      navbar_html += "<div id=\"hamburger-items\">";
 
-      new_html += "<a href='/lensr_blog_v1/'\">Home</a>";
-      new_html += "<a target=\"_blank\" href='https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG'\">Donate</a>";
-      new_html += "<a target=\"_blank\" href='https://www.youtube.com/@Lensr'\">YouTube</a>";
-      new_html += "<a target=\"_blank\" href='https://www.twitch.tv/lens_r'\">Twitch</a>";
-      new_html += "<a target=\"_blank\" href='https://www.github.com/LensPlaysGames'\">GitHub</a>";
-      new_html += "<a target=\"_blank\" href='https://discord.gg/FTQsgqQEM4'\">Discord</a>";
-      new_html += "<a id=\"dark-mode\" onClick={toggle_dark_mode();}>Dark Mode</a>";
+      navbar_html += "<a href='/lensr_blog_v1/'\">Home</a>";
+      navbar_html += "<a target=\"_blank\" href='https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG'\">Donate</a>";
+      navbar_html += "<a target=\"_blank\" href='https://www.youtube.com/@Lensr'\">YouTube</a>";
+      navbar_html += "<a target=\"_blank\" href='https://www.twitch.tv/lens_r'\">Twitch</a>";
+      navbar_html += "<a target=\"_blank\" href='https://www.github.com/LensPlaysGames'\">GitHub</a>";
+      navbar_html += "<a target=\"_blank\" href='https://discord.gg/FTQsgqQEM4'\">Discord</a>";
+      navbar_html += "<a id=\"dark-mode\" onClick={toggle_dark_mode();}>Dark Mode</a>";
 
-      new_html += "</div></nav>";
-      let old_html = "<div class=\"main-body\" id=\"main-body\">"
-          + document.body.innerHTML
-          + "</div>";
-      document.body.innerHTML = new_html + old_html;
+      navbar_html += "</div></nav>";
+
+      // STARTING HERE:
+      // <content/><postamble/>
+      // THE GOAL:
+      // <div><navbar/><content/></div><postamble/>
+
+      let content_elem = document.body.firstElementChild;
+      let navbar_and_contents = document.createElement("div");
+      navbar_and_contents.innerHTML = navbar_html + content_elem.outerHTML;
+      content_elem.replaceWith(navbar_and_contents);
   }
 #+end_src
 
@@ -190,6 +196,12 @@ setup :eyes:.
   }
 
   body {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      min-height: 100vh;
+
       margin: 0;
       padding: 0;
   }
@@ -343,7 +355,6 @@ setup :eyes:.
   }
 
   .title {
-      margin-top: 0;
       text-align: center;
   }
 
@@ -576,8 +587,8 @@ Thanks to [[https://code-boxx.com/simple-responsive-pure-css-hamburger-menu/][th
 
 #+begin_src css :mkdirp yes :tangle css/style.css
   footer {
-      color: #484848;
-      background-color: #0d0e0f;
+      color: #333333;
+      background-color: #edeeef;
 
       border-top: 1px solid #333;
 
@@ -587,7 +598,12 @@ Thanks to [[https://code-boxx.com/simple-responsive-pure-css-hamburger-menu/][th
       margin-top: 5ex;
 
       text-align: center;
-      font-size: max(1.6vh, 6pt);
+      font-size: max(1.8vh, 8pt);
+  }
+
+  .dark-mode footer {
+      color: #686868;
+      background-color: #0d0e0f;
   }
 
   .footer-row {
@@ -603,10 +619,14 @@ Thanks to [[https://code-boxx.com/simple-responsive-pure-css-hamburger-menu/][th
   }
 
   .footer-row button, .footer-row a, .footer-row a:visited {
-      color: #404040;
+      color: #333333;
       cursor: pointer;
       padding: 0;
-      font-size: max(1.6vh, 6pt);
+      font-size: max(1.8vh, 8pt);
+  }
+
+  .dark-mode .footer-row button, .dark-mode .footer-row a, .dark-mode .footer-row a:visited {
+      color: #686868;
   }
 
   .footer-row button:hover, .footer-row a:hover {
