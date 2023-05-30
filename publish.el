@@ -254,11 +254,13 @@ Passing nil will give the current time (as with any time object)."
 
 ;; all.js inlined into header (minified if available).
 (setq org-html-scripts
-      (concat "<script>"
-              (if (file-exists-p "res/all.min.js")
-                  (blub-file-string "res/all.min.js")
-                (blub-file-string "res/all.js"))
-              "</script>"))
+      (concat
+       "<link rel=\"icon\" type=\"image/x-icon\" href=\"favicon.ico\">"
+       "<script>"
+       (if (file-exists-p "res/all.min.js")
+           (blub-file-string "res/all.min.js")
+         (blub-file-string "res/all.js"))
+       "</script>"))
 
 ;; style.css inlined into header (minified if available).
 (setq org-html-head
