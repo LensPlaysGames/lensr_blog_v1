@@ -38,6 +38,16 @@ Cookies are very handy, simply tools. Basically a client-side config file per-us
   }
 #+end_src
 
+** Scroll to top of page
+
+#+begin_src js :mkdirp yes :tangle js/main.js
+  // When the user clicks on the button, scroll to the top of the document
+  function goto_top() {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+  }
+#+end_src
+
 ** Insert top-of-page banner
 
 This doesn't have to be done programatically at all,
@@ -349,7 +359,7 @@ setup :eyes:.
       font-size: max(1.2vh, 6pt);
   }
 
-  .main-body {
+  .content {
       margin-left: 26vw;
       margin-right: 26vw;
   }
@@ -363,7 +373,7 @@ setup :eyes:.
           font-size: max(1.8vh, 8pt);
       }
 
-      .main-body {
+      .content {
           margin-left: 22vw;
           margin-right: 22vw;
       }
@@ -378,7 +388,7 @@ setup :eyes:.
           font-size: max(1.6vh, 8pt);
       }
 
-      .main-body {
+      .content {
           margin-left: 18vw;
           margin-right: 18vw;
       }
@@ -397,7 +407,7 @@ setup :eyes:.
           font-size: max(1.6vh, 8pt);
       }
 
-      .main-body {
+      .content {
           margin-left: 14vw;
           margin-right: 14vw;
       }
@@ -416,7 +426,7 @@ setup :eyes:.
           font-size: max(1.8vh, 8pt);
       }
 
-      .main-body {
+      .content {
           margin-left: 8vw;
           margin-right: 8vw;
       }
@@ -435,7 +445,7 @@ setup :eyes:.
           font-size: max(1.6vh, 8pt);
       }
 
-      .main-body {
+      .content {
           margin-left: 4vw;
           margin-right: 4vw;
       }
@@ -562,3 +572,44 @@ Thanks to [[https://code-boxx.com/simple-responsive-pure-css-hamburger-menu/][th
   }
 #+end_src
 
+** Footer
+
+#+begin_src css :mkdirp yes :tangle css/style.css
+  footer {
+      color: #484848;
+      background-color: #0d0e0f;
+
+      border-top: 1px solid #333;
+
+      width: 100%;
+      padding: 50px 0;
+      margin: 0 auto;
+      margin-top: 5ex;
+
+      text-align: center;
+      font-size: max(1.6vh, 6pt);
+  }
+
+  .footer-row {
+      width: 100%;
+      margin: 0 auto;
+  }
+  footer .footer-row:not(:last-child) {
+      margin: 0px auto 2.2ex;
+  }
+
+  .footer-row > * {
+      margin: 0 1em;
+  }
+
+  .footer-row button, .footer-row a, .footer-row a:visited {
+      color: #404040;
+      cursor: pointer;
+      padding: 0;
+      font-size: max(1.6vh, 6pt);
+  }
+
+  .footer-row button:hover, .footer-row a:hover {
+      color: var(--fg);
+  }
+#+end_src

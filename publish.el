@@ -32,11 +32,11 @@
 ;; Tangling source blocks from literate js and css files requires org-tangle.
 (require 'ob-tangle)
 
-(defun blub-file-string (file)
-  "Return a string containing the contents of FILE."
+(defun blub-file-string (filepath)
+  "Return a string containing the contents of file at FILEPATH."
   (interactive "fFile: ")
   (with-temp-buffer
-    (insert-file-contents file)
+    (insert-file-contents filepath)
     (buffer-string)))
 
 (defun blub-directory-files-nodot (directory &optional full nosort count)
@@ -99,46 +99,45 @@ Passing nil will give the current time (as with any time object)."
               (post-file-name (format "posts/%s.org" custom-id)))
          (when (and (= 1 level)
                     (when (stringp tags-string) (string-match "blogpost" tags-string)))
-           ;; Copy the post into it's own file, that way readers won't get confused
-           ;; as to which post is which; one web page per post.
+           ;; Save the entire contents of each blogpost subtree into a variable.
+           ;; Convert org timestamp string into Emacs time object.
+           (let ((contents (progn
+                             ;; Push the contents of the subtree onto the 'kill-ring'.
+                             (org-copy-subtree)
+                             ;; Return the last kill, popping it from the kill ring.
+                             (current-kill 0))))
+             ;; Copy the post into it's own file, that way readers won't get confused
+             ;; as to which post is which; one web page per post.
+             (with-current-buffer (find-file-noselect post-file-name t)
+               (erase-buffer)
+               (insert (format "#+title: Lens_r | %s\n" headline) ;; this shows in browser tab
+                       (format "#+created: %s\n" publish-date)
+                       "#+options: title:nil\n\n"
+                       contents)
+               (save-buffer)))
 
+           (let ((publish-time (org-timestamp-to-time (org-timestamp-from-string publish-date))))
+             ;; Push a link to this newly-created post file, along with it's publish
+             ;; date, to a list of all blog post links.
+             (push `(,(format "[[file:%s][%s]]" post-file-name headline)
+                     ,publish-time)
+                   blog-links)
 
-           ;; The next thing we yank will be the contents of this subtree (the post).
-           (org-copy-subtree)
-           (with-current-buffer (find-file-noselect post-file-name t)
-             (erase-buffer)
-             (insert (format "#+title: Lens_r | %s\n" headline) ;; this shows in browser tab
-                     (format "#+created: %s\n" publish-date)
-                     "#+options: title:nil\n\n")
-             ;; This inserts the actual blog post, copied with 'org-copy-subtree' above.
-             (yank)
-             (save-buffer))
-
-           ;; Push a link to this newly-created post file, along with it's publish
-           ;; date, to the list of blog links.
-           (push `(,(format "[[file:%s][%s]]" post-file-name headline)
-                   ,publish-date)
-                 blog-links)
-
-           ;; Push an item to the RSS feed.
-           (push `(,(concat
-                     (format "    <item>\n      <title>%s</title>\n" headline custom-id)
-                     (format "      <link>https://lensplaysgames.github.io/lensr_blog_v1/posts/%s.html</link>\n  " custom-id)
-                     ;; Date translation...
-                     (let ((publish-time (org-timestamp-to-time (org-timestamp-from-string publish-date))))
-                       (concat "    <pubDate>"
-                               (blub-time-to-rss2-pubdate-string publish-time)
-                               "</pubDate>\n"))
-                     "    </item>\n"
-                     )
-                   ,(org-timestamp-to-time (org-timestamp-from-string publish-date)))
-                 rss2-items))))))
+             ;; Push an item to the RSS feed, along with it's publish date.
+             (push `(,(concat
+                       "    <item>\n"
+                       (format "      <title>%s</title>\n" headline)
+                       (format "      <link>https://lensplaysgames.github.io/lensr_blog_v1/posts/%s.html</link>\n" custom-id)
+                       ;; Date translation...
+                       (format "      <pubDate>%s</pubDate>\n" (blub-time-to-rss2-pubdate-string publish-time))
+                       "    </item>\n")
+                     ,publish-time)
+                   rss2-items)))))))
 
   ;; Sort links by publish date
-  (sort blog-links (lambda (a b)
-                     (not (time-less-p
-                           (org-timestamp-to-time (org-timestamp-from-string (cadr a)))
-                           (org-timestamp-to-time (org-timestamp-from-string (cadr b)))))))
+  (sort blog-links
+        (lambda (a b)
+          (not (time-less-p (cadr a) (cadr b)))))
 
   ;; Save list of links to blog posts in an org file.
   (with-current-buffer (find-file-noselect "org/index.org")
@@ -152,7 +151,7 @@ Passing nil will give the current time (as with any time object)."
             (insert "** " (car link))
             (newline)
             (when (cadr link)
-              (insert "** Published on " (cadr link))
+              (insert "** Published on " (format-time-string "%F" (cadr link)))
               (newline)
               (insert ":PROPERTIES:")
               (newline)
@@ -165,10 +164,9 @@ Passing nil will give the current time (as with any time object)."
     (save-buffer))
 
   ;; Sort rss items by publish date...
-  (sort rss2-items (lambda (a b)
-                     (not (time-less-p
-                           (cadr a)
-                           (cadr b)))))
+  (sort rss2-items
+        (lambda (a b)
+          (not (time-less-p (cadr a) (cadr b)))))
 
 
   ;; Save RSS in an XML file.
@@ -271,7 +269,7 @@ Passing nil will give the current time (as with any time object)."
               "</style>"))
 
 (setq org-publish-project-alist
-      '(("export-org"
+      `(("export-org"
          :publishing-function
          org-html-publish-to-html
          :publishing-directory "docs"
@@ -289,7 +287,7 @@ Passing nil will give the current time (as with any time object)."
          :html-head-include-scripts t
          :html-html5-fancy t
          :html-postamble t
-         :html-postamble-format (("en" "<p><small>Made with %c</small></p>")))
+         :html-postamble-format (("en" ,(blub-file-string "org/footer.html.in"))))
         ("copy"
          :publishing-function
          org-publish-attachment

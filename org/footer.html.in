@@ -1,0 +1,13 @@
+<footer>
+  <div class="footer-row">
+    <button onClick="goto_top()" title="Go to top of page">Back to Top</button>
+  </div>
+  <div class="footer-row">
+    <a target="_blank" href="https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG">Donate</a>
+    <a target="_blank" href="https://www.youtube.com/@Lensr">YouTube</a>
+    <a target="_blank" href="https://www.twitch.tv/lens_r">Twitch</a>
+    <a target="_blank" href="https://www.github.com/LensPlaysGames">GitHub</a>
+    <a target="_blank" href="https://discord.gg/FTQsgqQEM4">Discord</a>
+  </div>
+  <div class="footer-row"><span>Made with %c</span></div>
+</footer>
