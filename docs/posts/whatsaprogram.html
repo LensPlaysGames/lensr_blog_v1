@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-05-29 Mon 16:54 -->
+<!-- 2023-05-29 Mon 17:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Lens_r | What /is/ a Program?</title>
@@ -51,20 +51,63 @@ Some, from here, may expand the definition to "something that may be eventually 
 <p>
 Is the above code a "program"? If we follow the "eventually executable" definition, it <i>isn't</i>. There is a syntax error, as the <code>return</code> statement is not terminated with a semi-colon. This code, therefore, isn't compileable; it's an "ill-formed program" according to the C standard. So, as we can see, some programs (without changing the source) are not <b>ever</b> executable.
 </p>
+
+<p>
+So, a program isn't necessarily well-formed, a la compileable, and a program isn't necessarily executable. We're right back to the start: what <i>is</i> a program? To me, someone who "writes programs", it would seem that the things I write would be programs. So let's take this top-down approach, and find out what we already call programs, and <i>only then</i> begin to tighten the definition without excluding anything. What things might be a program?
+</p>
+
+<ul class="org-ul">
+<li>An executable file (in any format) is definitely a program.</li>
+<li>An object file may contain portions of or all of a program or programs.</li>
+<li>Source code is thought of as a program ("programmers write programs").</li>
+</ul>
+
+
+<p>
+From there, then, let's try to fit a definition to this set of things. There's one thing you may notice: they <i>all</i> have code in them &#x2026; just in <b>very</b> different forms. An executable file has machine code in it (among other things that tell the computer <i>how</i> to execute the file). The object file has machine code in it (or intermediate representation if using link-time optimisation). And finally, for the source code, it's even in the name. So, as <i>vague</i> as it is, I think that we can begin to narrow our idea of "program".
+</p>
+
+<p>
+A "program" is <i>some form</i> of instructions meant for a computer to do computations.
+</p>
+
+<p>
+So that C code up above? Well, it's only written with the intent that that sequence of tokens in that language will produce a given computation. "Code" is just instructions meant for a computer, no matter if that is machine code, C code, or LISP.
+</p>
+
+<p>
+However, this definition <i>does</i> come with it's own host of caveats. For example, the source code of a program fits the definition of "instructions meant for a computer", but so does the executable file generated after compiling that code. In that case, are there <i>two</i> programs? Or just one program in two different formats? I think this is a question of philosophy, truthfully. To me, it makes the most sense that there <i>are</i> two programs, they just have a set of instructions in different formats that <i>happen</i> to tell the computer to do the same thing (unless your compiler is borked/I wrote it).
+</p>
 </div>
 
 <div id="outline-container-org95517b5" class="outline-3">
-<h3 id="org95517b5"><span class="todo TODO">TODO</span> Etymology of "program"</h3>
+<h3 id="org95517b5">Etymology of "program"</h3>
 <div class="outline-text-3" id="text-org95517b5">
 <p>
-Where did the word come from? Why do we use it to describe computery things?
+The word "program" is derived from Greek <i>programma</i>, meaning "a public written notice". (See? Even the Ancient Greeks knew that software should be open to the public :Þ.) In the 1600s, it was used in concert and theatre, referring to an outline of what was going to happen that day (i.e. features presented, persons participating, etc). We can see from it's early use that a program defines what is going to happen during a performance.
+</p>
+
+<p>
+In the mid-1900s, when computers came about (thanks Alan), it stood to reason that something that tells you what the computer is going to do while it is running (during its <i>performance</i>) would be a <i>computer program</i>. And this is when it kind of got out of hand. Computers back then used punch cards as input; those punch cards, naturally, became known as programs. And at this point, everything still makes relative sense. It's not confusing what a computer program is.
+</p>
+
+<p>
+<b>And that's exactly when it got confusing.</b>
+</p>
+
+<p>
+Computers seriously blossomed in the years following it's discovery/invention. New hardware, new software, good times. Computers upgraded from full-room behemoths that munch on punch-cards to somewhat-reasonable (although still large) machines programmed in assembly. And with this shift came an important distinction: programmer's now write assembly code, but the computer no longer executes that directly. The assembly is first <i>assembled</i> into machine code, and only then is that executed by the computer. The people who used to punch cards to tell the computer what to do? Well now they wrote source code. But to them, they were still doing the same thing: telling computers to do some computations. "Something a programmer writes" <i>must</i> be a "program", so therefore the source code a programmer writes <i>must</i> be a "program". On the other end, a computer would read a punch card and do execution/computation based on it. That means that the compiler's output, the actual thing fed to the computer to make it do computation, <i>also</i> ended up being called a "program", even though these two things have been separated in reality.
+</p>
+
+<p>
+Because there was no longer a physical punch card tied to a "program", the original meaning of "program" (a printed list of features, persons participating, etc. at a concert/theatre) no longer applies <i>at all</i>. The <i>concept</i> stayed (a list of things that tells humans what's going to happen), but the actual meaning was transformed greatly. At this point, arbitrary bits on some magnetic tape were now a program. The baby was, in fact, thrown out with the bath-water.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org3d2ad36" class="outline-3">
-<h3 id="org3d2ad36"><b>My</b> Definition of "program"</h3>
-<div class="outline-text-3" id="text-org3d2ad36">
+<div id="outline-container-org0fccd38" class="outline-3">
+<h3 id="org0fccd38">A Definition of "program" that I Am Comfortable With</h3>
+<div class="outline-text-3" id="text-org0fccd38">
 <p>
 To me, there <i>isn't</i> a clear-cut definition of program. No matter which one you choose, there are unintuitive corner-cases. However! That does not stop me from <i>choosing</i> a definition that I am comfortable with.
 </p>

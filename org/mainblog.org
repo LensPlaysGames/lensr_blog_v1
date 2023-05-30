@@ -52,11 +52,34 @@ Some, from here, may expand the definition to "something that may be eventually 
 
 Is the above code a "program"? If we follow the "eventually executable" definition, it /isn't/. There is a syntax error, as the ~return~ statement is not terminated with a semi-colon. This code, therefore, isn't compileable; it's an "ill-formed program" according to the C standard. So, as we can see, some programs (without changing the source) are not *ever* executable.
 
-** TODO Etymology of "program"
+So, a program isn't necessarily well-formed, a la compileable, and a program isn't necessarily executable. We're right back to the start: what /is/ a program? To me, someone who "writes programs", it would seem that the things I write would be programs. So let's take this top-down approach, and find out what we already call programs, and /only then/ begin to tighten the definition without excluding anything. What things might be a program?
 
-Where did the word come from? Why do we use it to describe computery things?
+- An executable file (in any format) is definitely a program.
+- An object file may contain portions of or all of a program or programs.
+- Source code is thought of as a program ("programmers write programs").
 
-** *My* Definition of "program"
+
+From there, then, let's try to fit a definition to this set of things. There's one thing you may notice: they /all/ have code in them ... just in *very* different forms. An executable file has machine code in it (among other things that tell the computer /how/ to execute the file). The object file has machine code in it (or intermediate representation if using link-time optimisation). And finally, for the source code, it's even in the name. So, as /vague/ as it is, I think that we can begin to narrow our idea of "program".
+
+A "program" is /some form/ of instructions meant for a computer to do computations.
+
+So that C code up above? Well, it's only written with the intent that that sequence of tokens in that language will produce a given computation. "Code" is just instructions meant for a computer, no matter if that is machine code, C code, or LISP.
+
+However, this definition /does/ come with it's own host of caveats. For example, the source code of a program fits the definition of "instructions meant for a computer", but so does the executable file generated after compiling that code. In that case, are there /two/ programs? Or just one program in two different formats? I think this is a question of philosophy, truthfully. To me, it makes the most sense that there /are/ two programs, they just have a set of instructions in different formats that /happen/ to tell the computer to do the same thing (unless your compiler is borked/I wrote it).
+
+** Etymology of "program"
+
+The word "program" is derived from Greek /programma/, meaning "a public written notice". (See? Even the Ancient Greeks knew that software should be open to the public :Þ.) In the 1600s, it was used in concert and theatre, referring to an outline of what was going to happen that day (i.e. features presented, persons participating, etc). We can see from it's early use that a program defines what is going to happen during a performance.
+
+In the mid-1900s, when computers came about (thanks Alan), it stood to reason that something that tells you what the computer is going to do while it is running (during its /performance/) would be a /computer program/. And this is when it kind of got out of hand. Computers back then used punch cards as input; those punch cards, naturally, became known as programs. And at this point, everything still makes relative sense. It's not confusing what a computer program is.
+
+*And that's exactly when it got confusing.*
+
+Computers seriously blossomed in the years following it's discovery/invention. New hardware, new software, good times. Computers upgraded from full-room behemoths that munch on punch-cards to somewhat-reasonable (although still large) machines programmed in assembly. And with this shift came an important distinction: programmer's now write assembly code, but the computer no longer executes that directly. The assembly is first /assembled/ into machine code, and only then is that executed by the computer. The people who used to punch cards to tell the computer what to do? Well now they wrote source code. But to them, they were still doing the same thing: telling computers to do some computations. "Something a programmer writes" /must/ be a "program", so therefore the source code a programmer writes /must/ be a "program". On the other end, a computer would read a punch card and do execution/computation based on it. That means that the compiler's output, the actual thing fed to the computer to make it do computation, /also/ ended up being called a "program", even though these two things have been separated in reality.
+
+Because there was no longer a physical punch card tied to a "program", the original meaning of "program" (a printed list of features, persons participating, etc. at a concert/theatre) no longer applies /at all/. The /concept/ stayed (a list of things that tells humans what's going to happen), but the actual meaning was transformed greatly. At this point, arbitrary bits on some magnetic tape were now a program. The baby was, in fact, thrown out with the bath-water.
+
+** A Definition of "program" that I Am Comfortable With
 
 To me, there /isn't/ a clear-cut definition of program. No matter which one you choose, there are unintuitive corner-cases. However! That does not stop me from /choosing/ a definition that I am comfortable with.
 
