@@ -9,5 +9,8 @@
     <a target="_blank" href="https://www.github.com/LensPlaysGames">GitHub</a>
     <a target="_blank" href="https://discord.gg/FTQsgqQEM4">Discord</a>
   </div>
+  <div class="footer-row">
+    <a target="_blank" href="/lensr_blog_v1/rss.xml">Feed/RSS</a>
+  </div>
   <div class="footer-row"><span>Made with %c</span></div>
 </footer>

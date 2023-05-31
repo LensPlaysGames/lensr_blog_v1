@@ -19,14 +19,18 @@ Run it using the following shell command:
 
 *** Testing
 
+Because GitHub Pages hosts the site within a subdirectory of the main server (i.e. ~/lensr_blog_v1/~ is the base URL), it means that local and remote absolute URLs don't match. To fix this, the locally hosted version of the site is put within a matching subdirectory, that way URLs can be the same either way.
+
 NOTE: Use any port, there is nothing special about ~8000~ other than that it probably won't be used by anything important.
 
 For local testing, I recommend Python's =http.server=.
 #+begin_src sh
+  cd localbuild
   python -m http.server 8000
 #+end_src
 
 It is also fairly simple to get a PHP server up and running.
 #+begin_src sh
+  cd localbuild
   php -S localhost:8000
 #+end_src

@@ -32,13 +32,6 @@
 ;; Tangling source blocks from literate js and css files requires org-tangle.
 (require 'ob-tangle)
 
-(defvar-local blub-remote t
-  "Non-nil iff publishing for remote. Adds /lensr_blog_v1/ to any root-relative links.")
-
-(defun blub-url-root ()
-  "Iff 'blub-remote' is non-nil, return /lensr_blog_v1/, otherwise return /"
-  (if blub-remote "/lensr_blog_v1/" "/"))
-
 (defun blub-file-string (filepath)
   "Return a string containing the contents of file at FILEPATH."
   (interactive "fFile: ")
@@ -183,7 +176,7 @@ Passing nil will give the current time (as with any time object)."
 
 
   ;; Save RSS in an XML file.
-  (with-current-buffer (find-file-noselect "org/rss.xml")
+  (with-current-buffer (find-file-noselect "extras/rss.xml")
     (erase-buffer)
     (insert "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n"
             "  <channel>\n"
@@ -280,7 +273,7 @@ Passing nil will give the current time (as with any time object)."
   ;; javascript) into the ~extras~ directory.
   (if (>= (blub-file-size-in-bytes js-filepath) 4096)
       (let ((js-basename (file-name-nondirectory js-filepath)))
-        (setq org-html-scripts (format "<script type=\"application/javascript\" src=\"%s%s\"/>\n" (blub-url-root) js-basename))
+        (setq org-html-scripts (format "<script type=\"application/javascript\" src=\"/lensr_blog_v1/%s\"/>\n" js-basename))
         ;; Copy "res/all[.min].js" to "extras/all[.min].js"
         (copy-file js-filepath (expand-file-name js-basename "extras" t)))
     (setq org-html-scripts (format "<script>%s</script>\n" (blub-file-string js-filepath)))))
@@ -301,7 +294,7 @@ Passing nil will give the current time (as with any time object)."
   ;; stylesheet) into the ~extras~ directory.
   (if (>= (blub-file-size-in-bytes css-filepath) 4096)
       (let ((css-basename (file-name-nondirectory css-filepath)))
-        (setq org-html-head (format "<link rel=\"stylesheet\" href=\"%s%s\"/>\n" (blub-url-root) css-basename))
+        (setq org-html-head (format "<link rel=\"stylesheet\" href=\"/lensr_blog_v1/%s\"/>\n" css-basename))
         ;; Copy "res/all[.min].css" to "extras/all[.min].css"
         (copy-file css-filepath (expand-file-name css-basename "extras") t))
     (setq org-html-head (format "<style>%s</style>\n" (blub-file-string css-filepath)))))
@@ -351,5 +344,11 @@ Passing nil will give the current time (as with any time object)."
 
 (org-publish "lensr-blog-site")
 (message "Lens_r blog website has been published.")
+
+;; For local builds, we encapsulate the entire published output
+;; directory/site in a `lensr_blog_v1` directory. This allows URLs for
+;; local testing/building to match the GitHub way of doing things.
+(make-directory "localbuild/lensr_blog_v1" t)
+(copy-directory "docs" "localbuild/lensr_blog_v1/" nil t t)
 
 ;;; publish.el ends here
