@@ -138,19 +138,23 @@ in a document to switch to a dark color theme.
 
 #+begin_src css :mkdirp yes :tangle css/style.css
   :root {
-      --light-fg: #161718;
+      --light-fg: #333333;
       --light-bg: #ffffff;
+      --light-strong-fg: #161718;
 
-      --dark-fg: #ffffff;
+      --dark-fg: #e0e0e0;
       --dark-bg: #161718;
+      --dark-strong-fg: #f4f4f4;
 
       --fg: var(--light-fg);
       --bg: var(--light-bg);
+      --strong-fg: var(--light-strong-fg);
   }
 
   .dark-mode {
       --fg: var(--dark-fg);
       --bg: var(--dark-bg);
+      --strong-fg: var(--dark-strong-fg);
       color: var(--fg);
       background-color: var(--bg);
   }
@@ -211,6 +215,10 @@ setup :eyes:.
       margin: 0;
   }
 
+  h1, h2, h3, h4, h5, h6 {
+      color: var(--strong-fg);
+  }
+
   h1 {
       margin-top: 0.6rem;
       margin-bottom: 0.6rem;
@@ -259,8 +267,8 @@ setup :eyes:.
   }
 
   .org-src-container {
-      color: #1a1b1c;
-      background-color: #f0f0f0;
+      color: var(--fg);
+      background-color: #f8f8f8;
 
       border: 2px solid #444;
       border-radius: 4px;
@@ -272,8 +280,7 @@ setup :eyes:.
   }
 
   .dark-mode .org-src-container {
-      color: #e4ebe8;
-      background-color: #1a1b1c;
+      background-color: #262728;
 
       border-color: #bbb;
   }
@@ -587,7 +594,7 @@ Thanks to [[https://code-boxx.com/simple-responsive-pure-css-hamburger-menu/][th
 
 #+begin_src css :mkdirp yes :tangle css/style.css
   footer {
-      color: #333333;
+      color: #484848; /* Just slightly lighter than --light-fg */
       background-color: #edeeef;
 
       border-top: 1px solid #333;
@@ -619,7 +626,7 @@ Thanks to [[https://code-boxx.com/simple-responsive-pure-css-hamburger-menu/][th
   }
 
   .footer-row button, .footer-row a, .footer-row a:visited {
-      color: #333333;
+      color: #484848;
       cursor: pointer;
       padding: 0;
       font-size: max(1.8vh, 8pt);
@@ -629,7 +636,8 @@ Thanks to [[https://code-boxx.com/simple-responsive-pure-css-hamburger-menu/][th
       color: #686868;
   }
 
-  .footer-row button:hover, .footer-row a:hover {
+  .footer-row button:hover, .footer-row a:hover,
+  .dark-mode .footer-row button:hover, .dark-mode .footer-row a:hover {
       color: var(--fg);
   }
 #+end_src
