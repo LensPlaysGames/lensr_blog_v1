@@ -174,7 +174,6 @@ Passing nil will give the current time (as with any time object)."
         (lambda (a b)
           (not (time-less-p (cadr a) (cadr b)))))
 
-
   ;; Save RSS in an XML file.
   (with-current-buffer (find-file-noselect "extras/rss.xml")
     (erase-buffer)
