@@ -142,7 +142,7 @@ in a document to switch to a dark color theme.
       --light-bg: #ffffff;
       --light-strong-fg: #161718;
 
-      --dark-fg: #e0e0e0;
+      --dark-fg: #e8e8e8;
       --dark-bg: #161718;
       --dark-strong-fg: #f4f4f4;
 
@@ -268,7 +268,7 @@ setup :eyes:.
 
   .org-src-container {
       color: var(--fg);
-      background-color: #f8f8f8;
+      background-color: #f8f8f8; /* Just slightly brighter than --light-bg */
 
       border: 2px solid #444;
       border-radius: 4px;
@@ -280,7 +280,7 @@ setup :eyes:.
   }
 
   .dark-mode .org-src-container {
-      background-color: #262728;
+      background-color: #212223; /* Just slightly brighter than --dark-bg */
 
       border-color: #bbb;
   }
