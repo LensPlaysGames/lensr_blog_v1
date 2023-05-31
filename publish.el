@@ -32,12 +32,25 @@
 ;; Tangling source blocks from literate js and css files requires org-tangle.
 (require 'ob-tangle)
 
+(defvar-local blub-remote t
+  "Non-nil iff publishing for remote. Adds /lensr_blog_v1/ to any root-relative links.")
+
+(defun blub-url-root ()
+  "Iff 'blub-remote' is non-nil, return /lensr_blog_v1/, otherwise return /"
+  (if blub-remote "/lensr_blog_v1/" "/"))
+
 (defun blub-file-string (filepath)
   "Return a string containing the contents of file at FILEPATH."
   (interactive "fFile: ")
   (with-temp-buffer
     (insert-file-contents filepath)
     (buffer-string)))
+
+(defun blub-file-size-in-bytes (filepath)
+  "Return the file size, in bytes, of the file located at FILEPATH.
+If no file exists at FILEPATH, return nil."
+  (let ((attributes (file-attributes filepath)))
+    (when attributes (file-attribute-size attributes))))
 
 (defun blub-directory-files-nodot (directory &optional full nosort count)
   "Like 'directory-files' but don't return dotfiles like \".\" or \"..\".
@@ -252,23 +265,50 @@ Passing nil will give the current time (as with any time object)."
 ;; Don't include :tags: in org headers in the exported headline.
 (setq org-export-with-tags nil)
 
+;; Ensure extras subdirectory existence
+(make-directory "extras" t)
+
 ;; all.js inlined into header (minified if available).
-(setq org-html-scripts
-      (concat
-       "<link rel=\"icon\" type=\"image/x-icon\" href=\"favicon.ico\">"
-       "<script>"
-       (if (file-exists-p "res/all.min.js")
-           (blub-file-string "res/all.min.js")
-         (blub-file-string "res/all.js"))
-       "</script>"))
+;; TODO: It would be better to have a function that produces the <script>
+;; tag string and then only set 'org-html-scripts' once.
+(let ((js-filepath (if (file-exists-p "res/all.min.js")
+                       "res/all.min.js"
+                     "res/all.js")))
+  ;; If JS is larger than 4kb, it is more efficient to link to
+  ;; them vs inline them. To accomplish this, we copy any extra files that
+  ;; need included in the final published directory (i.e. the linked
+  ;; javascript) into the ~extras~ directory.
+  (if (>= (blub-file-size-in-bytes js-filepath) 4096)
+      (let ((js-basename (file-name-nondirectory js-filepath)))
+        (setq org-html-scripts (format "<script type=\"application/javascript\" src=\"%s%s\"/>\n" (blub-url-root) js-basename))
+        ;; Copy "res/all[.min].js" to "extras/all[.min].js"
+        (copy-file js-filepath (expand-file-name js-basename "extras" t)))
+    (setq org-html-scripts (format "<script>%s</script>\n" (blub-file-string js-filepath)))))
+
+;; NOTE: THIS IS IMPORTANT. Without this, it would just keep growing longer and longer.
+(setq org-html-head nil)
 
 ;; style.css inlined into header (minified if available).
-(setq org-html-head
-      (concat "<style>"
-              (if (file-exists-p "res/all.min.css")
-                  (blub-file-string "res/all.min.css")
-                (blub-file-string "res/all.css"))
-              "</style>"))
+;; TODO: It would be better to have a function that produces a string and
+;; then only set 'org-html-head' once. Or maybe just keep setting
+;; org-html-head to a concatenation of itself (append to it).
+(let ((css-filepath (if (file-exists-p "res/all.min.css")
+                        "res/all.min.css"
+                      "res/all.css")))
+  ;; If CSS is larger than 4kb, it is more efficient to link to
+  ;; them vs inline them. To accomplish this, we copy any extra files that
+  ;; need included in the final published directory (i.e. the linked
+  ;; stylesheet) into the ~extras~ directory.
+  (if (>= (blub-file-size-in-bytes css-filepath) 4096)
+      (let ((css-basename (file-name-nondirectory css-filepath)))
+        (setq org-html-head (format "<link rel=\"stylesheet\" href=\"%s%s\"/>\n" (blub-url-root) css-basename))
+        ;; Copy "res/all[.min].css" to "extras/all[.min].css"
+        (copy-file css-filepath (expand-file-name css-basename "extras") t))
+    (setq org-html-head (format "<style>%s</style>\n" (blub-file-string css-filepath)))))
+
+
+(setq org-html-head (concat org-html-head
+                            "<link rel=\"icon\" type=\"image/x-icon\" href=\"favicon.ico\">\n"))
 
 (setq org-publish-project-alist
       `(("export-org"
@@ -298,9 +338,15 @@ Passing nil will give the current time (as with any time object)."
          :base-directory "org"
          :base-extension "png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|svg\\|ico\\|xml"
          :exclude "backup\\|backup/\\|tmp\\|tmp/"
-         ;; :include ("emacs-init.org")
          )
-        ("lensr-blog-site" :components ("export-org" "copy"))
+        ("extra"
+         :publishing-function
+         org-publish-attachment
+         :publishing-directory "docs"
+         :recursive t
+         :base-directory "extras"
+         :base-extension "css\\|js")
+        ("lensr-blog-site" :components ("export-org" "copy" "extra"))
         ))
 
 (org-publish "lensr-blog-site")

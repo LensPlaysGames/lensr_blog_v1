@@ -1,4 +1,4 @@
-***** JavaScript and CSS for Lensor Radii Website
+* JavaScript and CSS for Lensor Radii Website
 
 It is recommended to use [[file:c:/Emacs/2022/lensor_site/publish.el][the publish script]], but resources can also be generated manually.
 
