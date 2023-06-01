@@ -337,7 +337,7 @@ Passing nil will give the current time (as with any time object)."
          :publishing-directory "docs"
          :recursive t
          :base-directory "extras"
-         :base-extension "css\\|js")
+         :base-extension any)
         ("lensr-blog-site" :components ("export-org" "copy" "extra"))
         ))
 
