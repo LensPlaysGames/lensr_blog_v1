@@ -177,7 +177,9 @@ Passing nil will give the current time (as with any time object)."
   ;; Save RSS in an XML file.
   (with-current-buffer (find-file-noselect "extras/rss.xml")
     (erase-buffer)
-    (insert "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n"
+    (insert "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+            "<?xml-stylesheet type=\"text/xsl\" href=\"rss.xsl\"?>\n"
+            "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n"
             "  <channel>\n"
             "    <title>Lens_r's Blog</title>\n"
             "    <link>https://lensplaysgames.github.io/lensr_blog_v1/</link>\n"
@@ -328,7 +330,7 @@ Passing nil will give the current time (as with any time object)."
          :publishing-directory "docs"
          :recursive t
          :base-directory "org"
-         :base-extension "png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|svg\\|ico\\|xml"
+         :base-extension "png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|svg\\|ico\\|xml\\|xsl"
          :exclude "backup\\|backup/\\|tmp\\|tmp/"
          )
         ("extra"

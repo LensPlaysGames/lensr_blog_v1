@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="rss.xsl"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Lens_r's Blog</title>
@@ -5,7 +7,7 @@
     <description>Lens_r sometimes writes things down.</description>
     <language>en-us</language>
     <pubDate>Mon, 29 May 2023 20:08:15 PDT</pubDate>
-    <lastBuildDate>Wed, 31 May 2023 10:23:13 PDT</lastBuildDate>
+    <lastBuildDate>Wed, 31 May 2023 21:35:07 PDT</lastBuildDate>
     <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
     <generator>Lens_r's Pile of Elisp</generator>
     <atom:link href="https://lensplaysgames.github.io/lensr_blog_v1/rss.xml" rel="self" type="application/rss+xml"/>
