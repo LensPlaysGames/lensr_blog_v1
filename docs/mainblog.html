@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-06-03 Sat 15:05 -->
+<!-- 2023-06-03 Sat 15:12 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Main Blog</title>
@@ -91,7 +91,7 @@ These optimisations allow you to sit here with a browser open to multiple tabs, 
 Imagining a naive CPU pipeline that does one thing at a time, we may arrive at something like this:
 </p>
 
-<pre class="example" id="org613f267">
+<pre class="example" id="org80c4af9">
 .-&gt;  Decoder -&gt; Processor  -.
 `---------------------------+
 </pre>
@@ -108,7 +108,7 @@ The "decoder" step would decode the next instruction from memory, located by the
 Sitting around doing nothing is <b>never</b> good. Luckily, we can attempt to make the situation better due to one simple fact: computations within the processor can't use or modify the instruction pointer directly (most of the time). This means the decoder <i>could</i> start decoding the next instruction <b>before</b> the processor finishes processing the last instruction decoded. By the time the processor finishes processing, the decoder may already be ready with another instruction to execute. This increases the amount of time the processor spends doing valuable computations, making the CPU faster and computers go brrr.
 </p>
 
-<pre class="example" id="org3d48f22">
+<pre class="example" id="orgfaefcbe">
 Decoder -&gt; Decoded Instruction Queue
 Pop(Decoded Instruction Queue) -&gt; Processor
 </pre>
@@ -162,7 +162,7 @@ Attempting to eliminate dependencies in the above code without renaming register
 Now, with this done, the CPU is smart enough to notice something: instructions 0 through 2 and 3 through 5 are two blocks of instructions that start with <i>no</i> register dependencies.
 </p>
 
-<pre class="example" id="org0a0e53c">
+<pre class="example" id="org195f8e8">
 0 sets r1
 1 uses r1 and sets r1
 2 uses r1

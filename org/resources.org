@@ -314,7 +314,7 @@ setup :eyes:.
       color: #ffee20;
   }
 
-  .dark-mode .org-comment-delimiter,.org-comment {
+  .dark-mode .org-comment-delimiter, .dark-mode .org-comment {
       color: #7f8388;
   }
 

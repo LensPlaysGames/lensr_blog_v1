@@ -116,7 +116,7 @@ Passing nil will give the current time (as with any time object)."
              ;; as to which post is which; one web page per post.
              (with-current-buffer (find-file-noselect post-file-name t)
                (erase-buffer)
-               (insert (format "#+title: Lens\\under{}r | %s\n" headline) ;; this shows in browser tab
+               (insert (format "#+title: Lens_r | %s\n" headline) ;; this shows in browser tab
                        (format "#+created: %s\n" publish-date)
                        "#+options: title:nil\n\n"
                        contents)
