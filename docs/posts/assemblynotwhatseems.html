@@ -6,9 +6,8 @@
 <!-- 2023-06-03 Sat 15:05 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Main Blog</title>
+<title>Lens\under{}r | Assembly Is *Not* What It Seems</title>
 <meta name="author" content="Rylan Lens Kellogg" />
-<meta name="description" content="A blog for all things Lens_r." />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" href="/lensr_blog_v1/all.min.css"/>
 <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -16,52 +15,6 @@
 </head>
 <body>
 <div id="content" class="content">
-<h1 class="title">Main Blog</h1>
-
-<div id="outline-container-orgbf6d1c7" class="outline-2">
-<h2 id="orgbf6d1c7">HOW TO WRITE POSTS</h2>
-<div class="outline-text-2" id="text-orgbf6d1c7">
-<p>
-First of all, a kind of overview of how this works. Each top-level heading (one star) with the "blogpost" tag will be exported by the publishing system to it's own file, and have it's own webpage on the website that will be linked to from the main blog page. Everything else <i>does</i> get exported to HTML, but only within the (not linked) <code>mainblog.html</code>. Which means readers of the blog won't see it :^).
-</p>
-
-<p>
-Here's an example blog post. It's quite simple. It has a title (the headline of the top-level org heading). It has a <code>blogpost</code> tag. It has a unique <code>CUSTOM_ID</code> property and the date published (inserted with <code>M-x org-time-stamp-inactive</code>, or at least in the format of it).
-</p>
-
-<p>
-Anything within this subtree will then be a part of the blog post. For now, there aren't any fancy CSS things going on, except for code being syntax highlighted. In the future I may add more properties so that certain pieces of text may be marked up in unique ways, but for now, we're going bare org-mode.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-org">\* Ooops, out of order! :blogpost:
-  <span class="org-org-drawer">:PROPERTIES:</span>
-  <span class="org-org-special-keyword">:CUSTOM_ID:</span> <span class="org-org-property-value">outofordertest</span>
-  <span class="org-org-special-keyword">:PUBLISHED:</span> <span class="org-org-date">[2023-05-29 Mon 12:40]</span>
-  <span class="org-org-special-keyword">:MODIFIED:</span> <span class="org-org-date">[2023-05-29 Mon 12:40]</span>
-  <span class="org-org-drawer">:END:</span>
-
-  Hmm, will this be in order?
-</pre>
-</div>
-</div>
-</div>
-
-
-<div id="outline-container-org10b9dfa" class="outline-2">
-<h2 id="org10b9dfa">Fun Titles / Idea Dump</h2>
-<div class="outline-text-2" id="text-org10b9dfa">
-</div>
-<div id="outline-container-orgc659c6a" class="outline-3">
-<h3 id="orgc659c6a">How I Built Rome in a Day</h3>
-<div class="outline-text-3" id="text-orgc659c6a">
-<p>
-<span class="timestamp-wrapper"><span class="timestamp">[2023-06-01 Thu 16:14]</span></span>
-</p>
-</div>
-</div>
-</div>
-
 
 <div id="outline-container-assemblynotwhatseems" class="outline-2">
 <h2 id="assemblynotwhatseems">Assembly Is <b>Not</b> What It Seems</h2>
@@ -71,9 +24,9 @@ Assembly is as close as you can get to the hardware, right? It basically tells y
 </p>
 </div>
 
-<div id="outline-container-orgd92d246" class="outline-3">
-<h3 id="orgd92d246">Why Is This the Prevailing Assumption?</h3>
-<div class="outline-text-3" id="text-orgd92d246">
+<div id="outline-container-orgbcba2dd" class="outline-3">
+<h3 id="orgbcba2dd">Why Is This the Prevailing Assumption?</h3>
+<div class="outline-text-3" id="text-orgbcba2dd">
 <p>
 Well, the reason assembly is thought of as "telling the hardware exactly what to do" is because &#x2026; well, it does, strictly from a programmer's point of view. But there's a distinction here that's important. It does not tell the CPU <i>how</i> to do it. So while, yes, you may feed it an assembly instruction to add two numbers, any one CPU may choose to do an OR operation instead, if one of the numbers is known to be zero. This sort of behaviour, where the CPU can technically do whatever it wants as long as the expected result is acquired, allows for <b><b>lots</b></b> of optimisations that would not otherwise be possible. If you are familiar with C/C++, you may be familiar with <i>Undefined Behaviour</i>, which is nearly exactly the sort of thing we are talking about here.
 </p>
@@ -84,14 +37,14 @@ These optimisations allow you to sit here with a browser open to multiple tabs, 
 </div>
 </div>
 
-<div id="outline-container-org80a3bd0" class="outline-3">
-<h3 id="org80a3bd0">How Can a CPU Do More Than One Thing at Once?</h3>
-<div class="outline-text-3" id="text-org80a3bd0">
+<div id="outline-container-orga18c487" class="outline-3">
+<h3 id="orga18c487">How Can a CPU Do More Than One Thing at Once?</h3>
+<div class="outline-text-3" id="text-orga18c487">
 <p>
 Imagining a naive CPU pipeline that does one thing at a time, we may arrive at something like this:
 </p>
 
-<pre class="example" id="org613f267">
+<pre class="example" id="org4374538">
 .-&gt;  Decoder -&gt; Processor  -.
 `---------------------------+
 </pre>
@@ -101,14 +54,14 @@ The "decoder" step would decode the next instruction from memory, located by the
 </p>
 </div>
 
-<div id="outline-container-orgd140699" class="outline-4">
-<h4 id="orgd140699">Eliminating Dependencies</h4>
-<div class="outline-text-4" id="text-orgd140699">
+<div id="outline-container-org9fc4b39" class="outline-4">
+<h4 id="org9fc4b39">Eliminating Dependencies</h4>
+<div class="outline-text-4" id="text-org9fc4b39">
 <p>
 Sitting around doing nothing is <b>never</b> good. Luckily, we can attempt to make the situation better due to one simple fact: computations within the processor can't use or modify the instruction pointer directly (most of the time). This means the decoder <i>could</i> start decoding the next instruction <b>before</b> the processor finishes processing the last instruction decoded. By the time the processor finishes processing, the decoder may already be ready with another instruction to execute. This increases the amount of time the processor spends doing valuable computations, making the CPU faster and computers go brrr.
 </p>
 
-<pre class="example" id="org3d48f22">
+<pre class="example" id="org33eff32">
 Decoder -&gt; Decoded Instruction Queue
 Pop(Decoded Instruction Queue) -&gt; Processor
 </pre>
@@ -123,9 +76,9 @@ Now, you might be wondering, what is the advantage of eliminating a dependency o
 </div>
 </div>
 
-<div id="outline-container-org7d6a972" class="outline-4">
-<h4 id="org7d6a972">Out-Of-Order Execution</h4>
-<div class="outline-text-4" id="text-org7d6a972">
+<div id="outline-container-org77c154a" class="outline-4">
+<h4 id="org77c154a">Out-Of-Order Execution</h4>
+<div class="outline-text-4" id="text-org77c154a">
 <p>
 That's right; by eliminating an instruction's dependency on a register, we can actually <b>execute</b> that instruction at the same time as another instruction, given they don't have dependencies on one another. Let's take a look at this in actual x86_64 assembly (in Intel syntax today, for funsies).
 </p>
@@ -162,7 +115,7 @@ Attempting to eliminate dependencies in the above code without renaming register
 Now, with this done, the CPU is smart enough to notice something: instructions 0 through 2 and 3 through 5 are two blocks of instructions that start with <i>no</i> register dependencies.
 </p>
 
-<pre class="example" id="org0a0e53c">
+<pre class="example" id="orgc7cef12">
 0 sets r1
 1 uses r1 and sets r1
 2 uses r1
@@ -180,115 +133,6 @@ As neither of these blocks of instructions depend on each other for any values o
 Anyway, thank you for reading this post on assembly. If you enjoyed it, I make Twitch and YouTube content that you might also enjoy. To stay tuned when more posts come out, there is an RSS feed you can subscribe to.
 </p>
 </div>
-</div>
-</div>
-</div>
-
-
-<div id="outline-container-whatsaprogram" class="outline-2">
-<h2 id="whatsaprogram">What <i>Is</i> a Program?</h2>
-<div class="outline-text-2" id="text-whatsaprogram">
-<p>
-This may seem obvious, but it turns out to be quite &#x2026; complex.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-c"><span class="org-type">int</span> <span class="org-function-name">main</span>() {
-  <span class="org-keyword">return</span> 69;
-}
-</pre>
-</div>
-
-<p>
-Is the above code a "program"? Most will say yes, in my experience. This immediately throws a wrench into most <i>obvious</i> definitions of program.
-</p>
-
-<p>
-The code above is not executable; it's simply plain-text within a file. Well, then maybe a program <i>isn't</i> necessarily executable, but <i>some</i> programs <i>may</i> be executed. So "something executable on a computer" isn't really a valid definition of "program".
-</p>
-
-<p>
-Some, from here, may expand the definition to "something that may be eventually executable on a computer (after some set of transformations)". Another issue arises, however, if we look at the following example.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-c"><span class="org-type">int</span> <span class="org-function-name">main</span>() {
-  <span class="org-keyword">return</span> 69
-}
-</pre>
-</div>
-
-<p>
-Is the above code a "program"? If we follow the "eventually executable" definition, it <i>isn't</i>. There is a syntax error, as the <code>return</code> statement is not terminated with a semi-colon. This code, therefore, isn't compileable; it's an "ill-formed program" according to the C standard. So, as we can see, some programs (without changing the source) are not <b>ever</b> executable.
-</p>
-
-<p>
-So, a program isn't necessarily well-formed, a la compileable, and a program isn't necessarily executable. We're right back to the start: what <i>is</i> a program? To me, someone who "writes programs", it would seem that the things I write would be programs. So let's take this top-down approach, and find out what we already call programs, and <i>only then</i> begin to tighten the definition without excluding anything. What things might be a program?
-</p>
-
-<ul class="org-ul">
-<li>An executable file (in any format) is definitely a program.</li>
-<li>An object file may contain portions of or all of a program or programs.</li>
-<li>Source code is thought of as a program ("programmers write programs").</li>
-</ul>
-
-
-<p>
-From there, then, let's try to fit a definition to this set of things. There's one thing you may notice: they <i>all</i> have code in them &#x2026; just in <b>very</b> different forms. An executable file has machine code in it (among other things that tell the computer <i>how</i> to execute the file). The object file has machine code in it (or intermediate representation if using link-time optimisation). And finally, for the source code, it's even in the name. So, as <i>vague</i> as it is, I think that we can begin to narrow our idea of "program".
-</p>
-
-<p>
-A "program" is <i>some form</i> of instructions meant for a computer to do computations.
-</p>
-
-<p>
-So that C code up above? Well, it's only written with the intent that that sequence of tokens in that language will produce a given computation. "Code" is just instructions meant for a computer, no matter if that is machine code, C code, or LISP.
-</p>
-
-<p>
-However, this definition <i>does</i> come with it's own host of caveats. For example, the source code of a program fits the definition of "instructions meant for a computer", but so does the executable file generated after compiling that code. In that case, are there <i>two</i> programs? Or just one program in two different formats? I think this is a question of philosophy, truthfully. To me, it makes the most sense that there <i>are</i> two programs, they just have a set of instructions in different formats that <i>happen</i> to tell the computer to do the same thing (unless your compiler is borked/I wrote it).
-</p>
-</div>
-
-<div id="outline-container-orge57b748" class="outline-3">
-<h3 id="orge57b748">Etymology of "program"</h3>
-<div class="outline-text-3" id="text-orge57b748">
-<p>
-The word "program" is derived from Greek <i>programma</i>, meaning "a public written notice". (See? Even the Ancient Greeks knew that software should be open to the public :Þ.) In the 1600s, it was used in concert and theatre, referring to an outline of what was going to happen that day (i.e. features presented, persons participating, etc). We can see from it's early use that a program defines what is going to happen during a performance.
-</p>
-
-<p>
-In the mid-1900s, when computers came about (thanks Alan), it stood to reason that something that tells you what the computer is going to do while it is running (during its <i>performance</i>) would be a <i>computer program</i>. And this is when it kind of got out of hand. Computers back then used punch cards as input; those punch cards, naturally, became known as programs. And at this point, everything still makes relative sense. It's not confusing what a computer program is.
-</p>
-
-<p>
-<b>And that's exactly when it got confusing.</b>
-</p>
-
-<p>
-Computers seriously blossomed in the years following it's discovery/invention. New hardware, new software, good times. Computers upgraded from full-room behemoths that munch on punch-cards to somewhat-reasonable (although still large) machines programmed in assembly. And with this shift came an important distinction: programmers now write assembly code, but the computer no longer executes that directly. The assembly is first <i>assembled</i> into machine code, and only then is that executed by the computer. The people who used to punch cards to tell the computer what to do? Well now they wrote source code. But to them, they were still doing the same thing: telling computers to do some computations. "Something a programmer writes" <i>must</i> be a "program", so therefore the source code a programmer writes <i>must</i> be a "program". On the other end, a computer would read a punch card and do execution/computation based on it. That means that the compiler's output, the actual thing fed to the computer to make it do computation, <i>also</i> ended up being called a "program", even though these two things have been separated in reality.
-</p>
-
-<p>
-Because there was no longer a physical punch card tied to a "program", the original meaning of "program" (a printed list of features, persons participating, etc. at a concert/theatre) no longer applies <i>at all</i>. The <i>concept</i> stayed (a list of things that tells humans what's going to happen), but the actual meaning was transformed greatly. At this point, arbitrary bits on some magnetic tape were now a program. The baby was, in fact, thrown out with the bath-water.
-</p>
-</div>
-</div>
-
-<div id="outline-container-org77c9895" class="outline-3">
-<h3 id="org77c9895">A Definition of "program" that I Am Comfortable With</h3>
-<div class="outline-text-3" id="text-org77c9895">
-<p>
-To me, there <i>isn't</i> a clear-cut definition of program. No matter which one you choose, there are unintuitive corner-cases. However! That does not stop me from <i>choosing</i> a definition that I am comfortable with.
-</p>
-
-<p>
-What if "program" actually equates to "instructions that tell a computer to do computations". While this <i>is</i> incredibly vague, it is also just specific enough. For example, when you write C code, you are attempting to instruct the computer on how to do execution/computation in order to give you the result you want. And when you compile that C code into an executable, the executable also contains instructions that tells a computer how to do computations, just in a different format.
-</p>
-
-<p>
-As with every definition of program, there are imperfect corner cases, but this is one I'm okay with: the <i>source code</i> and the <i>executable produced from that source code</i> are entirely separate programs that happen to have instructions within them that produce the same result (assuming a well-written compiler).
-</p>
 </div>
 </div>
 </div>

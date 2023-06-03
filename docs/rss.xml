@@ -7,12 +7,17 @@
     <description>Lens_r sometimes writes things down.</description>
     <language>en-us</language>
     <pubDate>Mon, 29 May 2023 20:08:15 PDT</pubDate>
-    <lastBuildDate>Wed, 31 May 2023 21:35:07 PDT</lastBuildDate>
+    <lastBuildDate>Sat, 03 Jun 2023 15:05:15 PDT</lastBuildDate>
     <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
     <generator>Lens_r's Pile of Elisp</generator>
     <atom:link href="https://lensplaysgames.github.io/lensr_blog_v1/rss.xml" rel="self" type="application/rss+xml"/>
     <item>
-      <title>What /is/ a Program?</title>
+      <title>Assembly Is *Not* What It Seems</title>
+      <link>https://lensplaysgames.github.io/lensr_blog_v1/posts/assemblynotwhatseems.html</link>
+      <pubDate>Sat, 03 Jun 2023 12:39:00 PDT</pubDate>
+    </item>
+    <item>
+      <title>What /Is/ a Program?</title>
       <link>https://lensplaysgames.github.io/lensr_blog_v1/posts/whatsaprogram.html</link>
       <pubDate>Mon, 29 May 2023 08:41:00 PDT</pubDate>
     </item>
