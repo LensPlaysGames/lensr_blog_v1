@@ -23,7 +23,95 @@ Anything within this subtree will then be a part of the blog post. For now, ther
 #+end_src
 
 
-* What /is/ a Program? :blogpost:
+* Fun Titles / Idea Dump
+
+** How I Built Rome in a Day
+[2023-06-01 Thu 16:14]
+
+
+* Assembly Is *Not* What It Seems :blogpost:
+:PROPERTIES:
+:CUSTOM_ID: assemblynotwhatseems
+:PUBLISHED: [2023-06-03 Sat 12:39]
+:MODIFIED: [2023-06-03 Sat 12:39]
+:END:
+
+Assembly is as close as you can get to the hardware, right? It basically tells you the exact instructions the CPU will run ... /right/?. Well, that may be what it seems like (and what people say), but not necessarily! Modern CPUs do so much more than just read an instruction and execute it, and that is what we will be exploring in this post.
+
+** Why Is This the Prevailing Assumption?
+
+Well, the reason assembly is thought of as "telling the hardware exactly what to do" is because ... well, it does, strictly from a programmer's point of view. But there's a distinction here that's important. It does not tell the CPU /how/ to do it. So while, yes, you may feed it an assembly instruction to add two numbers, any one CPU may choose to do an OR operation instead, if one of the numbers is known to be zero. This sort of behaviour, where the CPU can technically do whatever it wants as long as the expected result is acquired, allows for **lots** of optimisations that would not otherwise be possible. If you are familiar with C\slash{}C++, you may be familiar with /Undefined Behaviour/, which is nearly exactly the sort of thing we are talking about here.
+
+These optimisations allow you to sit here with a browser open to multiple tabs, background services running, multiprocessing ... the speed of modern computers doesn't come from speeding up math, but from increasing the amount of math a CPU can do at any given time.
+
+** How Can a CPU Do More Than One Thing at Once?
+
+Imagining a naive CPU pipeline that does one thing at a time, we may arrive at something like this:
+
+#+begin_example
+.->  Decoder -> Processor  -.
+`---------------------------+
+#+end_example
+
+The "decoder" step would decode the next instruction from memory, located by the instruction pointer, and the processor would get a decoded instruction with which to execute. While this /does/ work, it's also incredibly slower than it needs to be; for example, the decoder would decode an instruction /and then sit around doing nothing/ while the processor step computes the proper value. While the decoder is decoding the next instruction, the processor would sit around and do nothing.
+
+*** Eliminating Dependencies
+
+Sitting around doing nothing is *never* good. Luckily, we can attempt to make the situation better due to one simple fact: computations within the processor can't use or modify the instruction pointer directly (most of the time). This means the decoder /could/ start decoding the next instruction *before* the processor finishes processing the last instruction decoded. By the time the processor finishes processing, the decoder may already be ready with another instruction to execute. This increases the amount of time the processor spends doing valuable computations, making the CPU faster and computers go brrr.
+
+#+begin_example
+Decoder -> Decoded Instruction Queue
+Pop(Decoded Instruction Queue) -> Processor
+#+end_example
+
+As you can see, this /eliminates a dependency/: the processor no longer relies on the decoder directly, and instead relies on the decoded instruction queue being populated. This idea, this /concept/, of eliminating a dependency reaches so far down into the roots of modern CPUs that I could not explain it in one article, or even five. Modern CPUs eliminate dependencies on a register's value by renaming registers temporarily (yes, even the "hardware registers" don't actually exist in hardware ... there is something called a register file and it contains /actual/ hardware registers and the "name" of the register it's currently bound to; this technique is called /register banking/). This register renaming fixes our little caveat above with the instruction pointer being used in a computation. Just copy the value of the instruction pointer into a new register and rename that register to the instruction pointer for that instruction. Poof! No need to operate directly on the instruction pointer. In fact, this works for all registers.
+
+Now, you might be wondering, what is the advantage of eliminating a dependency on a register's value? This is where the next big step in computational speed comes from.
+
+*** Out-Of-Order Execution
+
+That's right; by eliminating an instruction's dependency on a register, we can actually *execute* that instruction at the same time as another instruction, given they don't have dependencies on one another. Let's take a look at this in actual x86\under{}64 assembly (in Intel syntax today, for funsies).
+
+#+begin_src asm
+0      mov rax, [my_ptr]           ;;#; rax := memory[my_ptr]
+1      add rax, 2                  ;;#; rax := rax + 2
+2      mov [my_ptr + 8], rax       ;;#; memory[my_ptr + 8] := rax
+3      mov rax, [my_other_ptr]     ;;#; rax := memory[my_other_ptr]
+4      add rax, 4                  ;;#; rax := rax + 4
+5      mov [my_other_ptr + 8], rax ;;#; memory[my_other_ptr] := rax
+#+end_src
+
+Attempting to eliminate dependencies in the above code without renaming registers doesn't gain us much; ~rax~ is used in *every* instruction, and therefore each instruction is dependant on the value of ~rax~ in the last instruction. Some instructions don't alter the register operand (like storing to memory), but they still require the value of ~rax~ to be what it was at the last assignment; because ~rax~ can't be reassigned, this store would still not able to be done in parallel with an instruction that sets the value of ~rax~.
+
+/This/ is where register renaming takes the spotlight. Because the x86\under{}64 CPU is smart enough to know which instructions set a register and which ones just use them, it can analyse the code it's about to execute and determine register dependencies. For example, instruction 0 sets the value of ~rax~ and has no dependencies. Instruction 1 sets the value of ~rax~ as well, but this time has a register dependency on the value of ~rax~ set by instruction 0. So instruction 1 /depends/ on instruction 0 already having been executed, and they cannot be executed out-of-order (or in parallel). It's a similar situation for instruction 2, as it depends on the value of ~rax~ set in instruction 1. However, instruction 3 is where it gets *interesting*. With the value of ~rax~ being set again, but this time from another place in memory, this means that any dependency on the old ~rax~ is broken. So instruction 3 has no dependencies, just like instruction 0. Instruction 4 is nearly identical to instruction 1, except this time it's dependent on the value of ~rax~ set in instruction 3. Same story for instruction 5, except dependent on instruction 4. Okay, so we can determine the register dependencies of an instruction ... but what has all this analysis got us? To showcase the value gained from doing this analysis, let's go through and give a unique name to each /value/ of ~rax~ that was depended upon.
+
+#+begin_src asm
+0      mov r1, [my_ptr]            ;;#; r1 := memory[my_ptr]
+1      add r1, 2                   ;;#; r1 := r1 + 2
+2      mov [my_ptr + 8], r1        ;;#; memory[my_ptr + 8] := r1
+3      mov r2, [my_other_ptr]      ;;#; r2 := memory[my_other_ptr]
+4      add r2, 4                   ;;#; r2 := r2 + 4
+5      mov [my_other_ptr + 8], r2  ;;#; memory[my_other_ptr] := r2
+#+end_src
+
+Now, with this done, the CPU is smart enough to notice something: instructions 0 through 2 and 3 through 5 are two blocks of instructions that start with /no/ register dependencies.
+
+#+begin_example
+0 sets r1
+1 uses r1 and sets r1
+2 uses r1
+
+3 sets r2
+4 uses r2 and sets r2
+5 uses r2
+#+end_example
+
+As neither of these blocks of instructions depend on each other for any values of any register (CPU state), this means they *can* be executed out-of-order. So, if the L1 cache has the memory at ~my_other_ptr~ already loaded, for example, the CPU could choose to execute the block of instructions that uses that memory more first, taking advantage of the already-populated cache. Or, even better, the CPU has multiple cores/computational units inside of it, and can dispatch these instructions between them (hyperthreading). This has the effect of *both* instructions 0 through 2 and 3 through 5 getting executed /at the same time/. *This drastically improves performance*.
+
+Anyway, thank you for reading this post on assembly. If you enjoyed it, I make Twitch and YouTube content that you might also enjoy. To stay tuned when more posts come out, there is an RSS feed you can subscribe to.
+
+
+* What /Is/ a Program? :blogpost:
 :PROPERTIES:
 :CUSTOM_ID: whatsaprogram
 :PUBLISHED: [2023-05-29 Mon 08:41]
