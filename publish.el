@@ -17,9 +17,6 @@
 
 ;; See =org/mainblog.org=.
 
-;; TODO: Put a link to RSS feed somewhere accessible but not in the way
-;; (maybe a good-looking footer would be perfect for this).
-
 ;;; Code:
 
 ;; Load minimum amount of packages.
@@ -31,6 +28,68 @@
 
 ;; Tangling source blocks from literate js and css files requires org-tangle.
 (require 'ob-tangle)
+
+(setq blub-directory (file-name-directory (buffer-file-name)))
+
+(defun blub--org-html--build-meta-info (oldfun info)
+  "Advice around 'org-html--build-meta-info' to insert open graph meta tags."
+  (concat
+   (funcall oldfun info)
+   ;; It's not known what directory we are in, so we switch to a known
+   ;; directory.
+   (let ((default-directory blub-directory))
+     (concat
+
+      ;; Set og:type to "article" if in a blogpost, otherwise set it to
+      ;; "website". Blogposts originate from the "posts" subdirectory.
+      (if (string-match "/posts/" (plist-get info :input-file))
+          "<meta property=\"og:type\" content=\"article\"/>\n"
+        "<meta property=\"og:type\" content=\"website\"/>\n")
+
+      ;; Set og:url to the url of this page.
+      (format "<meta property=\"og:url\" content=\"https://lensplaysgames.github.io/lensr_blog_v1/%s\"/>\n"
+              (file-relative-name (plist-get info :output-file) (plist-get info :publishing-directory)))
+
+      ;; Set og:title to the title of this page in plain text.
+      (format "<meta property=\"og:title\" content=\"%s\"/>\n"
+              (org-html-plain-text (org-element-interpret-data (plist-get info :title)) info))
+
+      ;; Some open graph meta tags require processing of input org file.
+      (with-current-buffer (find-file-noselect (plist-get info :input-file))
+        ;; Potential FIXME: Requiring these properties on the /first/
+        ;; heading of an org-mode file /does/ make sense, but it also
+        ;; makes it kind of confusing that these are file-wide
+        ;; properties. So using org keywords (the lines that start with
+        ;; "#+") may be a way better/clearer way to represent this.
+        ;; HOWEVER! The keyword API also kind of sucks, whereas the
+        ;; entry API is amazing.
+        (beginning-of-buffer)
+        (org-next-visible-heading 1)
+        (concat
+
+         ;; Set og:description, when present, favoring OG_DESCRIPTION
+         ;; first-header property over #+description.
+         (let ((description (org-entry-get (point) "OG_DESCRIPTION")))
+           ;; Use value of OG_DESCRIPTION, if valid. Otherwise,
+           ;; fallback to :description property within export context
+           ;; plist. If even that isn't valid, don't emit og:description.
+           (if (stringp description)
+               (format "<meta property=\"og:description\" content=\"%s\"/>\n" description)
+             (if (stringp (plist-get info :description))
+                 (format "<meta property=\"og:description\" content=\"%s\"/>\n" (plist-get info :description))
+               "")))
+
+         ;; Set og:image to url of custom :OG_IMAGE: property of first heading of input Org file, if it exists.
+         (let ((image-path (org-entry-get (point) "OG_IMAGE")))
+           (if (and (stringp image-path) ;; Property must be present
+                    (not (string-empty-p image-path)) ;; Property must have a value set
+                    (not (file-name-absolute-p image-path))) ;; Path must be relative
+               (format "<meta property=\"og:image\" content=\"https://lensplaysgames.github.io/lensr_blog_v1/%s\"/>\n" image-path)
+             ""))
+         ))
+      ))
+   ))
+(advice-add 'org-html--build-meta-info :around 'blub--org-html--build-meta-info)
 
 (defun blub-file-string (filepath)
   "Return a string containing the contents of file at FILEPATH."
@@ -106,7 +165,6 @@ Passing nil will give the current time (as with any time object)."
          (when (and (= 1 level)
                     (when (stringp tags-string) (string-match "blogpost" tags-string)))
            ;; Save the entire contents of each blogpost subtree into a variable.
-           ;; Convert org timestamp string into Emacs time object.
            (let ((contents (progn
                              ;; Push the contents of the subtree onto the 'kill-ring'.
                              (org-copy-subtree)
@@ -122,6 +180,7 @@ Passing nil will give the current time (as with any time object)."
                        contents)
                (save-buffer)))
 
+           ;; Convert org timestamp string into Emacs time object.
            (let ((publish-time (org-timestamp-to-time (org-timestamp-from-string publish-date))))
              ;; Push a link to this newly-created post file, along with it's publish
              ;; date, to a list of all blog post links.
@@ -302,7 +361,9 @@ Passing nil will give the current time (as with any time object)."
 
 
 (setq org-html-head (concat org-html-head
-                            "<link rel=\"icon\" type=\"image/x-icon\" href=\"favicon.ico\">\n"))
+                            "<link rel=\"icon\" type=\"image/x-icon\" href=\"favicon.ico\">\n"
+                            "<meta property=\"og:site_name\" content=\"Lens_r's Blog\"/>\n"
+                            ))
 
 (setq org-publish-project-alist
       `(("export-org"

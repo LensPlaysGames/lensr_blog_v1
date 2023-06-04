@@ -17,10 +17,13 @@ Anything within this subtree will then be a part of the blog post. For now, ther
     :CUSTOM_ID: outofordertest
     :PUBLISHED: [2023-05-29 Mon 12:40]
     :MODIFIED: [2023-05-29 Mon 12:40]
+    :OG_IMAGE: images/myimage.png
     :END:
 
     Hmm, will this be in order?
 #+end_src
+
+NOTE: The OG_IMAGE property is optional, but, if provided, sets the open graph/twitter card image (og:image) that will be displayed when the page is linked to from social media sites. OG_DESCRIPTION may also be set in order to explicitly set og:description.
 
 
 * Fun Titles / Idea Dump
@@ -33,7 +36,8 @@ Anything within this subtree will then be a part of the blog post. For now, ther
 :PROPERTIES:
 :CUSTOM_ID: assemblynotwhatseems
 :PUBLISHED: [2023-06-03 Sat 12:39]
-:MODIFIED: [2023-06-03 Sat 12:39]
+:MODIFIED: [2023-06-04 Sun 09:17]
+:OG_DESCRIPTION: Exploring Assembly from a CPU's Point of View
 :END:
 
 Assembly is as close as you can get to the hardware, right? It basically tells you the exact instructions the CPU will run ... /right/?. Well, that may be what it seems like (and what people say), but not necessarily! Modern CPUs do so much more than just read an instruction and execute it, and that is what we will be exploring in this post.
@@ -72,7 +76,7 @@ Now, you might be wondering, what is the advantage of eliminating a dependency o
 
 *** Out-Of-Order Execution
 
-That's right; by eliminating an instruction's dependency on a register, we can actually *execute* that instruction at the same time as another instruction, given they don't have dependencies on one another. Let's take a look at this in actual x86\under{}64 assembly (in Intel syntax today, for funsies).
+That's right; by eliminating an instruction's dependency on a register, we can actually *execute* that instruction at the same time as another instruction, given they don't have dependencies on one another. Let's take a look at this in actual x86\under{}64 assembly (in Intel syntax today, for funsies).   
 
 #+begin_src asm
 0      mov rax, [my_ptr]           ;;#; rax := memory[my_ptr]
@@ -123,7 +127,7 @@ Anyway, thank you for reading this post on assembly. If you enjoyed it, I make T
 :PROPERTIES:
 :CUSTOM_ID: whatsaprogram
 :PUBLISHED: [2023-05-29 Mon 08:41]
-:MODIFIED: [2023-05-29 Mon 09:11]
+:MODIFIED: [2023-06-04 Sun 09:17]
 :END:
 
 This may seem obvious, but it turns out to be quite ... complex.
