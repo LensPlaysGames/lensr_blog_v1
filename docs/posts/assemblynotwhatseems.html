@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-06-03 Sat 15:12 -->
+<!-- 2023-06-04 Sun 09:14 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Lens_r | Assembly Is *Not* What It Seems</title>
@@ -28,11 +28,7 @@ Assembly is as close as you can get to the hardware, right? It basically tells y
 <h3 id="orgbcba2dd">Why Is This the Prevailing Assumption?</h3>
 <div class="outline-text-3" id="text-orgbcba2dd">
 <p>
-Well, the reason assembly is thought of as "telling the hardware exactly what to do" is because &#x2026; well, it does, strictly from a programmer's point of view. But there's a distinction here that's important. It does not tell the CPU <i>how</i> to do it. So while, yes, you may feed it an assembly instruction to add two numbers, any one CPU may choose to do an OR operation instead, if one of the numbers is known to be zero. This sort of behaviour, where the CPU can technically do whatever it wants as long as the expected result is acquired, allows for <b><b>lots</b></b> of optimisations that would not otherwise be possible. If you are familiar with C/C++, you may be familiar with <i>Undefined Behaviour</i>, which is nearly exactly the sort of thing we are talking about here.
-</p>
-
-<p>
-These optimisations allow you to sit here with a browser open to multiple tabs, background services running, multiprocessing &#x2026; the speed of modern computers doesn't come from speeding up math, but from increasing the amount of math a CPU can do at any given time.
+Well, the reason assembly is thought of as "telling the hardware exactly what to do" is because &#x2026; well, it does, strictly from a programmer's point of view. But there's a distinction here that's important. It does not tell the CPU <i>how</i> to do it. So while, yes, you may feed it an assembly instruction to add two numbers, any one CPU may choose to do an OR operation instead, if one of the numbers is known to be zero. This sort of behaviour, where the CPU can technically do whatever it wants as long as the expected result is acquired, allows for <b><b>lots</b></b> of optimisations that would not otherwise be possible. For related reading, see <i>sequential consistency</i> and <i>unspecified behaviour</i>.
 </p>
 </div>
 </div>
@@ -44,13 +40,17 @@ These optimisations allow you to sit here with a browser open to multiple tabs, 
 Imagining a naive CPU pipeline that does one thing at a time, we may arrive at something like this:
 </p>
 
-<pre class="example" id="org1691cff">
+<pre class="example" id="orgb216d4d">
 .-&gt;  Decoder -&gt; Processor  -.
 `---------------------------+
 </pre>
 
 <p>
 The "decoder" step would decode the next instruction from memory, located by the instruction pointer, and the processor would get a decoded instruction with which to execute. While this <i>does</i> work, it's also incredibly slower than it needs to be; for example, the decoder would decode an instruction <i>and then sit around doing nothing</i> while the processor step computes the proper value. While the decoder is decoding the next instruction, the processor would sit around and do nothing.
+</p>
+
+<p>
+NOTE: This is a whole topic in-and-of-itself. See <a href="https://en.wikipedia.org/wiki/Instruction_pipelining">Instruction Pipelining @wikipedia.org</a>
 </p>
 </div>
 
@@ -61,7 +61,7 @@ The "decoder" step would decode the next instruction from memory, located by the
 Sitting around doing nothing is <b>never</b> good. Luckily, we can attempt to make the situation better due to one simple fact: computations within the processor can't use or modify the instruction pointer directly (most of the time). This means the decoder <i>could</i> start decoding the next instruction <b>before</b> the processor finishes processing the last instruction decoded. By the time the processor finishes processing, the decoder may already be ready with another instruction to execute. This increases the amount of time the processor spends doing valuable computations, making the CPU faster and computers go brrr.
 </p>
 
-<pre class="example" id="org542c8d8">
+<pre class="example" id="org144cf22">
 Decoder -&gt; Decoded Instruction Queue
 Pop(Decoded Instruction Queue) -&gt; Processor
 </pre>
@@ -115,7 +115,7 @@ Attempting to eliminate dependencies in the above code without renaming register
 Now, with this done, the CPU is smart enough to notice something: instructions 0 through 2 and 3 through 5 are two blocks of instructions that start with <i>no</i> register dependencies.
 </p>
 
-<pre class="example" id="orgb7e90e8">
+<pre class="example" id="orgbcc5bd7">
 0 sets r1
 1 uses r1 and sets r1
 2 uses r1
@@ -126,7 +126,19 @@ Now, with this done, the CPU is smart enough to notice something: instructions 0
 </pre>
 
 <p>
-As neither of these blocks of instructions depend on each other for any values of any register (CPU state), this means they <b>can</b> be executed out-of-order. So, if the L1 cache has the memory at <code>my_other_ptr</code> already loaded, for example, the CPU could choose to execute the block of instructions that uses that memory more first, taking advantage of the already-populated cache. Or, even better, the CPU has multiple cores/computational units inside of it, and can dispatch these instructions between them (hyperthreading). This has the effect of <b>both</b> instructions 0 through 2 and 3 through 5 getting executed <i>at the same time</i>. <b>This drastically improves performance</b>.
+As neither of these blocks of instructions depend on each other for any values of any register (CPU state), this means they <b>can</b> be executed out-of-order. So, if the L1 cache has the memory at <code>my_other_ptr</code> already loaded, for example, the CPU could choose to execute the block of instructions that uses that memory more first, taking advantage of the already-populated cache. And that's just for a single CPU with a single logical/arithmetic unit.
+</p>
+
+<p>
+At some point, humans were smart enough to realise that a CPU already has a clock, registers, instructions, etc, but, <i>for some reason</i>, only ever computes one instruction which operates on one or two registers per clock cycle. By inserting more actual logical and arithmetic units within a single CPU, it's possible for a single computational unit to compute <i>more than one</i> calculation at a time, operating on more than just one or two of its registers. That is, for two sequential <code>add</code> instructions that have no dependencies on each other, it's <b>vastly</b> more efficient to send each to its own ALU and have a single clock cycle cause both of them to do their respective computations, getting both results at the same time. This idea even extends past <code>add</code> instructions. For example, the instruction decoder could be duplicated, allowing for multiple instructions to be decoded at once.
+</p>
+
+<p>
+With modern processors, this is taken even one step further: the "CPU" has <i>multiple</i> CPUs inside of it, each with their own set of ALUs, register files, and more. Generally, the OS chooses the CPU it starts on as the "main" CPU, and that CPU is used to dispatch heavy computations between the rest. It is up to the OS kernel how this is actually accomplished, and what the other CPUs are used for: this is the job of the <i>scheduler</i> (another topic that I could write a million articles on and barely scratch the surface).
+</p>
+
+<p>
+Modern CPUs are to assembly what C is to Python. You can use C to implement Python, but it will be a lot more verbose, detailed, and complicated than any equivalent you could come up with in Python. Modern CPUs look at assembly and <i>wish</i> they could operate at such an abstract level, while assembly sees the CPU simply as a means to an end. So, the next time you write (or read) some assembly, remember that the CPU has other things in mind than just <code class="src src-asm"> <span class="org-keyword">add</span> rax, rax</code>.
 </p>
 
 <p>
