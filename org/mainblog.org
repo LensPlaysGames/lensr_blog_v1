@@ -39,7 +39,7 @@ NOTE: POST_TAGS property is not yet used yet, but will eventually be used for us
 :PROPERTIES:
 :CUSTOM_ID: comfortablewhenuncomfortable
 :PUBLISHED: [2023-06-22 Thu 15:29]
-:MODIFIED: [2023-06-22 Thu 15:29]
+:MODIFIED: [2023-06-22 Thu 15:31]
 :OG_DESCRIPTION: Getting Comfortable With the Uncomfortable, or How I Stay Sane Despite This Insane World
 :POST_TAGS: life
 :END:
@@ -76,7 +76,7 @@ Read The Fucking Manual
 
 I didn't have anyone to run to when I wanted to write an assembler for the Intercept compiler; I was the only one who implemented it. What I /did/ have that I could run to when I got lost was the ~Intel Software Developer's Manual~. That manual has everything you could possibly need to know about each and every possible instruction and encoding in x86\under{}64. *That manual was all I ever needed* to write an assembler for x86\under{}64.
 
-Now, did I still take to Googling "how does modrm byte work x86_64"? Of course! *There's no need to limit yourself to only one set of knowledge.* HOWEVER! The Intel SDM /does/ actually have everything that one may ever need to know about the ModRM byte. That is, this "rule" isn't meant to make you limit your sources of knowledge; it is to exercise the most likely avenue of getting that knowledge first, before you go crying to your peers/superiors about it.
+Now, did I still take to Googling "how does modrm byte work x86\under{}64"? Of course! *There's no need to limit yourself to only one set of knowledge.* HOWEVER! The Intel SDM /does/ actually have everything that one may ever need to know about the ModRM byte. That is, this "rule" isn't meant to make you limit your sources of knowledge; it is to exercise the most likely avenue of getting that knowledge first, before you go crying to your peers/superiors about it.
 
 ** A Pile Of Garbage Smells Bad, but Still Smells
 

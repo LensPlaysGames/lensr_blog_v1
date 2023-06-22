@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-06-22 Thu 15:24 -->
+<!-- 2023-06-22 Thu 15:32 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Main Blog</title>
@@ -145,7 +145,7 @@ I didn't have anyone to run to when I wanted to write an assembler for the Inter
 </p>
 
 <p>
-Now, did I still take to Googling "how does modrm byte work x86<sub>64</sub>"? Of course! <b>There's no need to limit yourself to only one set of knowledge.</b> HOWEVER! The Intel SDM <i>does</i> actually have everything that one may ever need to know about the ModRM byte. That is, this "rule" isn't meant to make you limit your sources of knowledge; it is to exercise the most likely avenue of getting that knowledge first, before you go crying to your peers/superiors about it.
+Now, did I still take to Googling "how does modrm byte work x86_64"? Of course! <b>There's no need to limit yourself to only one set of knowledge.</b> HOWEVER! The Intel SDM <i>does</i> actually have everything that one may ever need to know about the ModRM byte. That is, this "rule" isn't meant to make you limit your sources of knowledge; it is to exercise the most likely avenue of getting that knowledge first, before you go crying to your peers/superiors about it.
 </p>
 </div>
 </div>
@@ -192,7 +192,7 @@ Well, the reason assembly is thought of as "telling the hardware exactly what to
 Imagining a naive CPU pipeline that does one thing at a time, we may arrive at something like this:
 </p>
 
-<pre class="example" id="org6ae8c49">
+<pre class="example" id="org4674104">
 .-&gt;  Decoder -&gt; Processor  -.
 `---------------------------+
 </pre>
@@ -213,7 +213,7 @@ NOTE: This is a whole topic in-and-of-itself. See <a href="https://en.wikipedia.
 Sitting around doing nothing is <b>never</b> good. Luckily, we can attempt to make the situation better due to one simple fact: computations within the processor can't use or modify the instruction pointer directly (most of the time). This means the decoder <i>could</i> start decoding the next instruction <b>before</b> the processor finishes processing the last instruction decoded. By the time the processor finishes processing, the decoder may already be ready with another instruction to execute. This increases the amount of time the processor spends doing valuable computations, making the CPU faster and computers go brrr.
 </p>
 
-<pre class="example" id="org913d719">
+<pre class="example" id="orgf7986bc">
 Decoder -&gt; Decoded Instruction Queue
 Pop(Decoded Instruction Queue) -&gt; Processor
 </pre>
@@ -267,7 +267,7 @@ Attempting to eliminate dependencies in the above code without renaming register
 Now, with this done, the CPU is smart enough to notice something: instructions 0 through 2 and 3 through 5 are two blocks of instructions that start with <i>no</i> register dependencies.
 </p>
 
-<pre class="example" id="orgafef6d7">
+<pre class="example" id="orgdfb7109">
 0 sets r1
 1 uses r1 and sets r1
 2 uses r1

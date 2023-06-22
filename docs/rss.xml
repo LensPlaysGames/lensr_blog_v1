@@ -7,14 +7,14 @@
     <description>Lens_r sometimes writes things down.</description>
     <language>en-us</language>
     <pubDate>Mon, 29 May 2023 20:08:15 PDT</pubDate>
-    <lastBuildDate>Thu, 22 Jun 2023 15:24:06 PDT</lastBuildDate>
+    <lastBuildDate>Thu, 22 Jun 2023 15:32:05 PDT</lastBuildDate>
     <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
     <generator>Lens_r's Pile of Elisp</generator>
     <atom:link href="https://lensplaysgames.github.io/lensr_blog_v1/rss.xml" rel="self" type="application/rss+xml"/>
     <item>
       <title>Getting Comfortable With the Uncomfortable</title>
       <link>https://lensplaysgames.github.io/lensr_blog_v1/posts/comfortablewhenuncomfortable.html</link>
-      <pubDate>Tue, 20 Jun 2023 12:04:00 PDT</pubDate>
+      <pubDate>Thu, 22 Jun 2023 15:29:00 PDT</pubDate>
     </item>
     <item>
       <title>Assembly Is *Not* What It Seems</title>
