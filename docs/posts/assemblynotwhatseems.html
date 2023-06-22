@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-06-04 Sun 12:45 -->
+<!-- 2023-06-22 Thu 15:24 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Lens_r | Assembly Is *Not* What It Seems</title>
@@ -45,7 +45,7 @@ Well, the reason assembly is thought of as "telling the hardware exactly what to
 Imagining a naive CPU pipeline that does one thing at a time, we may arrive at something like this:
 </p>
 
-<pre class="example" id="orgb064a58">
+<pre class="example" id="orgd2b26e5">
 .-&gt;  Decoder -&gt; Processor  -.
 `---------------------------+
 </pre>
@@ -66,7 +66,7 @@ NOTE: This is a whole topic in-and-of-itself. See <a href="https://en.wikipedia.
 Sitting around doing nothing is <b>never</b> good. Luckily, we can attempt to make the situation better due to one simple fact: computations within the processor can't use or modify the instruction pointer directly (most of the time). This means the decoder <i>could</i> start decoding the next instruction <b>before</b> the processor finishes processing the last instruction decoded. By the time the processor finishes processing, the decoder may already be ready with another instruction to execute. This increases the amount of time the processor spends doing valuable computations, making the CPU faster and computers go brrr.
 </p>
 
-<pre class="example" id="org84f81f6">
+<pre class="example" id="org9d45903">
 Decoder -&gt; Decoded Instruction Queue
 Pop(Decoded Instruction Queue) -&gt; Processor
 </pre>
@@ -85,7 +85,7 @@ Now, you might be wondering, what is the advantage of eliminating a dependency o
 <h4 id="org77c154a">Out-Of-Order Execution</h4>
 <div class="outline-text-4" id="text-org77c154a">
 <p>
-That's right; by eliminating an instruction's dependency on a register, we can actually <b>execute</b> that instruction at the same time as another instruction, given they don't have dependencies on one another. Let's take a look at this in actual x86_64 assembly (in Intel syntax today, for funsies).   
+That's right; by eliminating an instruction's dependency on a register, we can actually <b>execute</b> that instruction at the same time as another instruction, given they don't have dependencies on one another. Let's take a look at this in actual x86_64 assembly (in Intel syntax today, for funsies).
 </p>
 
 <div class="org-src-container">
@@ -120,7 +120,7 @@ Attempting to eliminate dependencies in the above code without renaming register
 Now, with this done, the CPU is smart enough to notice something: instructions 0 through 2 and 3 through 5 are two blocks of instructions that start with <i>no</i> register dependencies.
 </p>
 
-<pre class="example" id="orgb697b70">
+<pre class="example" id="org2722780">
 0 sets r1
 1 uses r1 and sets r1
 2 uses r1

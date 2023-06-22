@@ -76,7 +76,7 @@ Now, you might be wondering, what is the advantage of eliminating a dependency o
 
 *** Out-Of-Order Execution
 
-That's right; by eliminating an instruction's dependency on a register, we can actually *execute* that instruction at the same time as another instruction, given they don't have dependencies on one another. Let's take a look at this in actual x86\under{}64 assembly (in Intel syntax today, for funsies).   
+That's right; by eliminating an instruction's dependency on a register, we can actually *execute* that instruction at the same time as another instruction, given they don't have dependencies on one another. Let's take a look at this in actual x86\under{}64 assembly (in Intel syntax today, for funsies).
 
 #+begin_src asm
 0      mov rax, [my_ptr]           ;;#; rax := memory[my_ptr]
