@@ -363,6 +363,16 @@ Passing nil will give the current time (as with any time object)."
 (setq org-html-head (concat org-html-head
                             "<link rel=\"icon\" type=\"image/x-icon\" href=\"favicon.ico\">\n"
                             "<meta property=\"og:site_name\" content=\"Lens_r's Blog\"/>\n"
+
+                            "<!-- Google tag (gtag.js) -->\n"
+                            "<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-PQ1QQT11F4\"></script>\n"
+                            "<script>\n"
+                            "  window.dataLayer = window.dataLayer || [];\n"
+                            "  function gtag(){dataLayer.push(arguments);}\n"
+                            "  gtag('js', new Date());\n"
+                            "  gtag('config', 'G-PQ1QQT11F4');\n"
+                            "</script>\n"
+
                             ))
 
 (setq org-publish-project-alist
