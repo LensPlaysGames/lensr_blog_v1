@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2023-06-22 Thu 15:24 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lens_r | Getting Comfortable With the Uncomfortable</title>
+<meta name="author" content="Rylan Lens Kellogg" />
+<meta name="generator" content="Org Mode" />
+<meta property="og:type" content="article"/>
+<meta property="og:url" content="https://lensplaysgames.github.io/lensr_blog_v1/posts/comfortablewhenuncomfortable.html"/>
+<meta property="og:title" content="Lens_r | Getting Comfortable With the Uncomfortable"/>
+<meta property="og:description" content="Getting Comfortable With the Uncomfortable, or How I Stay Sane Despite This Insane World"/>
+<link rel="stylesheet" href="/lensr_blog_v1/all.min.css"/>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<meta property="og:site_name" content="Lens_r's Blog"/>
+<script>function toggle_dark_mode(){var element=document.getElementsByTagName("html")[0],dark_button=document.getElementById("dark-mode");element.classList.toggle("dark-mode");const d=new Date;d.setTime(d.getTime()+24192e5),element.classList.contains("dark-mode")?(document.cookie="dark_mode=true; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Light Mode"):(document.cookie="dark_mode=false; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Dark Mode")}function goto_top(){document.body.scrollTop=0,document.documentElement.scrollTop=0}function insert_top_banner(){var navbar_html='<nav class="navbar" id="navbar">';navbar_html+='<label for="hamburger">&#9776;</label>';let content_elem=document.body.firstElementChild,navbar_and_contents=document.createElement("div");navbar_and_contents.innerHTML='<nav class="navbar" id="navbar"><label for="hamburger">&#9776;</label><input type="checkbox" id="hamburger"/><div id="hamburger-items"><a href=\'/lensr_blog_v1/\'">Home</a><a target="_blank" href=\'https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG\'">Donate</a><a target="_blank" href=\'https://www.youtube.com/@Lensr\'">YouTube</a><a target="_blank" href=\'https://www.twitch.tv/lens_r\'">Twitch</a><a target="_blank" href=\'https://www.github.com/LensPlaysGames\'">GitHub</a><a target="_blank" href=\'https://discord.gg/FTQsgqQEM4\'">Discord</a><a id="dark-mode" onClick={toggle_dark_mode();}>Dark Mode</a></div></nav>'+content_elem.outerHTML,content_elem.replaceWith(navbar_and_contents)}function main(){insert_top_banner();let cookies=decodeURIComponent(document.cookie).split(";");for(let i=0;i<cookies.length;i++){for(;" "==cookies[i].charAt(0);)cookies[i].substring(1);0==cookies[i].indexOf("dark_mode")&&"true"==cookies[i].substring(name.length,cookies[i].length).split("=")[1]&&toggle_dark_mode()}}window.onload=main;</script>
+</head>
+<body>
+<div id="content" class="content">
+
+<div id="outline-container-comfortablewhenuncomfortable" class="outline-2">
+<h2 id="comfortablewhenuncomfortable">Getting Comfortable With the Uncomfortable</h2>
+<div class="outline-text-2" id="text-comfortablewhenuncomfortable">
+<p>
+I got a new job.
+</p>
+
+<p>
+<i>Yay&#x2026;</i>
+</p>
+
+<p>
+I am now a Senior Engineer, writing software the likes of which I have never tried to write before. Everyday I am (a little) stressed with the ever-increasing list of things to get do, most of which I have never <code>A.</code> tried before or even <code>B.</code> heard of in my life.
+</p>
+
+<p>
+I wrote an entire OS, but that didn't teach me how to write a promise-based API in JavaScript.
+</p>
+
+<p>
+I wrote an entire compiler, but that didn't teach me how to use industry-level tools to create a scalable app that ebbs and flows as the active users fluctuate.
+</p>
+
+<p>
+What doing those projects <i>did</i> teach me was far more important than those minute details that I've picked up in my first week or two on the job.
+</p>
+</div>
+
+<div id="outline-container-org6225ef5" class="outline-3">
+<h3 id="org6225ef5">Solo Dolo</h3>
+<div class="outline-text-3" id="text-org6225ef5">
+<p>
+When you're all alone, your entire mindset changes. It is either "do" or it doesn't ever get done. When writing the kernel for LensorOS, I didn't have anyone to talk to in real life about it (at least anyone that would understand what the hell a filesystem even is, haha). This meant that most of my work was done alone; chicken-scratched writings in countless notebooks, solving problems that have been solved a million times before. Obviously, I didn't just gain knowledge spontaneously; I still utilised the resources I had available (like the OSDev wiki, among other things). When I say <i>alone</i>, I'm referring to the fact that, within those first four months, the only time I asked anybody for help on how to solve an issue was through a Reddit post that got no responses. With no contributors, no one to bounce ideas off of &#x2026; just <i>me</i>, within the eternal sunshine of my spotless mind, alone and unknowing of what I might find, I meandered onto a lesson that has stuck with me through time.
+</p>
+
+<p>
+<b><i>No one is there to save you</i></b>.
+</p>
+
+<p>
+For weeks I would battle a problem, flinging lines of code into file upon file, waiting for one&#x2014;just <i>one</i>&#x2014;solution to work. They often didn't. If I decided at this time, "I don't know how to do it, that means I <i>can't</i> do it without help", then I wouldn't have <i>any</i> programming projects. For every single one of these problems&#x2014;these problems that caused me to yell in frustration, angrily write cuss words, and frantically etch my thoughts into disorganised page after disorganised page of my helpless notebook&#x2014;I would go through a cycle. First, the idea would hit me; the excitement that came with it usually meant I got started right away on designing <i>some</i> sort of system to implement this idea. After an initial design that I thought <i>might</i> work, I'd jump right into implementing it. Usually, about half-way through implementing it, I would run into a road-block that made me realise my design could <i>never</i> work, it's inherently flawed, and I <i>have</i> to redesign it if I ever want this idea to come to fruition. This is where I often spent days/weeks, just desperately hoping for each attempt to be "the one".
+</p>
+
+<p>
+In these weeks is when the frustration came: every time something didn't work as expected, the program crashed for seemingly no reason, or one piece of code being changed affected an entirely unrelated piece of code. In these moments, it wasn't only frustration that came, but also severe feelings of <i>failure</i>. My notebooks would be filled with phrases like "fucking loser", "idiot", "useless, pathetic fool", and every permutation of those you may possibly think of (and more). In those times, I heavily based my self-esteem on my accomplishments; if I didn't get what I wanted done that day, I'd be in an awful mood and wonder why I should even be alive. Needless to say, there were constant hardships throughout my journey, both mental and technical, but I never once gave up (or let my unhealthy thoughts make me do something I'd regret).
+</p>
+
+<p>
+TL;DR: Oh, you have a question about how something works? Better just go ask your superior&#x2026; WRONG! Chances are your superior doesn't know this specific, minute detail either, and will have to go through the same channels that <i>you</i> could have to get the information, and then relay it back to you. Companies don't appreciate you off-loading your work onto your coworkers, <i>at all</i>; they want forward thinkers, people who get the job done before it has even started. A problem is only a problem if you haven't solved it yet!
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgbdfb735" class="outline-3">
+<h3 id="orgbdfb735">RTFM</h3>
+<div class="outline-text-3" id="text-orgbdfb735">
+<blockquote>
+<p>
+Read The Fucking Manual
+</p>
+</blockquote>
+
+<p>
+I didn't have anyone to run to when I wanted to write an assembler for the Intercept compiler; I was the only one who implemented it. What I <i>did</i> have that I could run to when I got lost was the <code>Intel Software Developer's Manual</code>. That manual has everything you could possibly need to know about each and every possible instruction and encoding in x86_64. <b>That manual was all I ever needed</b> to write an assembler for x86_64.
+</p>
+
+<p>
+Now, did I still take to Googling "how does modrm byte work x86<sub>64</sub>"? Of course! <b>There's no need to limit yourself to only one set of knowledge.</b> HOWEVER! The Intel SDM <i>does</i> actually have everything that one may ever need to know about the ModRM byte. That is, this "rule" isn't meant to make you limit your sources of knowledge; it is to exercise the most likely avenue of getting that knowledge first, before you go crying to your peers/superiors about it.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org071b2f1" class="outline-3">
+<h3 id="org071b2f1">A Pile Of Garbage Smells Bad, but Still Smells</h3>
+<div class="outline-text-3" id="text-org071b2f1">
+<p>
+<i>Something</i> is always better than nothing in the world of software engineering. GET STARTED. It doesn't matter if your whole idea of what is needed is wrong, your design is flawed, or anything like that; if you are dedicated, you will overcome all of these hurdles and get exactly where you want to go in the end (or somewhere near). For example, I had no idea how to serialise types for the Intercept compiler module description: that didn't stop me from starting up a stream and getting started on an implementation. About half-way through implementing my initial idea (Tag/Length/Value records), I realised that it wouldn't work <b>at all</b> for recursive types (i.e. a struct with a pointer to itself as a member). This didn't stop me; I continued implementing the flawed design, and then went back and thought about how I could change it to fix this new issue I've run into.
+</p>
+
+<p>
+By continuing to work through the initial roadblock, I was able to reach a point where I made <i>progress</i> towards my goal of serialising types, even though I hadn't yet succeeded. With this progress, Siraide was able to come up with a fix in just a few minutes, and I implemented that in less than an hour. From my broken, shoddy design emerged a functional one.
+</p>
+
+<p>
+I am not a genius or something because my terrible designs end up working in the end; it's a simple fact that if you begin building something, you <b>will</b> run into issues along the way. <b>If you let these issues stop you, then you will never get anything done.</b> However, if you are able to begin working on a solution to <i>any</i> problem, no matter how small, you will begin making progress on that problem. Keep doing that, and the problem will eventually be so small you don't even notice it.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<footer>
+  <div class="footer-row">
+    <button onClick="goto_top()" title="Go to top of page">Back to Top</button>
+  </div>
+  <div class="footer-row">
+    <a target="_blank" href="https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG">Donate</a>
+    <a target="_blank" href="https://www.youtube.com/@Lensr">YouTube</a>
+    <a target="_blank" href="https://www.twitch.tv/lens_r">Twitch</a>
+    <a target="_blank" href="https://www.github.com/LensPlaysGames">GitHub</a>
+    <a target="_blank" href="https://discord.gg/FTQsgqQEM4">Discord</a>
+  </div>
+  <div class="footer-row">
+    <a target="_blank" href="/lensr_blog_v1/rss.xml">Feed/RSS</a>
+  </div>
+  <div class="footer-row"><span>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6)</span></div>
+</footer>
+</div>
+</body>
+</html>
