@@ -359,22 +359,9 @@ Passing nil will give the current time (as with any time object)."
         (copy-file css-filepath (expand-file-name css-basename "extras") t))
     (setq org-html-head (format "<style>%s</style>\n" (blub-file-string css-filepath)))))
 
-
 (setq org-html-head (concat org-html-head
                             "<link rel=\"icon\" type=\"image/x-icon\" href=\"favicon.ico\">\n"
-                            "<meta property=\"og:site_name\" content=\"Lens_r's Blog\"/>\n"
-
-                            "<!-- Google tag (gtag.js) -->\n"
-                            "<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-E0F1C2XGCS\"></script>\n"
-                            "<script>\n"
-                            "window.dataLayer = window.dataLayer || [];\n"
-                            "function gtag(){dataLayer.push(arguments);}\n"
-                            "gtag('js', new Date());\n"
-                            "\n"
-                            "gtag('config', 'G-E0F1C2XGCS');\n"
-                            "</script>\n"
-
-                            ))
+                            "<meta property=\"og:site_name\" content=\"Lens_r's Blog\"/>\n"))
 
 (setq org-publish-project-alist
       `(("export-org"
