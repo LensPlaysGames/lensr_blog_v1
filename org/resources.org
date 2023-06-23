@@ -90,13 +90,11 @@ Everything has to start somewhere, right? Might as well copy the well-known conv
   function main() {
       // Insert the Navbar.
       insert_top_banner();
-      // Custom collapsible sections.
-      //setup_collapsibles();
       // Toggle dark mode if cookie is present with true value.
       let cookies = decodeURIComponent(document.cookie).split(';');
-      for(let i = 0; i < cookies.length; i++) {
+      for (let i = 0; i < cookies.length; i++) {
           while (cookies[i].charAt(0) == ' ') {
-              cookies[i].substring(1);
+              cookies[i] = cookies[i].substring(1)
           }
           if (cookies[i].indexOf("dark_mode") == 0) {
               let cookie_value = cookies[i]
@@ -107,19 +105,6 @@ Everything has to start somewhere, right? Might as well copy the well-known conv
               }
           }
       }
-      // Add #top link to table of contents
-      /*let toc_text = document.getElementById("text-table-of-contents");
-      if (toc_text) {
-          let to_top_ul = document.createElement("ul");
-          let to_top_li = document.createElement("li");
-          let link_top = document.createElement("a");
-          link_top.appendChild(document.createTextNode("Top"));
-          link_top.title = "Top of page";
-          link_top.href = "#top";
-          to_top_li.appendChild(link_top);
-          to_top_ul.appendChild(to_top_li);
-          toc_text.prepend(to_top_ul);
-      }*/
   }
 
   /* Attach main() function to run when window is loaded (page is rendered). */
