@@ -365,12 +365,13 @@ Passing nil will give the current time (as with any time object)."
                             "<meta property=\"og:site_name\" content=\"Lens_r's Blog\"/>\n"
 
                             "<!-- Google tag (gtag.js) -->\n"
-                            "<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-PQ1QQT11F4\"></script>\n"
+                            "<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-E0F1C2XGCS\"></script>\n"
                             "<script>\n"
-                            "  window.dataLayer = window.dataLayer || [];\n"
-                            "  function gtag(){dataLayer.push(arguments);}\n"
-                            "  gtag('js', new Date());\n"
-                            "  gtag('config', 'G-PQ1QQT11F4');\n"
+                            "window.dataLayer = window.dataLayer || [];\n"
+                            "function gtag(){dataLayer.push(arguments);}\n"
+                            "gtag('js', new Date());\n"
+                            "\n"
+                            "gtag('config', 'G-E0F1C2XGCS');\n"
                             "</script>\n"
 
                             ))
