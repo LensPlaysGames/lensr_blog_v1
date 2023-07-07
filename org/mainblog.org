@@ -35,6 +35,29 @@ NOTE: POST_TAGS property is not yet used yet, but will eventually be used for us
 ** How I Built Rome in a Day
 [2023-06-01 Thu 16:14]
 
+** How I Manage My Finances From the Command Line
+[2023-07-07 Fri 08:42]
+
+** I Use Org Mode For Everything From Work to Play
+[2023-07-07 Fri 08:42]
+
+** Conlang Showcase: Tlai-Tli (early)
+[2023-07-07 Fri 08:43]
+
+** Calculating My Content Creation Wage (it's negative)
+[2023-07-07 Fri 08:43]
+
+* Making Mistakes :WIPpost:
+:PROPERTIES:
+:CUSTOM_ID: makingmistkaes
+:PUBLISHED: [2023-07-07 Fri 08:39]
+:MODIFIED: [2023-07-07 Fri 08:41]
+:OG_DESCRIPTION: A little too much about my life, I guess
+:POST_TAGS: life
+:END:
+
+
+
 * Getting Comfortable With the Uncomfortable :blogpost:
 :PROPERTIES:
 :CUSTOM_ID: comfortablewhenuncomfortable
