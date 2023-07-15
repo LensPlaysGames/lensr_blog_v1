@@ -48,11 +48,11 @@ NOTE: POST_TAGS property is not yet used yet, but will eventually be used for us
 ** Calculating My Content Creation Wage (it's negative)
 [2023-07-07 Fri 08:43]
 
-* Making Mistakes :WIPpost:
+* Making Mistakes :blogpost:
 :PROPERTIES:
 :CUSTOM_ID: makingmistkaes
 :CREATED: [2023-07-07 Fri 08:39]
-:PUBLISHED: [2023-07-07 Fri 08:39]
+:PUBLISHED: [2023-07-15 Sat 10:01]
 :MODIFIED: [2023-07-15 Sat 06:49]
 :OG_DESCRIPTION: A little too much about my life, I guess
 :POST_TAGS: life
