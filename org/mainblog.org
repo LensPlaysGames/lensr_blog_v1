@@ -15,6 +15,7 @@ Anything within this subtree will then be a part of the blog post. For now, ther
   \* Ooops, out of order! :blogpost:
     :PROPERTIES:
     :CUSTOM_ID: outofordertest
+    :CREATED: [2023-05-29 Mon 12:40]
     :PUBLISHED: [2023-05-29 Mon 12:40]
     :MODIFIED: [2023-05-29 Mon 12:40]
     :OG_IMAGE: images/myimage.png
@@ -171,6 +172,7 @@ Again, I don't really know /why/ this article exists, but I hope that you at lea
 * Getting Comfortable With the Uncomfortable :blogpost:
 :PROPERTIES:
 :CUSTOM_ID: comfortablewhenuncomfortable
+:CREATED: [2023-06-22 Thu 15:29]
 :PUBLISHED: [2023-06-22 Thu 15:29]
 :MODIFIED: [2023-06-22 Thu 15:31]
 :OG_DESCRIPTION: Getting Comfortable With the Uncomfortable, or How I Stay Sane Despite This Insane World
@@ -222,6 +224,7 @@ I am not a genius or something because my terrible designs end up working in the
 * Assembly Is *Not* What It Seems :blogpost:
 :PROPERTIES:
 :CUSTOM_ID: assemblynotwhatseems
+:CREATED: [2023-06-03 Sat 12:39]
 :PUBLISHED: [2023-06-03 Sat 12:39]
 :MODIFIED: [2023-06-04 Sun 09:17]
 :OG_DESCRIPTION: Exploring Assembly from a CPU's Point of View
