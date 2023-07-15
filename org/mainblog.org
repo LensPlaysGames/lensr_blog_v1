@@ -36,7 +36,7 @@ NOTE: POST_TAGS property is not yet used yet, but will eventually be used for us
 ** How I Built Rome in a Day
 [2023-06-01 Thu 16:14]
 
-** How I Manage My Finances From the Command Line
+** TODO How I Manage My Finances From the Command Line
 [2023-07-07 Fri 08:42]
 
 ** I Use Org Mode For Everything From Work to Play
@@ -168,6 +168,101 @@ A few years after this mess, I began low-level programming. About a year after s
 
 Again, I don't really know /why/ this article exists, but I hope that you at least got something out of it.
 
+
+* How I Manage My Finances From the Command Line :WIPpost:
+:PROPERTIES:
+:CUSTOM_ID: financialcommandlinemanagement
+:CREATED: [2023-07-12 Wed 11:23]
+:PUBLISHED: [2023-07-12 Wed 11:23]
+:MODIFIED: [2023-07-15 Sat 06:50]
+:OG_DESCRIPTION: Double-entry accounting with Emacs and Ledger CLI.
+:POST_TAGS: emacs, finance
+:END:
+
+I don't know about you, but the pit in my stomach that develops when I don't know my own finances is /humongous/. The relief I feel when I just know I can pay bills, everything is fine, I'm saving money, etc. is worth the work I put into it.
+
+The crux of my financial handling came when I discovered a piece of free and open source software known as Ledger CLI. It was a "double-entry accounting" software; I didn't know what that meant, but as someone looking to fix that pit in my stomach, I was happy to try it out.
+
+While double-entry accounting /is/ a little bit to wrap your head around, it's also a really good way to think about transactions, so I think it's worth the effort.
+
+But before we get into that, let's first just go over how Ledger works. Unlike most accounting software I've found, which use either a proprietary binary "project" format or CSV, Ledger uses a plain-text file that *you* maintain however you'd like to; the software *never* alters your ledger file. To add a new transaction, you open the file in a text editor and add an entry; it is quite a human-friendly format. Let's look at an example transaction.
+
+#+begin_src ledger
+2023/07/14 Starbucks
+  Expenses:Wants:Coffee  $9.08
+  Assets:Checking
+#+end_src
+
+While that may be slightly confusing exactly what's going on, I have a good way to break it down for you. The date is in year\slash{}month\slash{}day format, followed by the "payee"; think of the payee like the name you would write on a check, or who is recieving the money: in this case, Starbucks. The following lines, indented with at least one space, are the postings of the transaction. Each posting has an account and an amount, which must be separated by at least two spaces. The accounts are entirely up to you how you keep track of things, just know they are hierarchical; that is, the total of `Expenses` will include the total of `Expenses:Wants`. While you /are/ able to use any accounts you would like, there is no requirement, Ledger CLI recommends these five top level categories, and everything else you sort into these. I highly recommend this system as well, to keep your ledger reports, well, legible.
+
+1. Expenses: where money goes,
+2. Assets: where money sits,
+3. Income: where money comes from,
+4. Liabilities: money you owe,
+5. Equity: the real value of your property.
+
+With these five categories, it makes it quite easy to describe most transactions relatively easily.
+
+You probably noticed the posting on the very bottom has no amount; this is because we are taking advantage of Ledger's ability to automatically calculate the amount needed to make the transaction equal to zero. In double entry accounting, you keep track of both where money comes from /and/ where money goes, so every transaction should add up to zero; in this case, Ledger will calculate ~$-9.08~. If you want, you could always write this value explicitly, but I see no reason to.
+
+When you get payed, the transaction you record in your ledger file may look something like this.
+
+#+begin_src ledger
+2023/07/14 Me
+  Assets:Checking  $69.420
+  Income:Salary
+#+end_src
+
+Finally, let's get to the meat and potatoes of Ledger CLI; the reports it can generate.
+
+Let's imagine the following ledger file, ~./.test.ledger~.
+#+begin_src ledger
+2023/06/17 Me
+  Assets:Checking  $69.420
+  Income:Salary
+
+2023/06/19 Starbucks
+  Expenses:Wants:Coffee  $6.84
+  Assets:Checking
+
+2023/07/14 Me
+  Assets:Checking  $69.420
+  Income:Salary
+
+2023/07/14 Starbucks
+  Expenses:Wants:Coffee  $9.08
+  Assets:Checking
+#+end_src
+
+Here is the =balance= report, which should always add up to zero; it tells you where money comes from and where money goes.
+
+#+begin_example
+$ ledger -f ./.test.ledger bal
+            $122.920  Assets:Checking
+             $15.920  Expenses:Wants:Coffee
+           $-138.840  Income:Salary
+--------------------
+                   0
+#+end_example
+
+The =balance= report is the one I use the most often; it lets me see how much money is left in my accounts/budget, as well as how much money has been allotted to different expenses.
+
+One of the most powerful features of Ledger is it's ability to [[https://ledger-cli.org/doc/ledger3.html#Period-Expressions][specify periods]]. This means you can specify "this week", "last month", "from 2 weeks ago", etc, and it will generate a report for the transactions within that time frame. With this feature, you can generate quarterly reports as well as see weekly spending habits.
+
+As well as the =balance= report, there is also the =register= report; this mimics what you might see in a checkbook. The =register= report makes it easier to see how each transaction adds to the totals that appear in the =balance= report.
+
+#+begin_example
+23-Jun-17 Me                    Assets:Checking             $69.420      $69.420
+                                Income:Salary              $-69.420            0
+23-Jun-19 Starbucks             Expenses:Wants:Coffee        $6.840       $6.840
+                                Assets:Checking             $-6.840            0
+23-Jul-14 Me                    Assets:Checking             $69.420      $69.420
+                                Income:Salary              $-69.420            0
+23-Jul-14 Starbucks             Expenses:Wants:Coffee        $9.080       $9.080
+                                Assets:Checking             $-9.080            0
+#+end_example
+
+And that's how I manage my finances from the command line :). Interested in [[https://ledger-cli.org/][Ledger CLI]]? This is just the tip of the iceberg. Here is an [[https://ledger-cli.org/doc/ledger3.html][online manual]] (highly recommend).
 
 * Getting Comfortable With the Uncomfortable :blogpost:
 :PROPERTIES:
