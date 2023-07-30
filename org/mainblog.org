@@ -170,7 +170,7 @@ Again, I don't really know /why/ this article exists, but I hope that you at lea
 :PROPERTIES:
 :CUSTOM_ID: financialcommandlinemanagement
 :CREATED: [2023-07-12 Wed 11:23]
-:PUBLISHED: [2023-07-12 Wed 11:23]
+:PUBLISHED: [2023-07-30 Sun 07:43]
 :MODIFIED: [2023-07-20 Thu 08:23]
 :OG_DESCRIPTION: Double-entry accounting with Emacs and Ledger CLI.
 :POST_TAGS: emacs, finance

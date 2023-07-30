@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-07-30 Sun 07:41 -->
+<!-- 2023-07-30 Sun 07:44 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Main Blog</title>
@@ -437,7 +437,7 @@ Let's imagine the following ledger file, <code>./.test.ledger</code>.
 Here is the <code>balance</code> report, which should always add up to zero; it tells you where money comes from and where money goes.
 </p>
 
-<pre class="example" id="org4660abf">
+<pre class="example" id="org425152d">
 $ ledger -f ./.test.ledger bal
             $122.920  Assets:Checking
              $15.920  Expenses:Wants:Coffee
@@ -458,7 +458,7 @@ One of the most powerful features of Ledger is it's ability to <a href="https://
 As well as the <code>balance</code> report, there is also the <code>register</code> report; this mimics what you might see in a checkbook. The <code>register</code> report makes it easier to see how each transaction adds to the totals that appear in the <code>balance</code> report.
 </p>
 
-<pre class="example" id="org218cd5e">
+<pre class="example" id="org066f80b">
 23-Jun-17 Me                    Assets:Checking             $69.420      $69.420
                                 Income:Salary              $-69.420            0
 23-Jun-19 Starbucks             Expenses:Wants:Coffee        $6.840       $6.840
@@ -590,7 +590,7 @@ Well, the reason assembly is thought of as "telling the hardware exactly what to
 Imagining a naive CPU pipeline that does one thing at a time, we may arrive at something like this:
 </p>
 
-<pre class="example" id="org21ec369">
+<pre class="example" id="org65960e2">
 .-&gt;  Decoder -&gt; Processor  -.
 `---------------------------+
 </pre>
@@ -611,7 +611,7 @@ NOTE: This is a whole topic in-and-of-itself. See <a href="https://en.wikipedia.
 Sitting around doing nothing is <b>never</b> good. Luckily, we can attempt to make the situation better due to one simple fact: computations within the processor can't use or modify the instruction pointer directly (most of the time). This means the decoder <i>could</i> start decoding the next instruction <b>before</b> the processor finishes processing the last instruction decoded. By the time the processor finishes processing, the decoder may already be ready with another instruction to execute. This increases the amount of time the processor spends doing valuable computations, making the CPU faster and computers go brrr.
 </p>
 
-<pre class="example" id="orgf2c751c">
+<pre class="example" id="orgab7d73d">
 Decoder -&gt; Decoded Instruction Queue
 Pop(Decoded Instruction Queue) -&gt; Processor
 </pre>
@@ -665,7 +665,7 @@ Attempting to eliminate dependencies in the above code without renaming register
 Now, with this done, the CPU is smart enough to notice something: instructions 0 through 2 and 3 through 5 are two blocks of instructions that start with <i>no</i> register dependencies.
 </p>
 
-<pre class="example" id="org27fd33b">
+<pre class="example" id="orgdef8763">
 0 sets r1
 1 uses r1 and sets r1
 2 uses r1
