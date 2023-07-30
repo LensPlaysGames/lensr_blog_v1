@@ -36,9 +36,6 @@ NOTE: POST_TAGS property is not yet used yet, but will eventually be used for us
 ** How I Built Rome in a Day
 [2023-06-01 Thu 16:14]
 
-** TODO How I Manage My Finances From the Command Line
-[2023-07-07 Fri 08:42]
-
 ** I Use Org Mode For Everything From Work to Play
 [2023-07-07 Fri 08:42]
 
@@ -169,12 +166,12 @@ A few years after this mess, I began low-level programming. About a year after s
 Again, I don't really know /why/ this article exists, but I hope that you at least got something out of it.
 
 
-* How I Manage My Finances From the Command Line :WIPpost:
+* How I Manage My Finances From the Command Line :blogpost:
 :PROPERTIES:
 :CUSTOM_ID: financialcommandlinemanagement
 :CREATED: [2023-07-12 Wed 11:23]
 :PUBLISHED: [2023-07-12 Wed 11:23]
-:MODIFIED: [2023-07-15 Sat 06:50]
+:MODIFIED: [2023-07-20 Thu 08:23]
 :OG_DESCRIPTION: Double-entry accounting with Emacs and Ledger CLI.
 :POST_TAGS: emacs, finance
 :END:
@@ -183,9 +180,11 @@ I don't know about you, but the pit in my stomach that develops when I don't kno
 
 The crux of my financial handling came when I discovered a piece of free and open source software known as Ledger CLI. It was a "double-entry accounting" software; I didn't know what that meant, but as someone looking to fix that pit in my stomach, I was happy to try it out.
 
-While double-entry accounting /is/ a little bit to wrap your head around, it's also a really good way to think about transactions, so I think it's worth the effort.
+While double-entry accounting /is/ a little bit to wrap your head around, it's also a really good way to think about transactions, so I think it's worth the effort. The main idea of double entry accounting is that you don't just keep track of where money goes, but also where it comes from; i.e. if you pay $15 (flat) for a video game, you would subtract $15 from your bank account but also add $15 to the /expense/ account related to video games. This lets you see not only your current balance, but /where/ your money is going, what you are spending it on.
 
-But before we get into that, let's first just go over how Ledger works. Unlike most accounting software I've found, which use either a proprietary binary "project" format or CSV, Ledger uses a plain-text file that *you* maintain however you'd like to; the software *never* alters your ledger file. To add a new transaction, you open the file in a text editor and add an entry; it is quite a human-friendly format. Let's look at an example transaction.
+Unlike most accounting software I've found, which use either a proprietary (yuck!) binary "project" format or CSV, Ledger uses a plain-text file that *you* maintain however you'd like to; the software *never* alters your ledger file. To add a new transaction, you open the file in a text editor and add an entry; it is quite a human-friendly format, once you get the basics down.
+
+** Transactions
 
 #+begin_src ledger
 2023/07/14 Starbucks
@@ -193,7 +192,7 @@ But before we get into that, let's first just go over how Ledger works. Unlike m
   Assets:Checking
 #+end_src
 
-While that may be slightly confusing exactly what's going on, I have a good way to break it down for you. The date is in year\slash{}month\slash{}day format, followed by the "payee"; think of the payee like the name you would write on a check, or who is recieving the money: in this case, Starbucks. The following lines, indented with at least one space, are the postings of the transaction. Each posting has an account and an amount, which must be separated by at least two spaces. The accounts are entirely up to you how you keep track of things, just know they are hierarchical; that is, the total of `Expenses` will include the total of `Expenses:Wants`. While you /are/ able to use any accounts you would like, there is no requirement, Ledger CLI recommends these five top level categories, and everything else you sort into these. I highly recommend this system as well, to keep your ledger reports, well, legible.
+While it may be slightly confusing as to what exactly is going on, I have a good way to break it down for you. The date is in year\slash{}month\slash{}day format, followed by the "payee"; think of the payee like the name you would write on a check, or who is recieving the money: in this case, Starbucks. The following lines, indented with at least one space, are the postings of the transaction. Each posting has an account and an amount, which must be separated by at least two spaces. The accounts are entirely up to you how you keep track of things, just know they are hierarchical; that is, the total of `Expenses` will include the total of `Expenses:Wants`. While you /are/ able to use any accounts you would like (there is no requirement) Ledger CLI recommends these five top level categories, and all of your accounts are sub-accounts of the main five. I highly recommend this system as well, to keep your ledger reports, well, legible, and to make sure others can help you if you need it.
 
 1. Expenses: where money goes,
 2. Assets: where money sits,
@@ -201,17 +200,19 @@ While that may be slightly confusing exactly what's going on, I have a good way 
 4. Liabilities: money you owe,
 5. Equity: the real value of your property.
 
-With these five categories, it makes it quite easy to describe most transactions relatively easily.
+With these five top-level accounts, it makes it quite easy to describe most transactions relatively easily with only one or two specifying accounts.
 
-You probably noticed the posting on the very bottom has no amount; this is because we are taking advantage of Ledger's ability to automatically calculate the amount needed to make the transaction equal to zero. In double entry accounting, you keep track of both where money comes from /and/ where money goes, so every transaction should add up to zero; in this case, Ledger will calculate ~$-9.08~. If you want, you could always write this value explicitly, but I see no reason to.
-
-When you get payed, the transaction you record in your ledger file may look something like this.
+Continuing on the coffee posting up above: you probably noticed the posting on the very bottom has no amount; this is because we are taking advantage of Ledger's ability to automatically calculate the amount needed to make the transaction equal to zero. In double entry accounting, you keep track of both where money comes from /and/ where money goes, so all the postings in a transaction should add up to zero. In this case, Ledger will calculate ~$-9.08~, as there is only a single posting without an amount. If you want, you could always write this value explicitly, but I see no reason to. After writing an entry like this in your ledger file, you can then run reports on it. We'll talk more about that after going over what it looks like when you get payed.
 
 #+begin_src ledger
 2023/07/14 Me
   Assets:Checking  $69.420
   Income:Salary
 #+end_src
+
+The date is self-explanatory, I would hope :Þ. As you can see, /you/ are now the one recieving the money, which means you get to write your name, "me", etc. in the payee section. The money is credited /into/ your checking account, and being sourced /from/ the salary account (where your salary is paid from). Personally, I like to further specify /which/ salary I'm being paid using a sub-account, as at times you may have multiple.
+
+** Generating Basic Reports
 
 Finally, let's get to the meat and potatoes of Ledger CLI; the reports it can generate.
 

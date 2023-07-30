@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-07-15 Sat 10:01 -->
+<!-- 2023-07-30 Sun 07:41 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Main Blog</title>
@@ -83,15 +83,6 @@ NOTE: POST<sub>TAGS</sub> property is not yet used yet, but will eventually be u
 <div class="outline-text-3" id="text-orgc659c6a">
 <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2023-06-01 Thu 16:14]</span></span>
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgec01824" class="outline-3">
-<h3 id="orgec01824"><span class="todo TODO">TODO</span> How I Manage My Finances From the Command Line</h3>
-<div class="outline-text-3" id="text-orgec01824">
-<p>
-<span class="timestamp-wrapper"><span class="timestamp">[2023-07-07 Fri 08:42]</span></span>
 </p>
 </div>
 </div>
@@ -362,13 +353,17 @@ The crux of my financial handling came when I discovered a piece of free and ope
 </p>
 
 <p>
-While double-entry accounting <i>is</i> a little bit to wrap your head around, it's also a really good way to think about transactions, so I think it's worth the effort.
+While double-entry accounting <i>is</i> a little bit to wrap your head around, it's also a really good way to think about transactions, so I think it's worth the effort. The main idea of double entry accounting is that you don't just keep track of where money goes, but also where it comes from; i.e. if you pay $15 (flat) for a video game, you would subtract $15 from your bank account but also add $15 to the <i>expense</i> account related to video games. This lets you see not only your current balance, but <i>where</i> your money is going, what you are spending it on.
 </p>
 
 <p>
-But before we get into that, let's first just go over how Ledger works. Unlike most accounting software I've found, which use either a proprietary binary "project" format or CSV, Ledger uses a plain-text file that <b>you</b> maintain however you'd like to; the software <b>never</b> alters your ledger file. To add a new transaction, you open the file in a text editor and add an entry; it is quite a human-friendly format. Let's look at an example transaction.
+Unlike most accounting software I've found, which use either a proprietary (yuck!) binary "project" format or CSV, Ledger uses a plain-text file that <b>you</b> maintain however you'd like to; the software <b>never</b> alters your ledger file. To add a new transaction, you open the file in a text editor and add an entry; it is quite a human-friendly format, once you get the basics down.
 </p>
+</div>
 
+<div id="outline-container-org5716afd" class="outline-3">
+<h3 id="org5716afd">Transactions</h3>
+<div class="outline-text-3" id="text-org5716afd">
 <div class="org-src-container">
 <pre class="src src-ledger">2023/07/14 Starbucks
   Expenses:Wants:Coffee  $9.08
@@ -377,7 +372,7 @@ But before we get into that, let's first just go over how Ledger works. Unlike m
 </div>
 
 <p>
-While that may be slightly confusing exactly what's going on, I have a good way to break it down for you. The date is in year/month/day format, followed by the "payee"; think of the payee like the name you would write on a check, or who is recieving the money: in this case, Starbucks. The following lines, indented with at least one space, are the postings of the transaction. Each posting has an account and an amount, which must be separated by at least two spaces. The accounts are entirely up to you how you keep track of things, just know they are hierarchical; that is, the total of `Expenses` will include the total of `Expenses:Wants`. While you <i>are</i> able to use any accounts you would like, there is no requirement, Ledger CLI recommends these five top level categories, and everything else you sort into these. I highly recommend this system as well, to keep your ledger reports, well, legible.
+While it may be slightly confusing as to what exactly is going on, I have a good way to break it down for you. The date is in year/month/day format, followed by the "payee"; think of the payee like the name you would write on a check, or who is recieving the money: in this case, Starbucks. The following lines, indented with at least one space, are the postings of the transaction. Each posting has an account and an amount, which must be separated by at least two spaces. The accounts are entirely up to you how you keep track of things, just know they are hierarchical; that is, the total of `Expenses` will include the total of `Expenses:Wants`. While you <i>are</i> able to use any accounts you would like (there is no requirement) Ledger CLI recommends these five top level categories, and all of your accounts are sub-accounts of the main five. I highly recommend this system as well, to keep your ledger reports, well, legible, and to make sure others can help you if you need it.
 </p>
 
 <ol class="org-ol">
@@ -389,15 +384,11 @@ While that may be slightly confusing exactly what's going on, I have a good way 
 </ol>
 
 <p>
-With these five categories, it makes it quite easy to describe most transactions relatively easily.
+With these five top-level accounts, it makes it quite easy to describe most transactions relatively easily with only one or two specifying accounts.
 </p>
 
 <p>
-You probably noticed the posting on the very bottom has no amount; this is because we are taking advantage of Ledger's ability to automatically calculate the amount needed to make the transaction equal to zero. In double entry accounting, you keep track of both where money comes from <i>and</i> where money goes, so every transaction should add up to zero; in this case, Ledger will calculate <code>$-9.08</code>. If you want, you could always write this value explicitly, but I see no reason to.
-</p>
-
-<p>
-When you get payed, the transaction you record in your ledger file may look something like this.
+Continuing on the coffee posting up above: you probably noticed the posting on the very bottom has no amount; this is because we are taking advantage of Ledger's ability to automatically calculate the amount needed to make the transaction equal to zero. In double entry accounting, you keep track of both where money comes from <i>and</i> where money goes, so all the postings in a transaction should add up to zero. In this case, Ledger will calculate <code>$-9.08</code>, as there is only a single posting without an amount. If you want, you could always write this value explicitly, but I see no reason to. After writing an entry like this in your ledger file, you can then run reports on it. We'll talk more about that after going over what it looks like when you get payed.
 </p>
 
 <div class="org-src-container">
@@ -407,6 +398,15 @@ When you get payed, the transaction you record in your ledger file may look some
 </pre>
 </div>
 
+<p>
+The date is self-explanatory, I would hope :Þ. As you can see, <i>you</i> are now the one recieving the money, which means you get to write your name, "me", etc. in the payee section. The money is credited <i>into</i> your checking account, and being sourced <i>from</i> the salary account (where your salary is paid from). Personally, I like to further specify <i>which</i> salary I'm being paid using a sub-account, as at times you may have multiple.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7a21d0a" class="outline-3">
+<h3 id="org7a21d0a">Generating Basic Reports</h3>
+<div class="outline-text-3" id="text-org7a21d0a">
 <p>
 Finally, let's get to the meat and potatoes of Ledger CLI; the reports it can generate.
 </p>
@@ -437,7 +437,7 @@ Let's imagine the following ledger file, <code>./.test.ledger</code>.
 Here is the <code>balance</code> report, which should always add up to zero; it tells you where money comes from and where money goes.
 </p>
 
-<pre class="example" id="orgdf61fa2">
+<pre class="example" id="org4660abf">
 $ ledger -f ./.test.ledger bal
             $122.920  Assets:Checking
              $15.920  Expenses:Wants:Coffee
@@ -458,7 +458,7 @@ One of the most powerful features of Ledger is it's ability to <a href="https://
 As well as the <code>balance</code> report, there is also the <code>register</code> report; this mimics what you might see in a checkbook. The <code>register</code> report makes it easier to see how each transaction adds to the totals that appear in the <code>balance</code> report.
 </p>
 
-<pre class="example" id="org27f7c3a">
+<pre class="example" id="org218cd5e">
 23-Jun-17 Me                    Assets:Checking             $69.420      $69.420
                                 Income:Salary              $-69.420            0
 23-Jun-19 Starbucks             Expenses:Wants:Coffee        $6.840       $6.840
@@ -472,6 +472,7 @@ As well as the <code>balance</code> report, there is also the <code>register</co
 <p>
 And that's how I manage my finances from the command line :). Interested in <a href="https://ledger-cli.org/">Ledger CLI</a>? This is just the tip of the iceberg. Here is an <a href="https://ledger-cli.org/doc/ledger3.html">online manual</a> (highly recommend).
 </p>
+</div>
 </div>
 </div>
 
@@ -589,7 +590,7 @@ Well, the reason assembly is thought of as "telling the hardware exactly what to
 Imagining a naive CPU pipeline that does one thing at a time, we may arrive at something like this:
 </p>
 
-<pre class="example" id="orgbefe66e">
+<pre class="example" id="org21ec369">
 .-&gt;  Decoder -&gt; Processor  -.
 `---------------------------+
 </pre>
@@ -610,7 +611,7 @@ NOTE: This is a whole topic in-and-of-itself. See <a href="https://en.wikipedia.
 Sitting around doing nothing is <b>never</b> good. Luckily, we can attempt to make the situation better due to one simple fact: computations within the processor can't use or modify the instruction pointer directly (most of the time). This means the decoder <i>could</i> start decoding the next instruction <b>before</b> the processor finishes processing the last instruction decoded. By the time the processor finishes processing, the decoder may already be ready with another instruction to execute. This increases the amount of time the processor spends doing valuable computations, making the CPU faster and computers go brrr.
 </p>
 
-<pre class="example" id="orgd5f1469">
+<pre class="example" id="orgf2c751c">
 Decoder -&gt; Decoded Instruction Queue
 Pop(Decoded Instruction Queue) -&gt; Processor
 </pre>
@@ -664,7 +665,7 @@ Attempting to eliminate dependencies in the above code without renaming register
 Now, with this done, the CPU is smart enough to notice something: instructions 0 through 2 and 3 through 5 are two blocks of instructions that start with <i>no</i> register dependencies.
 </p>
 
-<pre class="example" id="org7f7b0dc">
+<pre class="example" id="org27fd33b">
 0 sets r1
 1 uses r1 and sets r1
 2 uses r1

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2023-07-30 Sun 07:41 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lens_r | How I Manage My Finances From the Command Line</title>
+<meta name="author" content="Rylan Lens Kellogg" />
+<meta name="generator" content="Org Mode" />
+<meta property="og:type" content="article"/>
+<meta property="og:url" content="https://lensplaysgames.github.io/lensr_blog_v1/posts/financialcommandlinemanagement.html"/>
+<meta property="og:title" content="Lens_r | How I Manage My Finances From the Command Line"/>
+<meta property="og:description" content="Double-entry accounting with Emacs and Ledger CLI."/>
+<link rel="stylesheet" href="/lensr_blog_v1/all.min.css"/>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<meta property="og:site_name" content="Lens_r's Blog"/>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-E0F1C2XGCS"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'G-E0F1C2XGCS');
+</script>
+<script>function toggle_dark_mode(){var element=document.getElementsByTagName("html")[0],dark_button=document.getElementById("dark-mode");element.classList.toggle("dark-mode");const d=new Date;d.setTime(d.getTime()+24192e5),element.classList.contains("dark-mode")?(document.cookie="dark_mode=true; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Light Mode"):(document.cookie="dark_mode=false; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Dark Mode")}function goto_top(){document.body.scrollTop=0,document.documentElement.scrollTop=0}function insert_top_banner(){var navbar_html='<nav class="navbar" id="navbar">';navbar_html+='<label for="hamburger">&#9776;</label>';let content_elem=document.body.firstElementChild,navbar_and_contents=document.createElement("div");navbar_and_contents.innerHTML='<nav class="navbar" id="navbar"><label for="hamburger">&#9776;</label><input type="checkbox" id="hamburger"/><div id="hamburger-items"><a href=\'/lensr_blog_v1/\'">Home</a><a target="_blank" href=\'https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG\'">Donate</a><a target="_blank" href=\'https://www.youtube.com/@Lensr\'">YouTube</a><a target="_blank" href=\'https://www.twitch.tv/lens_r\'">Twitch</a><a target="_blank" href=\'https://www.github.com/LensPlaysGames\'">GitHub</a><a target="_blank" href=\'https://discord.gg/FTQsgqQEM4\'">Discord</a><a id="dark-mode" onClick={toggle_dark_mode();}>Dark Mode</a></div></nav>'+content_elem.outerHTML,content_elem.replaceWith(navbar_and_contents)}function main(){insert_top_banner();let cookies=decodeURIComponent(document.cookie).split(";");for(let i=0;i<cookies.length;i++){for(;" "==cookies[i].charAt(0);)cookies[i]=cookies[i].substring(1);0==cookies[i].indexOf("dark_mode")&&"true"==cookies[i].substring(name.length,cookies[i].length).split("=")[1]&&toggle_dark_mode()}}window.onload=main;</script>
+</head>
+<body>
+<div id="content" class="content">
+
+<div id="outline-container-financialcommandlinemanagement" class="outline-2">
+<h2 id="financialcommandlinemanagement">How I Manage My Finances From the Command Line</h2>
+<div class="outline-text-2" id="text-financialcommandlinemanagement">
+<p>
+I don't know about you, but the pit in my stomach that develops when I don't know my own finances is <i>humongous</i>. The relief I feel when I just know I can pay bills, everything is fine, I'm saving money, etc. is worth the work I put into it.
+</p>
+
+<p>
+The crux of my financial handling came when I discovered a piece of free and open source software known as Ledger CLI. It was a "double-entry accounting" software; I didn't know what that meant, but as someone looking to fix that pit in my stomach, I was happy to try it out.
+</p>
+
+<p>
+While double-entry accounting <i>is</i> a little bit to wrap your head around, it's also a really good way to think about transactions, so I think it's worth the effort. The main idea of double entry accounting is that you don't just keep track of where money goes, but also where it comes from; i.e. if you pay $15 (flat) for a video game, you would subtract $15 from your bank account but also add $15 to the <i>expense</i> account related to video games. This lets you see not only your current balance, but <i>where</i> your money is going, what you are spending it on.
+</p>
+
+<p>
+Unlike most accounting software I've found, which use either a proprietary (yuck!) binary "project" format or CSV, Ledger uses a plain-text file that <b>you</b> maintain however you'd like to; the software <b>never</b> alters your ledger file. To add a new transaction, you open the file in a text editor and add an entry; it is quite a human-friendly format, once you get the basics down.
+</p>
+</div>
+
+<div id="outline-container-orgd63ff32" class="outline-3">
+<h3 id="orgd63ff32">Transactions</h3>
+<div class="outline-text-3" id="text-orgd63ff32">
+<div class="org-src-container">
+<pre class="src src-ledger">2023/07/14 Starbucks
+  Expenses:Wants:Coffee  $9.08
+  Assets:Checking
+</pre>
+</div>
+
+<p>
+While it may be slightly confusing as to what exactly is going on, I have a good way to break it down for you. The date is in year/month/day format, followed by the "payee"; think of the payee like the name you would write on a check, or who is recieving the money: in this case, Starbucks. The following lines, indented with at least one space, are the postings of the transaction. Each posting has an account and an amount, which must be separated by at least two spaces. The accounts are entirely up to you how you keep track of things, just know they are hierarchical; that is, the total of `Expenses` will include the total of `Expenses:Wants`. While you <i>are</i> able to use any accounts you would like (there is no requirement) Ledger CLI recommends these five top level categories, and all of your accounts are sub-accounts of the main five. I highly recommend this system as well, to keep your ledger reports, well, legible, and to make sure others can help you if you need it.
+</p>
+
+<ol class="org-ol">
+<li>Expenses: where money goes,</li>
+<li>Assets: where money sits,</li>
+<li>Income: where money comes from,</li>
+<li>Liabilities: money you owe,</li>
+<li>Equity: the real value of your property.</li>
+</ol>
+
+<p>
+With these five top-level accounts, it makes it quite easy to describe most transactions relatively easily with only one or two specifying accounts.
+</p>
+
+<p>
+Continuing on the coffee posting up above: you probably noticed the posting on the very bottom has no amount; this is because we are taking advantage of Ledger's ability to automatically calculate the amount needed to make the transaction equal to zero. In double entry accounting, you keep track of both where money comes from <i>and</i> where money goes, so all the postings in a transaction should add up to zero. In this case, Ledger will calculate <code>$-9.08</code>, as there is only a single posting without an amount. If you want, you could always write this value explicitly, but I see no reason to. After writing an entry like this in your ledger file, you can then run reports on it. We'll talk more about that after going over what it looks like when you get payed.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ledger">2023/07/14 Me
+  Assets:Checking  $69.420
+  Income:Salary
+</pre>
+</div>
+
+<p>
+The date is self-explanatory, I would hope :Þ. As you can see, <i>you</i> are now the one recieving the money, which means you get to write your name, "me", etc. in the payee section. The money is credited <i>into</i> your checking account, and being sourced <i>from</i> the salary account (where your salary is paid from). Personally, I like to further specify <i>which</i> salary I'm being paid using a sub-account, as at times you may have multiple.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3ab63b1" class="outline-3">
+<h3 id="org3ab63b1">Generating Basic Reports</h3>
+<div class="outline-text-3" id="text-org3ab63b1">
+<p>
+Finally, let's get to the meat and potatoes of Ledger CLI; the reports it can generate.
+</p>
+
+<p>
+Let's imagine the following ledger file, <code>./.test.ledger</code>.
+</p>
+<div class="org-src-container">
+<pre class="src src-ledger">2023/06/17 Me
+  Assets:Checking  $69.420
+  Income:Salary
+
+2023/06/19 Starbucks
+  Expenses:Wants:Coffee  $6.84
+  Assets:Checking
+
+2023/07/14 Me
+  Assets:Checking  $69.420
+  Income:Salary
+
+2023/07/14 Starbucks
+  Expenses:Wants:Coffee  $9.08
+  Assets:Checking
+</pre>
+</div>
+
+<p>
+Here is the <code>balance</code> report, which should always add up to zero; it tells you where money comes from and where money goes.
+</p>
+
+<pre class="example" id="org0d66c00">
+$ ledger -f ./.test.ledger bal
+            $122.920  Assets:Checking
+             $15.920  Expenses:Wants:Coffee
+           $-138.840  Income:Salary
+--------------------
+                   0
+</pre>
+
+<p>
+The <code>balance</code> report is the one I use the most often; it lets me see how much money is left in my accounts/budget, as well as how much money has been allotted to different expenses.
+</p>
+
+<p>
+One of the most powerful features of Ledger is it's ability to <a href="https://ledger-cli.org/doc/ledger3.html#Period-Expressions">specify periods</a>. This means you can specify "this week", "last month", "from 2 weeks ago", etc, and it will generate a report for the transactions within that time frame. With this feature, you can generate quarterly reports as well as see weekly spending habits.
+</p>
+
+<p>
+As well as the <code>balance</code> report, there is also the <code>register</code> report; this mimics what you might see in a checkbook. The <code>register</code> report makes it easier to see how each transaction adds to the totals that appear in the <code>balance</code> report.
+</p>
+
+<pre class="example" id="org29f9d27">
+23-Jun-17 Me                    Assets:Checking             $69.420      $69.420
+                                Income:Salary              $-69.420            0
+23-Jun-19 Starbucks             Expenses:Wants:Coffee        $6.840       $6.840
+                                Assets:Checking             $-6.840            0
+23-Jul-14 Me                    Assets:Checking             $69.420      $69.420
+                                Income:Salary              $-69.420            0
+23-Jul-14 Starbucks             Expenses:Wants:Coffee        $9.080       $9.080
+                                Assets:Checking             $-9.080            0
+</pre>
+
+<p>
+And that's how I manage my finances from the command line :). Interested in <a href="https://ledger-cli.org/">Ledger CLI</a>? This is just the tip of the iceberg. Here is an <a href="https://ledger-cli.org/doc/ledger3.html">online manual</a> (highly recommend).
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<footer>
+  <div class="footer-row">
+    <button onClick="goto_top()" title="Go to top of page">Back to Top</button>
+  </div>
+  <div class="footer-row">
+    <a target="_blank" href="https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG">Donate</a>
+    <a target="_blank" href="https://www.youtube.com/@Lensr">YouTube</a>
+    <a target="_blank" href="https://www.twitch.tv/lens_r">Twitch</a>
+    <a target="_blank" href="https://www.github.com/LensPlaysGames">GitHub</a>
+    <a target="_blank" href="https://discord.gg/FTQsgqQEM4">Discord</a>
+  </div>
+  <div class="footer-row">
+    <a target="_blank" href="/lensr_blog_v1/rss.xml">Feed/RSS</a>
+  </div>
+  <div class="footer-row"><span>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6)</span></div>
+</footer>
+</div>
+</body>
+</html>
