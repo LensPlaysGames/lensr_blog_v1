@@ -149,7 +149,7 @@ This was the experience that changed my life from being a loser, an addict, and 
 
 This experience lit a fire under my ass, and /fast/. I immediately unenrolled from school; at this point in my life, it was a burden that drained my mental and physical health, as well as a source of bad decisions. So, a few months into the 10th grade, I was no longer in high school. As per the terms of my unenrollment, I had to do some program that would supposedly help me get my GED; I won't go into it now, I will just say that that program exists solely to destroy lives, and everyone within it is a selfish demon who deserves immediate (and slow) dismemberment. I /didn't/ get my GED.
 
-A week or two after I unenrolled from school, my mother texted (yes, /texted/) me that she didn't know what to do anymore and that I needed to move out by the end of the day. I was shocked to recieve such a message, and didn't exactly know what to do. I was either going to become homeless, kill myself using up the last of my stash, or move in somewhere else... I figured that last one sounded better than the second, albeit unrealistic (who would want to deal with me at this point in my life); so, I called my dad and told him the situation. He was generous and kind enough to let me move in with him /that day/, and I can't thank him enough for that. I easily would have made some very bad decisions that day if that call had gone even slightly differently. So, I packed everything I wanted (not much) into my school backpack, and he picked me up later that day. Just like that, I was gone.
+A week or two after I unenrolled from school, my mother texted (yes, /texted/) me that she didn't know what to do anymore and that I needed to move out by the end of the day. I was shocked to receive such a message, and didn't exactly know what to do. I was either going to become homeless, kill myself using up the last of my stash, or move in somewhere else... I figured that last one sounded better than the second, albeit unrealistic (who would want to deal with me at this point in my life); so, I called my dad and told him the situation. He was generous and kind enough to let me move in with him /that day/, and I can't thank him enough for that. I easily would have made some very bad decisions that day if that call had gone even slightly differently. So, I packed everything I wanted (not much) into my school backpack, and he picked me up later that day. Just like that, I was gone.
 
 My mother texted relentlessly for weeks about how she didn't mean it and how I needed to move back in with her "or else". I just ignored her, as I still do. What is written here is simply what I am willing to share publicly, and it doesn't paint her in a nice light, to say the least. She is an abuser, she is manipulative, and she is a liar. That text message kicking me out was my saving grace; without it, I'd still be tangled in her shitty life.
 
@@ -171,7 +171,7 @@ Again, I don't really know /why/ this article exists, but I hope that you at lea
 :CUSTOM_ID: financialcommandlinemanagement
 :CREATED: [2023-07-12 Wed 11:23]
 :PUBLISHED: [2023-07-30 Sun 07:43]
-:MODIFIED: [2023-07-20 Thu 08:23]
+:MODIFIED: [2023-07-30 Sun 09:19]
 :OG_DESCRIPTION: Double-entry accounting with Emacs and Ledger CLI.
 :POST_TAGS: emacs, finance
 :END:
@@ -192,7 +192,7 @@ Unlike most accounting software I've found, which use either a proprietary (yuck
   Assets:Checking
 #+end_src
 
-While it may be slightly confusing as to what exactly is going on, I have a good way to break it down for you. The date is in year\slash{}month\slash{}day format, followed by the "payee"; think of the payee like the name you would write on a check, or who is recieving the money: in this case, Starbucks. The following lines, indented with at least one space, are the postings of the transaction. Each posting has an account and an amount, which must be separated by at least two spaces. The accounts are entirely up to you how you keep track of things, just know they are hierarchical; that is, the total of `Expenses` will include the total of `Expenses:Wants`. While you /are/ able to use any accounts you would like (there is no requirement) Ledger CLI recommends these five top level categories, and all of your accounts are sub-accounts of the main five. I highly recommend this system as well, to keep your ledger reports, well, legible, and to make sure others can help you if you need it.
+While it may be slightly confusing as to what exactly is going on, I have a good way to break it down for you. The date is in year\slash{}month\slash{}day format, followed by the "payee"; think of the payee like the name you would write on a check, or who is receiving the money: in this case, Starbucks. The following lines, indented with at least one space, are the postings of the transaction. Each posting has an account and an amount, which must be separated by at least two spaces. The accounts are entirely up to you how you keep track of things, just know they are hierarchical; that is, the total of `Expenses` will include the total of `Expenses:Wants`. While you /are/ able to use any accounts you would like (there is no requirement) Ledger CLI recommends these five top level categories, and all of your accounts are sub-accounts of the main five. I highly recommend this system as well, to keep your ledger reports, well, legible, and to make sure others can help you if you need it.
 
 1. Expenses: where money goes,
 2. Assets: where money sits,
@@ -210,7 +210,7 @@ Continuing on the coffee posting up above: you probably noticed the posting on t
   Income:Salary
 #+end_src
 
-The date is self-explanatory, I would hope :Þ. As you can see, /you/ are now the one recieving the money, which means you get to write your name, "me", etc. in the payee section. The money is credited /into/ your checking account, and being sourced /from/ the salary account (where your salary is paid from). Personally, I like to further specify /which/ salary I'm being paid using a sub-account, as at times you may have multiple.
+The date is self-explanatory, I would hope :Þ. As you can see, /you/ are now the one receiving the money, which means you get to write your name, "me", etc. in the payee section. The money is credited /into/ your checking account, and being sourced /from/ the salary account (where your salary is paid from). Personally, I like to further specify /which/ salary I'm being paid using a sub-account, as at times you may have multiple.
 
 ** Generating Basic Reports
 

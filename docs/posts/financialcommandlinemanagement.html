@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-07-30 Sun 07:44 -->
+<!-- 2023-07-30 Sun 09:19 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Lens_r | How I Manage My Finances From the Command Line</title>
@@ -61,7 +61,7 @@ Unlike most accounting software I've found, which use either a proprietary (yuck
 </div>
 
 <p>
-While it may be slightly confusing as to what exactly is going on, I have a good way to break it down for you. The date is in year/month/day format, followed by the "payee"; think of the payee like the name you would write on a check, or who is recieving the money: in this case, Starbucks. The following lines, indented with at least one space, are the postings of the transaction. Each posting has an account and an amount, which must be separated by at least two spaces. The accounts are entirely up to you how you keep track of things, just know they are hierarchical; that is, the total of `Expenses` will include the total of `Expenses:Wants`. While you <i>are</i> able to use any accounts you would like (there is no requirement) Ledger CLI recommends these five top level categories, and all of your accounts are sub-accounts of the main five. I highly recommend this system as well, to keep your ledger reports, well, legible, and to make sure others can help you if you need it.
+While it may be slightly confusing as to what exactly is going on, I have a good way to break it down for you. The date is in year/month/day format, followed by the "payee"; think of the payee like the name you would write on a check, or who is receiving the money: in this case, Starbucks. The following lines, indented with at least one space, are the postings of the transaction. Each posting has an account and an amount, which must be separated by at least two spaces. The accounts are entirely up to you how you keep track of things, just know they are hierarchical; that is, the total of `Expenses` will include the total of `Expenses:Wants`. While you <i>are</i> able to use any accounts you would like (there is no requirement) Ledger CLI recommends these five top level categories, and all of your accounts are sub-accounts of the main five. I highly recommend this system as well, to keep your ledger reports, well, legible, and to make sure others can help you if you need it.
 </p>
 
 <ol class="org-ol">
@@ -88,7 +88,7 @@ Continuing on the coffee posting up above: you probably noticed the posting on t
 </div>
 
 <p>
-The date is self-explanatory, I would hope :Þ. As you can see, <i>you</i> are now the one recieving the money, which means you get to write your name, "me", etc. in the payee section. The money is credited <i>into</i> your checking account, and being sourced <i>from</i> the salary account (where your salary is paid from). Personally, I like to further specify <i>which</i> salary I'm being paid using a sub-account, as at times you may have multiple.
+The date is self-explanatory, I would hope :Þ. As you can see, <i>you</i> are now the one receiving the money, which means you get to write your name, "me", etc. in the payee section. The money is credited <i>into</i> your checking account, and being sourced <i>from</i> the salary account (where your salary is paid from). Personally, I like to further specify <i>which</i> salary I'm being paid using a sub-account, as at times you may have multiple.
 </p>
 </div>
 </div>
@@ -126,7 +126,7 @@ Let's imagine the following ledger file, <code>./.test.ledger</code>.
 Here is the <code>balance</code> report, which should always add up to zero; it tells you where money comes from and where money goes.
 </p>
 
-<pre class="example" id="org53b6c3e">
+<pre class="example" id="orgb676db4">
 $ ledger -f ./.test.ledger bal
             $122.920  Assets:Checking
              $15.920  Expenses:Wants:Coffee
@@ -147,7 +147,7 @@ One of the most powerful features of Ledger is it's ability to <a href="https://
 As well as the <code>balance</code> report, there is also the <code>register</code> report; this mimics what you might see in a checkbook. The <code>register</code> report makes it easier to see how each transaction adds to the totals that appear in the <code>balance</code> report.
 </p>
 
-<pre class="example" id="org547512c">
+<pre class="example" id="orgf0c9146">
 23-Jun-17 Me                    Assets:Checking             $69.420      $69.420
                                 Income:Salary              $-69.420            0
 23-Jun-19 Starbucks             Expenses:Wants:Coffee        $6.840       $6.840
