@@ -3,11 +3,11 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-07-30 Sun 09:19 -->
+<!-- 2025-11-03 Mon 12:35 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Lens_r | Assembly Is *Not* What It Seems</title>
-<meta name="author" content="Rylan Lens Kellogg" />
+<meta name="author" content="lens_r" />
 <meta name="generator" content="Org Mode" />
 <meta property="og:type" content="article"/>
 <meta property="og:url" content="https://lensplaysgames.github.io/lensr_blog_v1/posts/assemblynotwhatseems.html"/>
@@ -25,11 +25,10 @@ gtag('js', new Date());
 
 gtag('config', 'G-E0F1C2XGCS');
 </script>
-<script>function toggle_dark_mode(){var element=document.getElementsByTagName("html")[0],dark_button=document.getElementById("dark-mode");element.classList.toggle("dark-mode");const d=new Date;d.setTime(d.getTime()+24192e5),element.classList.contains("dark-mode")?(document.cookie="dark_mode=true; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Light Mode"):(document.cookie="dark_mode=false; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Dark Mode")}function goto_top(){document.body.scrollTop=0,document.documentElement.scrollTop=0}function insert_top_banner(){var navbar_html='<nav class="navbar" id="navbar">';navbar_html+='<label for="hamburger">&#9776;</label>';let content_elem=document.body.firstElementChild,navbar_and_contents=document.createElement("div");navbar_and_contents.innerHTML='<nav class="navbar" id="navbar"><label for="hamburger">&#9776;</label><input type="checkbox" id="hamburger"/><div id="hamburger-items"><a href=\'/lensr_blog_v1/\'">Home</a><a target="_blank" href=\'https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG\'">Donate</a><a target="_blank" href=\'https://www.youtube.com/@Lensr\'">YouTube</a><a target="_blank" href=\'https://www.twitch.tv/lens_r\'">Twitch</a><a target="_blank" href=\'https://www.github.com/LensPlaysGames\'">GitHub</a><a target="_blank" href=\'https://discord.gg/FTQsgqQEM4\'">Discord</a><a id="dark-mode" onClick={toggle_dark_mode();}>Dark Mode</a></div></nav>'+content_elem.outerHTML,content_elem.replaceWith(navbar_and_contents)}function main(){insert_top_banner();let cookies=decodeURIComponent(document.cookie).split(";");for(let i=0;i<cookies.length;i++){for(;" "==cookies[i].charAt(0);)cookies[i]=cookies[i].substring(1);0==cookies[i].indexOf("dark_mode")&&"true"==cookies[i].substring(name.length,cookies[i].length).split("=")[1]&&toggle_dark_mode()}}window.onload=main;</script>
+<script>function toggle_dark_mode(){var element=document.getElementsByTagName("html")[0],dark_button=document.getElementById("dark-mode"),d=(element.classList.toggle("dark-mode"),new Date);d.setTime(d.getTime()+24192e5),element.classList.contains("dark-mode")?(document.cookie="dark_mode=true; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Light Mode"):(document.cookie="dark_mode=false; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Dark Mode")}function goto_top(){document.body.scrollTop=0,document.documentElement.scrollTop=0}function insert_top_banner(){var navbar_html='<nav class="navbar" id="navbar">',navbar_html=((navbar_html+='<label for="hamburger">&#9776;</label>')+'<input type="checkbox" id="hamburger"/>'+'<div id="hamburger-items">'+"<a href='/lensr_blog_v1/'\">Home</a>"+'<a target="_blank" href=\'https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG\'">Donate</a>'+'<a target="_blank" href=\'https://www.youtube.com/@Lensr\'">YouTube</a>'+'<a target="_blank" href=\'https://www.twitch.tv/lens_r\'">Twitch</a>'+'<a target="_blank" href=\'https://www.github.com/LensPlaysGames\'">GitHub</a>'+'<a target="_blank" href=\'https://discord.gg/FTQsgqQEM4\'">Discord</a>'+'<a id="dark-mode" onClick={toggle_dark_mode();}>Dark Mode</a>'+"</div></nav>",document.body.firstElementChild),navbar_and_contents=document.createElement("div");navbar_and_contents.innerHTML='<nav class="navbar" id="navbar"><label for="hamburger">&#9776;</label><input type="checkbox" id="hamburger"/><div id="hamburger-items"><a href=\'/lensr_blog_v1/\'">Home</a><a target="_blank" href=\'https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG\'">Donate</a><a target="_blank" href=\'https://www.youtube.com/@Lensr\'">YouTube</a><a target="_blank" href=\'https://www.twitch.tv/lens_r\'">Twitch</a><a target="_blank" href=\'https://www.github.com/LensPlaysGames\'">GitHub</a><a target="_blank" href=\'https://discord.gg/FTQsgqQEM4\'">Discord</a><a id="dark-mode" onClick={toggle_dark_mode();}>Dark Mode</a></div></nav>'+navbar_html.outerHTML,navbar_html.replaceWith(navbar_and_contents)}function main(){insert_top_banner();var cookies=decodeURIComponent(document.cookie).split(";");for(let i=0;i<cookies.length;i++){for(;" "==cookies[i].charAt(0);)cookies[i]=cookies[i].substring(1);0==cookies[i].indexOf("dark_mode")&&"true"==cookies[i].substring(name.length,cookies[i].length).split("=")[1]&&toggle_dark_mode()}}window.onload=main;</script>
 </head>
 <body>
 <div id="content" class="content">
-
 <div id="outline-container-assemblynotwhatseems" class="outline-2">
 <h2 id="assemblynotwhatseems">Assembly Is <b>Not</b> What It Seems</h2>
 <div class="outline-text-2" id="text-assemblynotwhatseems">
@@ -37,24 +36,22 @@ gtag('config', 'G-E0F1C2XGCS');
 Assembly is as close as you can get to the hardware, right? It basically tells you the exact instructions the CPU will run &#x2026; <i>right</i>?. Well, that may be what it seems like (and what people say), but not necessarily! Modern CPUs do so much more than just read an instruction and execute it, and that is what we will be exploring in this post.
 </p>
 </div>
-
-<div id="outline-container-orgbcba2dd" class="outline-3">
-<h3 id="orgbcba2dd">Why Is This the Prevailing Assumption?</h3>
-<div class="outline-text-3" id="text-orgbcba2dd">
+<div id="outline-container-org56efd41" class="outline-3">
+<h3 id="org56efd41">Why Is This the Prevailing Assumption?</h3>
+<div class="outline-text-3" id="text-org56efd41">
 <p>
 Well, the reason assembly is thought of as "telling the hardware exactly what to do" is because &#x2026; well, it does, strictly from a programmer's point of view. But there's a distinction here that's important. It does not tell the CPU <i>how</i> to do it. So while, yes, you may feed it an assembly instruction to add two numbers, any one CPU may choose to do an OR operation instead, if one of the numbers is known to be zero. This sort of behaviour, where the CPU can technically do whatever it wants as long as the expected result is acquired, allows for <b><b>lots</b></b> of optimisations that would not otherwise be possible. For related reading, see <i>sequential consistency</i> and <i>unspecified behaviour</i>.
 </p>
 </div>
 </div>
-
-<div id="outline-container-orga18c487" class="outline-3">
-<h3 id="orga18c487">How Can a CPU Do More Than One Thing at Once?</h3>
-<div class="outline-text-3" id="text-orga18c487">
+<div id="outline-container-orgc7965d5" class="outline-3">
+<h3 id="orgc7965d5">How Can a CPU Do More Than One Thing at Once?</h3>
+<div class="outline-text-3" id="text-orgc7965d5">
 <p>
 Imagining a naive CPU pipeline that does one thing at a time, we may arrive at something like this:
 </p>
 
-<pre class="example" id="orgbd76fbe">
+<pre class="example" id="org68090f1">
 .-&gt;  Decoder -&gt; Processor  -.
 `---------------------------+
 </pre>
@@ -67,15 +64,14 @@ The "decoder" step would decode the next instruction from memory, located by the
 NOTE: This is a whole topic in-and-of-itself. See <a href="https://en.wikipedia.org/wiki/Instruction_pipelining">Instruction Pipelining @wikipedia.org</a>
 </p>
 </div>
-
-<div id="outline-container-org9fc4b39" class="outline-4">
-<h4 id="org9fc4b39">Eliminating Dependencies</h4>
-<div class="outline-text-4" id="text-org9fc4b39">
+<div id="outline-container-orgcba89b2" class="outline-4">
+<h4 id="orgcba89b2">Eliminating Dependencies</h4>
+<div class="outline-text-4" id="text-orgcba89b2">
 <p>
 Sitting around doing nothing is <b>never</b> good. Luckily, we can attempt to make the situation better due to one simple fact: computations within the processor can't use or modify the instruction pointer directly (most of the time). This means the decoder <i>could</i> start decoding the next instruction <b>before</b> the processor finishes processing the last instruction decoded. By the time the processor finishes processing, the decoder may already be ready with another instruction to execute. This increases the amount of time the processor spends doing valuable computations, making the CPU faster and computers go brrr.
 </p>
 
-<pre class="example" id="orgfb4f75b">
+<pre class="example" id="org2617cf9">
 Decoder -&gt; Decoded Instruction Queue
 Pop(Decoded Instruction Queue) -&gt; Processor
 </pre>
@@ -89,21 +85,20 @@ Now, you might be wondering, what is the advantage of eliminating a dependency o
 </p>
 </div>
 </div>
-
-<div id="outline-container-org77c154a" class="outline-4">
-<h4 id="org77c154a">Out-Of-Order Execution</h4>
-<div class="outline-text-4" id="text-org77c154a">
+<div id="outline-container-org1fd74f2" class="outline-4">
+<h4 id="org1fd74f2">Out-Of-Order Execution</h4>
+<div class="outline-text-4" id="text-org1fd74f2">
 <p>
 That's right; by eliminating an instruction's dependency on a register, we can actually <b>execute</b> that instruction at the same time as another instruction, given they don't have dependencies on one another. Let's take a look at this in actual x86_64 assembly (in Intel syntax today, for funsies).
 </p>
 
 <div class="org-src-container">
-<pre class="src src-asm"><span class="org-function-name">0</span>      <span class="org-keyword">mov</span> rax, [my_ptr]           <span class="org-comment-delimiter">;;</span><span class="org-comment">#; rax := memory[my_ptr]</span>
-<span class="org-function-name">1</span>      <span class="org-keyword">add</span> rax, 2                  <span class="org-comment-delimiter">;;</span><span class="org-comment">#; rax := rax + 2</span>
-<span class="org-function-name">2</span>      <span class="org-keyword">mov</span> [my_ptr + 8], rax       <span class="org-comment-delimiter">;;</span><span class="org-comment">#; memory[my_ptr + 8] := rax</span>
-<span class="org-function-name">3</span>      <span class="org-keyword">mov</span> rax, [my_other_ptr]     <span class="org-comment-delimiter">;;</span><span class="org-comment">#; rax := memory[my_other_ptr]</span>
-<span class="org-function-name">4</span>      <span class="org-keyword">add</span> rax, 4                  <span class="org-comment-delimiter">;;</span><span class="org-comment">#; rax := rax + 4</span>
-<span class="org-function-name">5</span>      <span class="org-keyword">mov</span> [my_other_ptr + 8], rax <span class="org-comment-delimiter">;;</span><span class="org-comment">#; memory[my_other_ptr] := rax</span>
+<pre class="src src-asm"><span class="org-function-name">0</span>      <span class="org-keyword">mov</span> rax, [my_ptr]           <span class="org-comment-delimiter">;;</span><span class="org-comment">#; rax := memory[my_ptr]
+</span><span class="org-function-name">1</span>      <span class="org-keyword">add</span> rax, 2                  <span class="org-comment-delimiter">;;</span><span class="org-comment">#; rax := rax + 2
+</span><span class="org-function-name">2</span>      <span class="org-keyword">mov</span> [my_ptr + 8], rax       <span class="org-comment-delimiter">;;</span><span class="org-comment">#; memory[my_ptr + 8] := rax
+</span><span class="org-function-name">3</span>      <span class="org-keyword">mov</span> rax, [my_other_ptr]     <span class="org-comment-delimiter">;;</span><span class="org-comment">#; rax := memory[my_other_ptr]
+</span><span class="org-function-name">4</span>      <span class="org-keyword">add</span> rax, 4                  <span class="org-comment-delimiter">;;</span><span class="org-comment">#; rax := rax + 4
+</span><span class="org-function-name">5</span>      <span class="org-keyword">mov</span> [my_other_ptr + 8], rax <span class="org-comment-delimiter">;;</span><span class="org-comment">#; memory[my_other_ptr] := rax</span>
 </pre>
 </div>
 
@@ -116,12 +111,12 @@ Attempting to eliminate dependencies in the above code without renaming register
 </p>
 
 <div class="org-src-container">
-<pre class="src src-asm"><span class="org-function-name">0</span>      <span class="org-keyword">mov</span> r1, [my_ptr]            <span class="org-comment-delimiter">;;</span><span class="org-comment">#; r1 := memory[my_ptr]</span>
-<span class="org-function-name">1</span>      <span class="org-keyword">add</span> r1, 2                   <span class="org-comment-delimiter">;;</span><span class="org-comment">#; r1 := r1 + 2</span>
-<span class="org-function-name">2</span>      <span class="org-keyword">mov</span> [my_ptr + 8], r1        <span class="org-comment-delimiter">;;</span><span class="org-comment">#; memory[my_ptr + 8] := r1</span>
-<span class="org-function-name">3</span>      <span class="org-keyword">mov</span> r2, [my_other_ptr]      <span class="org-comment-delimiter">;;</span><span class="org-comment">#; r2 := memory[my_other_ptr]</span>
-<span class="org-function-name">4</span>      <span class="org-keyword">add</span> r2, 4                   <span class="org-comment-delimiter">;;</span><span class="org-comment">#; r2 := r2 + 4</span>
-<span class="org-function-name">5</span>      <span class="org-keyword">mov</span> [my_other_ptr + 8], r2  <span class="org-comment-delimiter">;;</span><span class="org-comment">#; memory[my_other_ptr] := r2</span>
+<pre class="src src-asm"><span class="org-function-name">0</span>      <span class="org-keyword">mov</span> r1, [my_ptr]            <span class="org-comment-delimiter">;;</span><span class="org-comment">#; r1 := memory[my_ptr]
+</span><span class="org-function-name">1</span>      <span class="org-keyword">add</span> r1, 2                   <span class="org-comment-delimiter">;;</span><span class="org-comment">#; r1 := r1 + 2
+</span><span class="org-function-name">2</span>      <span class="org-keyword">mov</span> [my_ptr + 8], r1        <span class="org-comment-delimiter">;;</span><span class="org-comment">#; memory[my_ptr + 8] := r1
+</span><span class="org-function-name">3</span>      <span class="org-keyword">mov</span> r2, [my_other_ptr]      <span class="org-comment-delimiter">;;</span><span class="org-comment">#; r2 := memory[my_other_ptr]
+</span><span class="org-function-name">4</span>      <span class="org-keyword">add</span> r2, 4                   <span class="org-comment-delimiter">;;</span><span class="org-comment">#; r2 := r2 + 4
+</span><span class="org-function-name">5</span>      <span class="org-keyword">mov</span> [my_other_ptr + 8], r2  <span class="org-comment-delimiter">;;</span><span class="org-comment">#; memory[my_other_ptr] := r2</span>
 </pre>
 </div>
 
@@ -129,7 +124,7 @@ Attempting to eliminate dependencies in the above code without renaming register
 Now, with this done, the CPU is smart enough to notice something: instructions 0 through 2 and 3 through 5 are two blocks of instructions that start with <i>no</i> register dependencies.
 </p>
 
-<pre class="example" id="orgd0d75c1">
+<pre class="example" id="org815d33c">
 0 sets r1
 1 uses r1 and sets r1
 2 uses r1
@@ -178,7 +173,7 @@ Anyway, thank you for reading this post on assembly. If you enjoyed it, I make T
   <div class="footer-row">
     <a target="_blank" href="/lensr_blog_v1/rss.xml">Feed/RSS</a>
   </div>
-  <div class="footer-row"><span>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6)</span></div>
+  <div class="footer-row"><span>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span></div>
 </footer>
 </div>
 </body>

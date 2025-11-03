@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2025-11-03 Mon 12:35 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lens_r | Glint's Quirky Call Syntax</title>
+<meta name="author" content="lens_r" />
+<meta name="generator" content="Org Mode" />
+<meta property="og:type" content="article"/>
+<meta property="og:url" content="https://lensplaysgames.github.io/lensr_blog_v1/posts/2025glintcallgrammar.html"/>
+<meta property="og:title" content="Lens_r | Glint's Quirky Call Syntax"/>
+<meta property="og:description" content="Ambiguous? I think not."/>
+<link rel="stylesheet" href="/lensr_blog_v1/all.min.css"/>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<meta property="og:site_name" content="Lens_r's Blog"/>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-E0F1C2XGCS"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'G-E0F1C2XGCS');
+</script>
+<script>function toggle_dark_mode(){var element=document.getElementsByTagName("html")[0],dark_button=document.getElementById("dark-mode"),d=(element.classList.toggle("dark-mode"),new Date);d.setTime(d.getTime()+24192e5),element.classList.contains("dark-mode")?(document.cookie="dark_mode=true; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Light Mode"):(document.cookie="dark_mode=false; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Dark Mode")}function goto_top(){document.body.scrollTop=0,document.documentElement.scrollTop=0}function insert_top_banner(){var navbar_html='<nav class="navbar" id="navbar">',navbar_html=((navbar_html+='<label for="hamburger">&#9776;</label>')+'<input type="checkbox" id="hamburger"/>'+'<div id="hamburger-items">'+"<a href='/lensr_blog_v1/'\">Home</a>"+'<a target="_blank" href=\'https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG\'">Donate</a>'+'<a target="_blank" href=\'https://www.youtube.com/@Lensr\'">YouTube</a>'+'<a target="_blank" href=\'https://www.twitch.tv/lens_r\'">Twitch</a>'+'<a target="_blank" href=\'https://www.github.com/LensPlaysGames\'">GitHub</a>'+'<a target="_blank" href=\'https://discord.gg/FTQsgqQEM4\'">Discord</a>'+'<a id="dark-mode" onClick={toggle_dark_mode();}>Dark Mode</a>'+"</div></nav>",document.body.firstElementChild),navbar_and_contents=document.createElement("div");navbar_and_contents.innerHTML='<nav class="navbar" id="navbar"><label for="hamburger">&#9776;</label><input type="checkbox" id="hamburger"/><div id="hamburger-items"><a href=\'/lensr_blog_v1/\'">Home</a><a target="_blank" href=\'https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG\'">Donate</a><a target="_blank" href=\'https://www.youtube.com/@Lensr\'">YouTube</a><a target="_blank" href=\'https://www.twitch.tv/lens_r\'">Twitch</a><a target="_blank" href=\'https://www.github.com/LensPlaysGames\'">GitHub</a><a target="_blank" href=\'https://discord.gg/FTQsgqQEM4\'">Discord</a><a id="dark-mode" onClick={toggle_dark_mode();}>Dark Mode</a></div></nav>'+navbar_html.outerHTML,navbar_html.replaceWith(navbar_and_contents)}function main(){insert_top_banner();var cookies=decodeURIComponent(document.cookie).split(";");for(let i=0;i<cookies.length;i++){for(;" "==cookies[i].charAt(0);)cookies[i]=cookies[i].substring(1);0==cookies[i].indexOf("dark_mode")&&"true"==cookies[i].substring(name.length,cookies[i].length).split("=")[1]&&toggle_dark_mode()}}window.onload=main;</script>
+</head>
+<body>
+<div id="content" class="content">
+<div id="outline-container-2025glintcallgrammar" class="outline-2">
+<h2 id="2025glintcallgrammar">Glint's Quirky Call Syntax</h2>
+<div class="outline-text-2" id="text-2025glintcallgrammar">
+<p>
+In case you don't know, I'm the creator of and main contributor to the Lensor Compiler Collection (abbreviated <i>LCC</i>). I am also the designer and creator of a language LCC compiles, <i>Glint</i>. Herein lies the quirks of Glint's syntax, and why it took so long to put together a formal grammar (or, even a comprehensive tree-sitter one).
+</p>
+
+<p>
+Glint is, well, Glint. You know it when you see it, and there's a couple reasons for that. One is that it is quite opinionated, but also not at all. You'll see what I mean.
+</p>
+
+<p>
+Let's take a look at what is often the most noticeable difference between Glint and other popular programming languages, like C and LISP: call expressions.
+</p>
+</div>
+<div id="outline-container-org41756e3" class="outline-3">
+<h3 id="org41756e3">Implicit Invocation</h3>
+<div class="outline-text-3" id="text-org41756e3">
+<p>
+Let's assume we have some function <code>foo</code> which takes no parameters, and we want to call it.
+</p>
+
+<p>
+In C:
+</p>
+<div class="org-src-container">
+<pre class="src src-c"><span class="org-function-name">foo</span>();
+</pre>
+</div>
+
+<p>
+In LISP:
+</p>
+<div class="org-src-container">
+<pre class="src src-lisp">(foo)
+</pre>
+</div>
+
+<p>
+Now, in Glint:
+</p>
+<div class="org-src-container">
+<pre class="src src-glint">foo;
+</pre>
+</div>
+
+<p>
+Uhhh&#x2026; Where are the parentheses?! Well, you see, this is one place where Glint keeps it interesting: implicit invocation. That is, the semantics of Glint state that an expression with a function type may be implicitly converted to an invocation of that function, and the type of the expression updated to the return type of the function. That's just a fancy way of saying, for a function with no parameters, you don't need to use parentheses to call it. Cool! I like typing less.
+</p>
+
+<p>
+NOTE: the idea for implicit invocation is inspired from Algol 68; LCC's test suite was originally written in Algol just for the fun of it.
+</p>
+</div>
+</div>
+<div id="outline-container-org6c8daa6" class="outline-3">
+<h3 id="org6c8daa6">Calls With Arguments</h3>
+<div class="outline-text-3" id="text-org6c8daa6">
+<p>
+Now, let's assume we have some function <code>bar</code> which takes two integer parameters, and we want to call it.
+</p>
+
+
+<p>
+In C:
+</p>
+<div class="org-src-container">
+<pre class="src src-c">bar(27, 42);
+</pre>
+</div>
+
+<p>
+In LISP:
+</p>
+<div class="org-src-container">
+<pre class="src src-lisp">(bar 27 42)
+</pre>
+</div>
+
+<p>
+Now, in Glint:
+</p>
+<div class="org-src-container">
+<pre class="src src-glint">bar 27, 42;
+</pre>
+</div>
+
+<p>
+Wait, where are the parentheses? That's right, Glint doesn't associate parentheses with call expressions in any scenario. You never need them, unless you do (more on that later).
+</p>
+
+<p>
+The reason behind this design choice was simple: I like LISP, but I hate (yet also understand) when people complain about the noise of the parentheses. So, Glint attempts to be as LISP-like as possible while not requiring any in the most common cases. Like how English changes a lot of word's hard-to-make sounds to the schwa sound (IPA ə) to make it easier and quicker to say, Glint alters the syntax of expressions to not require parentheses (or <i>noise</i>, in general) in as many places as possible.
+</p>
+</div>
+</div>
+<div id="outline-container-orgf57110f" class="outline-3">
+<h3 id="orgf57110f">When Things Get Complicated</h3>
+<div class="outline-text-3" id="text-orgf57110f">
+<p>
+Now, you may be wondering something: if a call is just (at least) two expressions next to each other, how do we parse binary operators in relation to calls?
+</p>
+
+<p>
+That is, how should the following be interpreted?
+</p>
+<div class="org-src-container">
+<pre class="src src-glint">blah 27 + 42;
+</pre>
+</div>
+
+<p>
+Is this a call expression, with callee <code>blah</code> and <i>one</i> binary expression argument <code>27 + 42</code>?
+</p>
+
+<p>
+Or, is this a binary expression, with a call expression <code>blah 27</code> on the left hand side, and <code>42</code> on the right hand side?
+</p>
+
+<pre class="example" id="orgfaede58">
+Call
+|-- identifier: blah
+`-- Binary: +
+    |-- number: 27
+    `-- number: 42
+</pre>
+
+<pre class="example" id="org911d1bf">
+Binary: +
+|-- Call
+|   |-- identifier: blah
+|   `-- number: 27
+`-- number: 42
+</pre>
+
+<p>
+If you are familiar with writing parsers, than you are probably thinking, "Normally, we'd handle this sort of thing with precedence."
+</p>
+
+<p>
+Unfortunately, there is one more quirk of Glint we have to consider, and it's that some unary prefix expressions share the same token with binary infix expressions; of those, <code>&amp;</code> is the most common. <code>&amp;</code> as a unary prefix operator gets the address of it's contained expression. <code>&amp;</code> as a binary infix operator performs a bitwise AND operation on it's contained expressions, and returns the result.
+</p>
+
+<p>
+Now, how should the following be interpreted?:
+</p>
+<div class="org-src-container">
+<pre class="src src-glint">blah &amp;x;
+</pre>
+</div>
+
+<p>
+To most, it would make most sense, if <code>blah</code> is a function accepting a pointer argument, that this would be a call to that function with a single argument.
+</p>
+
+<p>
+Notice, however, how that interpretation <i>depends</i> on the type of the object that the identifier <i>blah</i> refers to. Information like that isn't available until after semantic analysis, which means a formal grammar can't encode that information into it. So, if we want the grammar to not be (ULTRA) ambiguous, we have to decide on a rule to parse this.
+</p>
+
+<p>
+You may be thinking, "If we already parsed the declaration of blah, doesn't the parser already know it's type?"&#x2014;and you would be correct. <i>If</i> the declaration of <code>blah</code> happens to be before this expression, then yes, we could know that. The problem is that Glint's function declarations are not in any order; you can use a function before defining it, since call expressions don't need resolved until semantic analysis (AFTER <i>everything</i> has been parsed). This means that, at the time of parsing, you cannot guarantee that you will know the type of anything (and that tracks, since parsing shouldn't really do anything based on types other than parse them). Because of this, we can't conditionally parse a call or a binary expression based on the type of the lhs, and we can't just collect these parsed expressions and figure it out in semantic analysis because each path would further change the parsed tree (i.e. precedence wouldn't apply properly).
+</p>
+
+<p>
+Okay, so, our rule (mentioned above) is as such: binary expressions are parsed <i>before</i> call arguments. So, if there is a prefix unary operator <i>that may also be a binary infix operator</i> directly following some parsed expression, it is treated as the binary infix operator. Notice that this is different from precedence, since we encounter a token that could either be a binary operator containing this expression, and should be parsed, or a unary prefix one for a further expression, that should be not parsed until parsing the next expression.
+</p>
+
+<p>
+This means, sadly, that the concession of an unambiguous grammar means we have to sacrifice this specific use case of parentheses if we want it to be a call. Do note that the parentheses have nothing to do with it being parsed as a call; they are just a way to group expressions explicitly so that precedence doesn't come into effect.
+</p>
+
+<p>
+A similar issue applies to subscript not knowing <i>how</i> tight to bind with respect to calls. Is <code>foo 42[0];</code> a subscript of the call <code>foo 42</code>, or is it a call of <code>foo</code> with a <code>42[0]</code> subscript argument?
+</p>
+
+<p>
+As you can see, there <i>would</i> be an ambiguity here if not for the following rule: a binary expression may not directly contain a call expression. If you want to apply a binary expression to a call, group the call's expressions with parentheses and subscript the paren expression.
+</p>
+
+<p>
+So, binary expressions actually only accept a subset of Glint's expressions (ones that aren't calls). This is put in practice by the simple ordering of gathering binary operators before call arguments during parsing (such that a call is parsed <i>after</i> binary expressions are, it can't directly appear as a child of one (since it hasn't yet been parsed) (because the binary expression binds more tightly)).
+</p>
+
+<pre class="example" id="org20f1114">
+lhs = ParsePrimary();
+lhs = ParseBinary();
+
+if (at separator)
+  return lhs;
+
+lhs = GatherCallArguments();
+</pre>
+
+<p>
+This means, for our subscript example, <code>foo 42[0]</code>, <code>foo</code> is parsed as a primary expression (identifier), there is no valid binary operator and no expression separator, so we treat <code>foo</code> as a callee and begin gathering call arguments. We parse <code>42</code> as our primary, and, now, there <i>is</i> a valid binary operator (<code>[</code> for subscript operation), so we parse that with the lhs being <code>42</code>. As you can see, a binary operator can never have a call as it's left hand side, because a call hasn't been parsed yet. This effectively means that the lhs of a binary expression is not allowed to be a call expression, which reduces the ambiguity in the grammar.
+</p>
+
+<p>
+So, for <code>-</code> and <code>&amp;</code>, both unary prefix and binary infix operators, they "can't" appear as unary operators as the direct first argument to a function call. They <i>can</i>, however, appear as unary operators as the direct child of a paren expression, so we "escape" to the full Glint grammar using parentheses. This allows Glint to be as parentheses-less as possible, unless they are absolutely needed to disambiguate the expression.
+</p>
+
+<p>
+I am currently considering altering bitwise and operator to be <code>bit&amp;</code> instead of just <code>&amp;</code>, so that parentheses wouldn't be needed in the addressof case (since that tends to be somewhat common).
+</p>
+
+<p>
+If you are interested in how this sort of grammar would be parsed, there is the LCC implementation in C++, and a tree-sitter grammar declared in JavaScript with a very understandable structure.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<footer>
+  <div class="footer-row">
+    <button onClick="goto_top()" title="Go to top of page">Back to Top</button>
+  </div>
+  <div class="footer-row">
+    <a target="_blank" href="https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG">Donate</a>
+    <a target="_blank" href="https://www.youtube.com/@Lensr">YouTube</a>
+    <a target="_blank" href="https://www.twitch.tv/lens_r">Twitch</a>
+    <a target="_blank" href="https://www.github.com/LensPlaysGames">GitHub</a>
+    <a target="_blank" href="https://discord.gg/FTQsgqQEM4">Discord</a>
+  </div>
+  <div class="footer-row">
+    <a target="_blank" href="/lensr_blog_v1/rss.xml">Feed/RSS</a>
+  </div>
+  <div class="footer-row"><span>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span></div>
+</footer>
+</div>
+</body>
+</html>

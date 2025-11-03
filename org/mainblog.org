@@ -26,10 +26,302 @@ Anything within this subtree will then be a part of the blog post. For now, ther
     Hmm, will this be in order?
 #+end_src
 
+NOTE: CUSTOM_ID and PUBLISHED are always required.
+
 NOTE: The OG_IMAGE property is optional, but, if provided, sets the open graph/twitter card image (og:image) that will be displayed when the page is linked to from social media sites. OG_DESCRIPTION may also be set in order to explicitly set og:description.
 
 NOTE: POST_TAGS property is not yet used yet, but will eventually be used for users to be able to find posts by tag.
 
+
+
+* 2025 Ideas
+
+** Literate Compiler/Programming Tests with Org Mode and Emacs
+[2025-11-03 Mon 09:53]
+
+- RunTest test suite
+
+Wrote first draft [2025-11-03 Mon 11:02]
+
+** Abusing the C++ Type System---LCC's Instruction Selection Implementation
+[2025-11-03 Mon 09:53]
+
+- isel_patterns.hh
+
+** Glint's Basic Grammar
+[2025-11-03 Mon 09:53]
+- once I flesh it out, go over the single expression, group expression, call expression stuff, and why it fundamentally is a different grammar than C or LISP or Rust.
+- accompanying video possibly?
+
+** Formatting Glint using Emacs and Rust
+[2025-11-03 Mon 09:53]
+- glint-ts-mode formatting implementation using tree sitter queries
+
+** My Very Own Emacs---How I Wrote a LISP-based Text Editor
+[2025-11-03 Mon 09:53]
+- LITE tree sitter and graphical implementation
+- accompanying video possibly?
+
+** Implementing Org mode in Glint
+[2025-11-03 Mon 09:53]
+
+* Glint's Quirky Call Syntax                                       :blogpost:
+:PROPERTIES:
+:CUSTOM_ID: 2025glintcallgrammar
+:CREATED: [2025-11-03 Mon 11:02]
+:PUBLISHED: [2025-11-03 Mon 12:30]
+:MODIFIED: [2025-11-03 Mon 12:30]
+:OG_IMAGE: /todo
+:OG_DESCRIPTION: Ambiguous? I think not.
+:POST_TAGS: LCC, compiler, testing, programming, emacs, lisp, org
+:END:
+
+In case you don't know, I'm the creator of and main contributor to the Lensor Compiler Collection (abbreviated /LCC/). I am also the designer and creator of a language LCC compiles, /Glint/. Herein lies the quirks of Glint's syntax, and why it took so long to put together a formal grammar (or, even a comprehensive tree-sitter one).
+
+Glint is, well, Glint. You know it when you see it, and there's a couple reasons for that. One is that it is quite opinionated, but also not at all. You'll see what I mean.
+
+Let's take a look at what is often the most noticeable difference between Glint and other popular programming languages, like C and LISP: call expressions.
+
+** Implicit Invocation
+
+Let's assume we have some function =foo= which takes no parameters, and we want to call it.
+
+In C:
+#+begin_src c
+  foo();
+#+end_src
+
+In LISP:
+#+begin_src lisp
+  (foo)
+#+end_src
+
+Now, in Glint:
+#+begin_src glint
+  foo;
+#+end_src
+
+Uhhh... Where are the parentheses?! Well, you see, this is one place where Glint keeps it interesting: implicit invocation. That is, the semantics of Glint state that an expression with a function type may be implicitly converted to an invocation of that function, and the type of the expression updated to the return type of the function. That's just a fancy way of saying, for a function with no parameters, you don't need to use parentheses to call it. Cool! I like typing less.
+
+NOTE: the idea for implicit invocation is inspired from Algol 68; LCC's test suite was originally written in Algol just for the fun of it.
+
+** Calls With Arguments
+
+Now, let's assume we have some function =bar= which takes two integer parameters, and we want to call it.
+
+
+In C:
+#+begin_src c
+  bar(27, 42);
+#+end_src
+
+In LISP:
+#+begin_src lisp
+  (bar 27 42)
+#+end_src
+
+Now, in Glint:
+#+begin_src glint
+  bar 27, 42;
+#+end_src
+
+Wait, where are the parentheses? That's right, Glint doesn't associate parentheses with call expressions in any scenario. You never need them, unless you do (more on that later).
+
+The reason behind this design choice was simple: I like LISP, but I hate (yet also understand) when people complain about the noise of the parentheses. So, Glint attempts to be as LISP-like as possible while not requiring any in the most common cases. Like how English changes a lot of word's hard-to-make sounds to the schwa sound (IPA ə) to make it easier and quicker to say, Glint alters the syntax of expressions to not require parentheses (or /noise/, in general) in as many places as possible.
+
+** When Things Get Complicated
+
+Now, you may be wondering something: if a call is just (at least) two expressions next to each other, how do we parse binary operators in relation to calls?
+
+That is, how should the following be interpreted?
+#+begin_src glint
+  blah 27 + 42;
+#+end_src
+
+Is this a call expression, with callee =blah= and /one/ binary expression argument =27 + 42=?
+
+Or, is this a binary expression, with a call expression =blah 27= on the left hand side, and =42= on the right hand side?
+
+#+begin_example
+Call
+|-- identifier: blah
+`-- Binary: +
+    |-- number: 27
+    `-- number: 42
+#+end_example
+
+#+begin_example
+Binary: +
+|-- Call
+|   |-- identifier: blah
+|   `-- number: 27
+`-- number: 42
+#+end_example
+
+If you are familiar with writing parsers, than you are probably thinking, "Normally, we'd handle this sort of thing with precedence."
+
+Unfortunately, there is one more quirk of Glint we have to consider, and it's that some unary prefix expressions share the same token with binary infix expressions; of those, =&= is the most common. =&= as a unary prefix operator gets the address of it's contained expression. =&= as a binary infix operator performs a bitwise AND operation on it's contained expressions, and returns the result.
+
+Now, how should the following be interpreted?:
+#+begin_src glint
+  blah &x;
+#+end_src
+
+To most, it would make most sense, if =blah= is a function accepting a pointer argument, that this would be a call to that function with a single argument.
+
+Notice, however, how that interpretation /depends/ on the type of the object that the identifier /blah/ refers to. Information like that isn't available until after semantic analysis, which means a formal grammar can't encode that information into it. So, if we want the grammar to not be (ULTRA) ambiguous, we have to decide on a rule to parse this.
+
+You may be thinking, "If we already parsed the declaration of blah, doesn't the parser already know it's type?"---and you would be correct. /If/ the declaration of =blah= happens to be before this expression, then yes, we could know that. The problem is that Glint's function declarations are not in any order; you can use a function before defining it, since call expressions don't need resolved until semantic analysis (AFTER /everything/ has been parsed). This means that, at the time of parsing, you cannot guarantee that you will know the type of anything (and that tracks, since parsing shouldn't really do anything based on types other than parse them). Because of this, we can't conditionally parse a call or a binary expression based on the type of the lhs, and we can't just collect these parsed expressions and figure it out in semantic analysis because each path would further change the parsed tree (i.e. precedence wouldn't apply properly).
+
+Okay, so, our rule (mentioned above) is as such: binary expressions are parsed /before/ call arguments. So, if there is a prefix unary operator /that may also be a binary infix operator/ directly following some parsed expression, it is treated as the binary infix operator. Notice that this is different from precedence, since we encounter a token that could either be a binary operator containing this expression, and should be parsed, or a unary prefix one for a further expression, that should be not parsed until parsing the next expression.
+
+This means, sadly, that the concession of an unambiguous grammar means we have to sacrifice this specific use case of parentheses if we want it to be a call. Do note that the parentheses have nothing to do with it being parsed as a call; they are just a way to group expressions explicitly so that precedence doesn't come into effect.
+
+A similar issue applies to subscript not knowing /how/ tight to bind with respect to calls. Is =foo 42[0];= a subscript of the call =foo 42=, or is it a call of =foo= with a =42[0]= subscript argument?
+
+As you can see, there /would/ be an ambiguity here if not for the following rule: a binary expression may not directly contain a call expression. If you want to apply a binary expression to a call, group the call's expressions with parentheses and subscript the paren expression.
+
+So, binary expressions actually only accept a subset of Glint's expressions (ones that aren't calls). This is put in practice by the simple ordering of gathering binary operators before call arguments during parsing (such that a call is parsed /after/ binary expressions are, it can't directly appear as a child of one (since it hasn't yet been parsed) (because the binary expression binds more tightly)).
+
+#+begin_example
+lhs = ParsePrimary();
+lhs = ParseBinary();
+
+if (at separator)
+  return lhs;
+
+lhs = GatherCallArguments();
+#+end_example
+
+This means, for our subscript example, =foo 42[0]=, =foo= is parsed as a primary expression (identifier), there is no valid binary operator and no expression separator, so we treat =foo= as a callee and begin gathering call arguments. We parse =42= as our primary, and, now, there /is/ a valid binary operator (=[= for subscript operation), so we parse that with the lhs being =42=. As you can see, a binary operator can never have a call as it's left hand side, because a call hasn't been parsed yet. This effectively means that the lhs of a binary expression is not allowed to be a call expression, which reduces the ambiguity in the grammar.
+
+So, for =-= and =&=, both unary prefix and binary infix operators, they "can't" appear as unary operators as the direct first argument to a function call. They /can/, however, appear as unary operators as the direct child of a paren expression, so we "escape" to the full Glint grammar using parentheses. This allows Glint to be as parentheses-less as possible, unless they are absolutely needed to disambiguate the expression.
+
+I am currently considering altering bitwise and operator to be =bit&= instead of just =&=, so that parentheses wouldn't be needed in the addressof case (since that tends to be somewhat common).
+
+If you are interested in how this sort of grammar would be parsed, there is the LCC implementation in C++, and a tree-sitter grammar declared in JavaScript with a very understandable structure.
+
+* Literate Tests with Org Mode and Emacs Lisp :blogpost:
+:PROPERTIES:
+:CUSTOM_ID: 2025literatetests
+:CREATED: [2025-11-03 Mon 10:01]
+:PUBLISHED: [2025-11-03 Mon 12:30]
+:MODIFIED: [2025-11-03 Mon 12:30]
+:OG_IMAGE: /todo
+:OG_DESCRIPTION: Testing, testing... Attention, please!
+:POST_TAGS: LCC, compiler, testing, programming, emacs, lisp, org
+:END:
+
+In case you don't know, I'm the creator of and main contributor to the Lensor Compiler Collection (abbreviated /LCC/).
+
+LCC has design the standard: "no third party dependencies". That means that I have written the code that transforms source code into tokens, as well as the code that issues diagnostics, as well as the code that selects machine instructions to emit, as well as the code that emits said machine instructions. As well as about 18 kajillion other steps that I'm omitting (not for sake of brevity, but because they've been blocked out by my subconscious in an attempt to protect me from the horrors of the world).
+
+While that's all well and good, I'm only human, and humans make mistkaes; especially over the course of years, which is how much time I have sunk into this little hobby project. The issue with a compiler collection is, well, /finding/ the bugs. Sometimes they are bugs of omission (i.e. not doing something that is actually required), sometimes they are bugs of logical error (i.e. my mental model is incorrect and doesn't match reality), sometimes they are off-by-one bugs, or accidentally using =+= instead of =+==. It's not easy to just scan through code and find bugs; it often requires a deep understanding of /what/ the compiler is /trying/ to accomplish, not the code that is currently there (otherwise, it wouldn't be buggy code).
+
+On top of all that, the compiler performs many data transformations, separated and grouped into stages. This means that, if one stage is wrong, the problem often /appears/ in another stage, despite /originating/ from an earlier one. For example, if semantic analysis of a language fails to set the type of some node, and that language's IR code generation tries to read the type and gets =NULL=, it will crash /in IR generation/, not in semantic analysis...
+
+All of /that/ to say, compilers are inherently complex systems, and complex systems have lots of places for errors to be introduced, and often have lots of /other/ places for errors to actually manifest.
+
+This is why, for compiler collections, /testing/ is of the utmost importance. At it's most basic definition, a test is just an assertion of some output after some transformation is applied to some input.
+
+LCC has many testing frameworks in place to ensure all parts of the codebase work as expected (or, at least, I'm working on it). But, one of these frameworks is of interest today: /RunTest/.
+
+** RunTest
+
+You can think of RunTest as an end-to-end testing framework for LCC. That is, it treats LCC as a black box, and just pushes data through it to get an expected output. The catch is that the output is automatically compiled with LCC, linked with GCC, and then the resulting binary executed; RunTest asserts the output of /that/ binary, given an input of a source language to LCC.
+
+Specifically, RunTest asserts the exit status and printed output of the final binary.
+
+So, unless we want a single test to span across multiple files (something that I abhor), we need /some/ sort of polyglot file format which may contain arbitrary source code, binary data (in case of asserting the program outputs control characters, NUL bytes, etc), and a number for the exit status.
+
+We /could/ just use a =.txt= file, but, if we include binary data, a lot of text editors (which is what =.txt= files will be opened with, by default) will crash, or display unexpected/wrong characters. This is not good for the test author, as you may imagine. On top of that, some languages that LCC supports may not support comments; that means that if we relied on defining tests within a language, the language's lexer would have to work in tandem with the test suite. That doesn't quite match our "arbitrary" source code specification, does it?
+
+I was writing some documentation for Glint, typing some Glint source code in a source block within an Org mode file using Emacs, when I realized that I already had the answer. /That/ is when it hit me: Org mode. I write source code of arbitrary languages in Org mode /all the time/. In fact, I do it for this blog. Why not use Org mode to write tests in? We can include binary data with example blocks, and we can include source code. Obviously, we can write a number in an Org file... It fits our specifications! On top of that, it allows the author of the test to define it /literately/, i.e. with included text to describe (any part of) the test.
+
+The one "downside" to this is that Org mode is deeply tied into the Emacs ecosystem; in fact, the sole implementation of Org mode /is/ Emacs. There aren't really parsers available for Org mode files that don't use Emacs itself. So, if we want to extract the test data from our Org mode test files, we need to use---you guessed it---Emacs!
+
+Of course, Emacs is wonderful and provides Emacs Lisp, so we can just write a script, and Emacs will run it for us whenever we ask (just like Bash).
+Emacs is also very portable (just like Bash) ((holy heck, it even runs on my /phone/ now!!)), so I think anyone who wants to hack on LCC will be able to get a working Emacs on their system.
+
+With that out of the way, I decided on a basic syntax for the tests; here's Glint's "Empty File" test.
+
+#+begin_src org
+,* Empty File
+
+In Glint, an empty program is completely valid.
+
+The rules for implicit return at the top level still apply.
+So, because the last expression is not of =int= type, Glint inserts =return 0;=.
+
+,#+NAME: source
+,#+begin_src glint
+,#+end_src
+
+,#+NAME: status
+,#+begin_example
+0
+,#+end_example
+
+,#+NAME: output
+,#+begin_example
+,#+end_example
+#+end_src
+
+The name of the test is the top-level headline, and the following named blocks constitute the test's source code input, and the test's expected status and output when the resulting binary has been run.
+
+As you can see, a test author may mark up the different portions of their test with explanations, information, or whatever data is needed to understand the test case and why it is the way it is.
+
+Now, an LCC contributor may define some language input and assert that it properly compiles to a program with the given semantics. This asserts that the binding between language and compiler is properly aligned, and semantics are preserved. For example, if semantics are not preserved, the language may be generating IR that doesn't match their intentions, or LCC may have a bug in it where it isn't respecting some feature of the IR when applying a transformation, or it could be a cosmic ray sent by aliens, bit-flipping your RAM just for funsies.
+You never know with these computer things.
+
+Either way, it's good to have a system that alerts you when things are broken, rather than /gasp/ *silently* producing broken code (my nightmare), and this framework does that in a (I believe) neat and tidy way.
+
+** Oh, Yeah
+
+I forgot to mention, the org syntax accepts multiple source blocks, each one compiled separately and their artifacts collected to link together properly. This means that, if your language has modules or something like that, you can define a module and a program that uses it, and RunTest will automagically compile it properly. This means that Module/Type/AST serialisation and deserialisation may be tested by RunTest as well, which is a large pain-point for a lot of language developers (binary formats tend to be annoying like that).
+
+** Deep Dive
+
+You can read actual RunTest tests at =runtest/corpus/= within the [[https://github.com/LensPlaysGames/LensorCompilerCollection][LCC repository]]. This can be a good way to get a feel for a language LCC compiles, as there are lots of example programs combined with an assertion of exactly what they do.
+
+Still interested? Go read =runtest/runtest.el= within the [[https://github.com/LensPlaysGames/LensorCompilerCollection][LCC repository]]; it showcases a lot of very LISPy things, like =gensym=, macros, asynchronous subprocesses, and more, while still being short and sweet.
+
+* empty space
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 * Fun Titles / Idea Dump
 
@@ -44,6 +336,84 @@ NOTE: POST_TAGS property is not yet used yet, but will eventually be used for us
 
 ** Calculating My Content Creation Wage (it's negative)
 [2023-07-07 Fri 08:43]
+
+* A Glint of Hope :notpost:
+:PROPERTIES:
+:CUSTOM_ID: aglintofhoep
+:CREATED: [2024-07-26 Fri 02:18]
+:PUBLISHED: [2024-07-26 Fri 02:18]
+:MODIFIED: [2024-07-26 Fri 02:18]
+:OG_IMAGE: 2024.07.26.GlintLineCount.png
+:OG_DESCRIPTION: Seeing the Light Reflect out of the Darkness... Wait, Are Those Eyes?
+:POST_TAGS: glint, programming
+:END:
+
+Out with the old, in with the new!
+
+** Glint
+
+A programming language that is somewhat usable to do very basic systems things.
+
+*** Sum Types
+
+Instead of repetitive type boilerplate with inheritance, use sum types.
+
+C++: Encoding meaning in the designation of a type itself vs within a larger encapsulating type. Best described by example.
+#+begin_src c++
+class type {
+  ...
+};
+class function_type : type {
+  vector arguments;
+  ...
+};
+class integer_type ...
+#+end_src
+You get the gist. This bloats immensely fast, exponentially, where adding a trivial type like an integer requires an entire class wrapping it. And then also adding to the "kind" enum in the base class(es).
+
+In Glint, sum types let us represent these sort of structures with less boilerplate. Do this instead.
+#+begin_src
+type : sum {
+  function :[argument];
+  integer :int;
+};
+#+end_src
+And I didn't even need to `...` anything, that's all of it. No enum required. Only as many type declarations as you actually need.
+
+
+You can also use sum types for implementing a result type very easily.
+#+begin_src
+index_t : sum {
+  error :[byte];
+  value :uint;
+};
+#+end_src
+Getting an index to something but don't want to require some sentinel values reserved for error state communication? Use a sum type! Return a dynamically allocated bytestring for an error message, or return a meaningful value.
+
+** Tendency Towards Distemper
+
+I have this terrible habit of being just /slightly/ too ambitious such that I become increasingly frustrated with my smidgen of inability to achieve what I want to, how fast I want to. It makes me so frustrated and grows into rage, until
+I explode. Eventually, I slow down (just slightly, begrudgingly) and solve the problem. It is like pushing harder and harder when getting tired on a bike until you literally can't go anymore, collapsing, getting mad at yourself and the bike, and then eventually, after some rest, getting back on the bike and doing it all over again.
+
+** Glint Line Count as of 2024.07.26: 10005
+
+Line count on Glint language only using https://github.com/AlDanial/cloc.
+#+begin_example
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+C++                              8           1472           1689           8123
+C/C++ Header                     7            556            421           1882
+-------------------------------------------------------------------------------
+SUM:                            15           2028           2110          10005
+-------------------------------------------------------------------------------
+#+end_example
+
+Design started on Glint on June 25, 2024, with development beginning shortly thereafter. Line count above as of July 26, 2024. It's amazing what can be done in a month.
+
+** Food for Thought
+
+Why are =enum= and =struct= highlighted as a keyword but =void= and =bool= are highlighted as types...?
 
 * Making Mistakes :blogpost:
 :PROPERTIES:

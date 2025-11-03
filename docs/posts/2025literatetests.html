@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2025-11-03 Mon 12:35 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lens_r | Literate Tests with Org Mode and Emacs Lisp</title>
+<meta name="author" content="lens_r" />
+<meta name="generator" content="Org Mode" />
+<meta property="og:type" content="article"/>
+<meta property="og:url" content="https://lensplaysgames.github.io/lensr_blog_v1/posts/2025literatetests.html"/>
+<meta property="og:title" content="Lens_r | Literate Tests with Org Mode and Emacs Lisp"/>
+<meta property="og:description" content="Testing, testing... Attention, please!"/>
+<link rel="stylesheet" href="/lensr_blog_v1/all.min.css"/>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<meta property="og:site_name" content="Lens_r's Blog"/>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-E0F1C2XGCS"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'G-E0F1C2XGCS');
+</script>
+<script>function toggle_dark_mode(){var element=document.getElementsByTagName("html")[0],dark_button=document.getElementById("dark-mode"),d=(element.classList.toggle("dark-mode"),new Date);d.setTime(d.getTime()+24192e5),element.classList.contains("dark-mode")?(document.cookie="dark_mode=true; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Light Mode"):(document.cookie="dark_mode=false; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Dark Mode")}function goto_top(){document.body.scrollTop=0,document.documentElement.scrollTop=0}function insert_top_banner(){var navbar_html='<nav class="navbar" id="navbar">',navbar_html=((navbar_html+='<label for="hamburger">&#9776;</label>')+'<input type="checkbox" id="hamburger"/>'+'<div id="hamburger-items">'+"<a href='/lensr_blog_v1/'\">Home</a>"+'<a target="_blank" href=\'https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG\'">Donate</a>'+'<a target="_blank" href=\'https://www.youtube.com/@Lensr\'">YouTube</a>'+'<a target="_blank" href=\'https://www.twitch.tv/lens_r\'">Twitch</a>'+'<a target="_blank" href=\'https://www.github.com/LensPlaysGames\'">GitHub</a>'+'<a target="_blank" href=\'https://discord.gg/FTQsgqQEM4\'">Discord</a>'+'<a id="dark-mode" onClick={toggle_dark_mode();}>Dark Mode</a>'+"</div></nav>",document.body.firstElementChild),navbar_and_contents=document.createElement("div");navbar_and_contents.innerHTML='<nav class="navbar" id="navbar"><label for="hamburger">&#9776;</label><input type="checkbox" id="hamburger"/><div id="hamburger-items"><a href=\'/lensr_blog_v1/\'">Home</a><a target="_blank" href=\'https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG\'">Donate</a><a target="_blank" href=\'https://www.youtube.com/@Lensr\'">YouTube</a><a target="_blank" href=\'https://www.twitch.tv/lens_r\'">Twitch</a><a target="_blank" href=\'https://www.github.com/LensPlaysGames\'">GitHub</a><a target="_blank" href=\'https://discord.gg/FTQsgqQEM4\'">Discord</a><a id="dark-mode" onClick={toggle_dark_mode();}>Dark Mode</a></div></nav>'+navbar_html.outerHTML,navbar_html.replaceWith(navbar_and_contents)}function main(){insert_top_banner();var cookies=decodeURIComponent(document.cookie).split(";");for(let i=0;i<cookies.length;i++){for(;" "==cookies[i].charAt(0);)cookies[i]=cookies[i].substring(1);0==cookies[i].indexOf("dark_mode")&&"true"==cookies[i].substring(name.length,cookies[i].length).split("=")[1]&&toggle_dark_mode()}}window.onload=main;</script>
+</head>
+<body>
+<div id="content" class="content">
+<div id="outline-container-2025literatetests" class="outline-2">
+<h2 id="2025literatetests">Literate Tests with Org Mode and Emacs Lisp</h2>
+<div class="outline-text-2" id="text-2025literatetests">
+<p>
+In case you don't know, I'm the creator of and main contributor to the Lensor Compiler Collection (abbreviated <i>LCC</i>).
+</p>
+
+<p>
+LCC has design the standard: "no third party dependencies". That means that I have written the code that transforms source code into tokens, as well as the code that issues diagnostics, as well as the code that selects machine instructions to emit, as well as the code that emits said machine instructions. As well as about 18 kajillion other steps that I'm omitting (not for sake of brevity, but because they've been blocked out by my subconscious in an attempt to protect me from the horrors of the world).
+</p>
+
+<p>
+While that's all well and good, I'm only human, and humans make mistkaes; especially over the course of years, which is how much time I have sunk into this little hobby project. The issue with a compiler collection is, well, <i>finding</i> the bugs. Sometimes they are bugs of omission (i.e. not doing something that is actually required), sometimes they are bugs of logical error (i.e. my mental model is incorrect and doesn't match reality), sometimes they are off-by-one bugs, or accidentally using <code>+</code> instead of <code>+=</code>. It's not easy to just scan through code and find bugs; it often requires a deep understanding of <i>what</i> the compiler is <i>trying</i> to accomplish, not the code that is currently there (otherwise, it wouldn't be buggy code).
+</p>
+
+<p>
+On top of all that, the compiler performs many data transformations, separated and grouped into stages. This means that, if one stage is wrong, the problem often <i>appears</i> in another stage, despite <i>originating</i> from an earlier one. For example, if semantic analysis of a language fails to set the type of some node, and that language's IR code generation tries to read the type and gets <code>NULL</code>, it will crash <i>in IR generation</i>, not in semantic analysis&#x2026;
+</p>
+
+<p>
+All of <i>that</i> to say, compilers are inherently complex systems, and complex systems have lots of places for errors to be introduced, and often have lots of <i>other</i> places for errors to actually manifest.
+</p>
+
+<p>
+This is why, for compiler collections, <i>testing</i> is of the utmost importance. At it's most basic definition, a test is just an assertion of some output after some transformation is applied to some input.
+</p>
+
+<p>
+LCC has many testing frameworks in place to ensure all parts of the codebase work as expected (or, at least, I'm working on it). But, one of these frameworks is of interest today: <i>RunTest</i>.
+</p>
+</div>
+<div id="outline-container-orgacf4e54" class="outline-3">
+<h3 id="orgacf4e54">RunTest</h3>
+<div class="outline-text-3" id="text-orgacf4e54">
+<p>
+You can think of RunTest as an end-to-end testing framework for LCC. That is, it treats LCC as a black box, and just pushes data through it to get an expected output. The catch is that the output is automatically compiled with LCC, linked with GCC, and then the resulting binary executed; RunTest asserts the output of <i>that</i> binary, given an input of a source language to LCC.
+</p>
+
+<p>
+Specifically, RunTest asserts the exit status and printed output of the final binary.
+</p>
+
+<p>
+So, unless we want a single test to span across multiple files (something that I abhor), we need <i>some</i> sort of polyglot file format which may contain arbitrary source code, binary data (in case of asserting the program outputs control characters, NUL bytes, etc), and a number for the exit status.
+</p>
+
+<p>
+We <i>could</i> just use a <code>.txt</code> file, but, if we include binary data, a lot of text editors (which is what <code>.txt</code> files will be opened with, by default) will crash, or display unexpected/wrong characters. This is not good for the test author, as you may imagine. On top of that, some languages that LCC supports may not support comments; that means that if we relied on defining tests within a language, the language's lexer would have to work in tandem with the test suite. That doesn't quite match our "arbitrary" source code specification, does it?
+</p>
+
+<p>
+I was writing some documentation for Glint, typing some Glint source code in a source block within an Org mode file using Emacs, when I realized that I already had the answer. <i>That</i> is when it hit me: Org mode. I write source code of arbitrary languages in Org mode <i>all the time</i>. In fact, I do it for this blog. Why not use Org mode to write tests in? We can include binary data with example blocks, and we can include source code. Obviously, we can write a number in an Org file&#x2026; It fits our specifications! On top of that, it allows the author of the test to define it <i>literately</i>, i.e. with included text to describe (any part of) the test.
+</p>
+
+<p>
+The one "downside" to this is that Org mode is deeply tied into the Emacs ecosystem; in fact, the sole implementation of Org mode <i>is</i> Emacs. There aren't really parsers available for Org mode files that don't use Emacs itself. So, if we want to extract the test data from our Org mode test files, we need to use&#x2014;you guessed it&#x2014;Emacs!
+</p>
+
+<p>
+Of course, Emacs is wonderful and provides Emacs Lisp, so we can just write a script, and Emacs will run it for us whenever we ask (just like Bash).
+Emacs is also very portable (just like Bash) ((holy heck, it even runs on my <i>phone</i> now!!)), so I think anyone who wants to hack on LCC will be able to get a working Emacs on their system.
+</p>
+
+<p>
+With that out of the way, I decided on a basic syntax for the tests; here's Glint's "Empty File" test.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-org"><span class="org-org-level-1">* Empty File</span>
+
+In Glint, an empty program is completely valid.
+
+The rules for implicit return at the top level still apply.
+So, because the last expression is not of <span class="org-org-verbatim">=int=</span> type, Glint inserts <span class="org-org-verbatim">=return 0;=</span>.
+
+<span class="org-org-meta-line">#+NAME: source</span>
+<span class="org-org-block-begin-line">#+begin_src glint
+</span><span class="org-org-block-end-line">#+end_src
+</span>
+<span class="org-org-meta-line">#+NAME: status</span>
+<span class="org-org-block-begin-line">#+begin_example
+</span><span class="org-org-block">0
+</span><span class="org-org-block-end-line">#+end_example
+</span>
+<span class="org-org-meta-line">#+NAME: output</span>
+<span class="org-org-block-begin-line">#+begin_example
+</span><span class="org-org-block-end-line">#+end_example</span>
+</pre>
+</div>
+
+<p>
+The name of the test is the top-level headline, and the following named blocks constitute the test's source code input, and the test's expected status and output when the resulting binary has been run.
+</p>
+
+<p>
+As you can see, a test author may mark up the different portions of their test with explanations, information, or whatever data is needed to understand the test case and why it is the way it is.
+</p>
+
+<p>
+Now, an LCC contributor may define some language input and assert that it properly compiles to a program with the given semantics. This asserts that the binding between language and compiler is properly aligned, and semantics are preserved. For example, if semantics are not preserved, the language may be generating IR that doesn't match their intentions, or LCC may have a bug in it where it isn't respecting some feature of the IR when applying a transformation, or it could be a cosmic ray sent by aliens, bit-flipping your RAM just for funsies.
+You never know with these computer things.
+</p>
+
+<p>
+Either way, it's good to have a system that alerts you when things are broken, rather than <i>gasp</i> <b>silently</b> producing broken code (my nightmare), and this framework does that in a (I believe) neat and tidy way.
+</p>
+</div>
+</div>
+<div id="outline-container-org13cc766" class="outline-3">
+<h3 id="org13cc766">Oh, Yeah</h3>
+<div class="outline-text-3" id="text-org13cc766">
+<p>
+I forgot to mention, the org syntax accepts multiple source blocks, each one compiled separately and their artifacts collected to link together properly. This means that, if your language has modules or something like that, you can define a module and a program that uses it, and RunTest will automagically compile it properly. This means that Module/Type/AST serialisation and deserialisation may be tested by RunTest as well, which is a large pain-point for a lot of language developers (binary formats tend to be annoying like that).
+</p>
+</div>
+</div>
+<div id="outline-container-org5505df0" class="outline-3">
+<h3 id="org5505df0">Deep Dive</h3>
+<div class="outline-text-3" id="text-org5505df0">
+<p>
+You can read actual RunTest tests at <code>runtest/corpus/</code> within the <a href="https://github.com/LensPlaysGames/LensorCompilerCollection">LCC repository</a>. This can be a good way to get a feel for a language LCC compiles, as there are lots of example programs combined with an assertion of exactly what they do.
+</p>
+
+<p>
+Still interested? Go read <code>runtest/runtest.el</code> within the <a href="https://github.com/LensPlaysGames/LensorCompilerCollection">LCC repository</a>; it showcases a lot of very LISPy things, like <code>gensym</code>, macros, asynchronous subprocesses, and more, while still being short and sweet.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<footer>
+  <div class="footer-row">
+    <button onClick="goto_top()" title="Go to top of page">Back to Top</button>
+  </div>
+  <div class="footer-row">
+    <a target="_blank" href="https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG">Donate</a>
+    <a target="_blank" href="https://www.youtube.com/@Lensr">YouTube</a>
+    <a target="_blank" href="https://www.twitch.tv/lens_r">Twitch</a>
+    <a target="_blank" href="https://www.github.com/LensPlaysGames">GitHub</a>
+    <a target="_blank" href="https://discord.gg/FTQsgqQEM4">Discord</a>
+  </div>
+  <div class="footer-row">
+    <a target="_blank" href="/lensr_blog_v1/rss.xml">Feed/RSS</a>
+  </div>
+  <div class="footer-row"><span>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span></div>
+</footer>
+</div>
+</body>
+</html>

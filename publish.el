@@ -14,6 +14,8 @@
 
 ;; M-x eval-buffer RET
 ;; (eval-buffer)
+;; Alternatively, if you don't want to muck up "your" Emacs, you can run like this from CLI:
+;; emacs --batch ./publish.el --eval "(eval-buffer)"
 
 ;; See =org/mainblog.org=.
 
@@ -31,6 +33,9 @@
 
 (setq blub-directory (file-name-directory (buffer-file-name)))
 
+(setq blub-url "https://lensplaysgames.github.io")
+;; (setq blub-url "http://localhost:8000")
+
 (defun blub--org-html--build-meta-info (oldfun info)
   "Advice around 'org-html--build-meta-info' to insert open graph meta tags."
   (concat
@@ -47,7 +52,8 @@
         "<meta property=\"og:type\" content=\"website\"/>\n")
 
       ;; Set og:url to the url of this page.
-      (format "<meta property=\"og:url\" content=\"https://lensplaysgames.github.io/lensr_blog_v1/%s\"/>\n"
+      (format "<meta property=\"og:url\" content=\"%s/lensr_blog_v1/%s\"/>\n"
+              blub-url
               (file-relative-name (plist-get info :output-file) (plist-get info :publishing-directory)))
 
       ;; Set og:title to the title of this page in plain text.
@@ -84,7 +90,10 @@
            (if (and (stringp image-path) ;; Property must be present
                     (not (string-empty-p image-path)) ;; Property must have a value set
                     (not (file-name-absolute-p image-path))) ;; Path must be relative
-               (format "<meta property=\"og:image\" content=\"https://lensplaysgames.github.io/lensr_blog_v1/%s\"/>\n" image-path)
+               (format
+                "<meta property=\"og:image\" content=\"%s/lensr_blog_v1/%s\"/>\n"
+                blub-url
+                image-path)
              ""))
          ))
       ))
@@ -192,7 +201,7 @@ Passing nil will give the current time (as with any time object)."
              (push `(,(concat
                        "    <item>\n"
                        (format "      <title>%s</title>\n" headline)
-                       (format "      <link>https://lensplaysgames.github.io/lensr_blog_v1/posts/%s.html</link>\n" custom-id)
+                       (format "      <link>%s/lensr_blog_v1/posts/%s.html</link>\n" blub-url custom-id)
                        ;; Date translation...
                        (format "      <pubDate>%s</pubDate>\n" (blub-time-to-rss2-pubdate-string publish-time))
                        "    </item>\n")
@@ -241,7 +250,8 @@ Passing nil will give the current time (as with any time object)."
             "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n"
             "  <channel>\n"
             "    <title>Lens_r's Blog</title>\n"
-            "    <link>https://lensplaysgames.github.io/lensr_blog_v1/</link>\n"
+            (format "    <link>%s/lensr_blog_v1/</link>\n"
+                    blub-url)
             "    <description>Lens_r sometimes writes things down.</description>\n"
             "    <language>en-us</language>\n"
             ;; pubDate of channel == when it was created.
@@ -252,7 +262,8 @@ Passing nil will give the current time (as with any time object)."
             "</lastBuildDate>\n"
             "    <docs>https://validator.w3.org/feed/docs/rss2.html</docs>\n"
             "    <generator>Lens_r's Pile of Elisp</generator>\n"
-            "    <atom:link href=\"https://lensplaysgames.github.io/lensr_blog_v1/rss.xml\" rel=\"self\" type=\"application/rss+xml\"/>\n")
+            (format "    <atom:link href=\"%s/lensr_blog_v1/rss.xml\" rel=\"self\" type=\"application/rss+xml\"/>\n"
+                    blub-url))
     (mapc (lambda (rss-item)
             (insert (car rss-item)))
           rss2-items)
@@ -280,7 +291,7 @@ Passing nil will give the current time (as with any time object)."
 (blub-concatenate-directory-files "org/css" "res/all.css")
 
 ;; https://www.npmjs.com/package/uglify-js
-;; install with "npm i uglify-js --location=global"
+;; install with "npm i -g uglify-js"
 (let ((minjs (executable-find "uglifyjs"))
       (outjs "res/all.min.js"))
   (when minjs
@@ -294,7 +305,7 @@ Passing nil will give the current time (as with any time object)."
                   "--output" (expand-file-name outjs))))
 
 ;; https://www.npmjs.com/package/clean-css-cli
-;; install with "npm i clean-css-cli --location=global"
+;; install with "npm i -g clean-css-cli"
 (let ((mincss (executable-find "cleancss"))
       (outcss "res/all.min.css"))
   (when mincss
@@ -423,5 +434,8 @@ Passing nil will give the current time (as with any time object)."
 ;; local testing/building to match the GitHub way of doing things.
 (make-directory "localbuild/lensr_blog_v1" t)
 (copy-directory "docs" "localbuild/lensr_blog_v1/" nil t t)
+
+(when (string-search "localhost" blub-url)
+  (message "\n\nWARNING WARNING WARNING\n\nDO NOT USE THIS PUBLISH INSTANCE TO RELEASE!!!\nTHE URL CONTAINS LOCALHOST, LIKE FOR A LOCAL DEVELOPMENT BUILD\n\n"))
 
 ;;; publish.el ends here

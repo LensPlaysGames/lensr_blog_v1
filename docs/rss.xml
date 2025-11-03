@@ -7,10 +7,20 @@
     <description>Lens_r sometimes writes things down.</description>
     <language>en-us</language>
     <pubDate>Mon, 29 May 2023 20:08:15 PDT</pubDate>
-    <lastBuildDate>Sun, 30 Jul 2023 09:19:09 PDT</lastBuildDate>
+    <lastBuildDate>Mon, 03 Nov 2025 12:35:50 PDT</lastBuildDate>
     <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
     <generator>Lens_r's Pile of Elisp</generator>
     <atom:link href="https://lensplaysgames.github.io/lensr_blog_v1/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Glint's Quirky Call Syntax</title>
+      <link>https://lensplaysgames.github.io/lensr_blog_v1/posts/2025glintcallgrammar.html</link>
+      <pubDate>Mon, 03 Nov 2025 12:30:00 PDT</pubDate>
+    </item>
+    <item>
+      <title>Literate Tests with Org Mode and Emacs Lisp</title>
+      <link>https://lensplaysgames.github.io/lensr_blog_v1/posts/2025literatetests.html</link>
+      <pubDate>Mon, 03 Nov 2025 12:30:00 PDT</pubDate>
+    </item>
     <item>
       <title>How I Manage My Finances From the Command Line</title>
       <link>https://lensplaysgames.github.io/lensr_blog_v1/posts/financialcommandlinemanagement.html</link>

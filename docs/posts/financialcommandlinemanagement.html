@@ -3,11 +3,11 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-07-30 Sun 09:19 -->
+<!-- 2025-11-03 Mon 12:35 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Lens_r | How I Manage My Finances From the Command Line</title>
-<meta name="author" content="Rylan Lens Kellogg" />
+<meta name="author" content="lens_r" />
 <meta name="generator" content="Org Mode" />
 <meta property="og:type" content="article"/>
 <meta property="og:url" content="https://lensplaysgames.github.io/lensr_blog_v1/posts/financialcommandlinemanagement.html"/>
@@ -25,11 +25,10 @@ gtag('js', new Date());
 
 gtag('config', 'G-E0F1C2XGCS');
 </script>
-<script>function toggle_dark_mode(){var element=document.getElementsByTagName("html")[0],dark_button=document.getElementById("dark-mode");element.classList.toggle("dark-mode");const d=new Date;d.setTime(d.getTime()+24192e5),element.classList.contains("dark-mode")?(document.cookie="dark_mode=true; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Light Mode"):(document.cookie="dark_mode=false; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Dark Mode")}function goto_top(){document.body.scrollTop=0,document.documentElement.scrollTop=0}function insert_top_banner(){var navbar_html='<nav class="navbar" id="navbar">';navbar_html+='<label for="hamburger">&#9776;</label>';let content_elem=document.body.firstElementChild,navbar_and_contents=document.createElement("div");navbar_and_contents.innerHTML='<nav class="navbar" id="navbar"><label for="hamburger">&#9776;</label><input type="checkbox" id="hamburger"/><div id="hamburger-items"><a href=\'/lensr_blog_v1/\'">Home</a><a target="_blank" href=\'https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG\'">Donate</a><a target="_blank" href=\'https://www.youtube.com/@Lensr\'">YouTube</a><a target="_blank" href=\'https://www.twitch.tv/lens_r\'">Twitch</a><a target="_blank" href=\'https://www.github.com/LensPlaysGames\'">GitHub</a><a target="_blank" href=\'https://discord.gg/FTQsgqQEM4\'">Discord</a><a id="dark-mode" onClick={toggle_dark_mode();}>Dark Mode</a></div></nav>'+content_elem.outerHTML,content_elem.replaceWith(navbar_and_contents)}function main(){insert_top_banner();let cookies=decodeURIComponent(document.cookie).split(";");for(let i=0;i<cookies.length;i++){for(;" "==cookies[i].charAt(0);)cookies[i]=cookies[i].substring(1);0==cookies[i].indexOf("dark_mode")&&"true"==cookies[i].substring(name.length,cookies[i].length).split("=")[1]&&toggle_dark_mode()}}window.onload=main;</script>
+<script>function toggle_dark_mode(){var element=document.getElementsByTagName("html")[0],dark_button=document.getElementById("dark-mode"),d=(element.classList.toggle("dark-mode"),new Date);d.setTime(d.getTime()+24192e5),element.classList.contains("dark-mode")?(document.cookie="dark_mode=true; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Light Mode"):(document.cookie="dark_mode=false; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Dark Mode")}function goto_top(){document.body.scrollTop=0,document.documentElement.scrollTop=0}function insert_top_banner(){var navbar_html='<nav class="navbar" id="navbar">',navbar_html=((navbar_html+='<label for="hamburger">&#9776;</label>')+'<input type="checkbox" id="hamburger"/>'+'<div id="hamburger-items">'+"<a href='/lensr_blog_v1/'\">Home</a>"+'<a target="_blank" href=\'https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG\'">Donate</a>'+'<a target="_blank" href=\'https://www.youtube.com/@Lensr\'">YouTube</a>'+'<a target="_blank" href=\'https://www.twitch.tv/lens_r\'">Twitch</a>'+'<a target="_blank" href=\'https://www.github.com/LensPlaysGames\'">GitHub</a>'+'<a target="_blank" href=\'https://discord.gg/FTQsgqQEM4\'">Discord</a>'+'<a id="dark-mode" onClick={toggle_dark_mode();}>Dark Mode</a>'+"</div></nav>",document.body.firstElementChild),navbar_and_contents=document.createElement("div");navbar_and_contents.innerHTML='<nav class="navbar" id="navbar"><label for="hamburger">&#9776;</label><input type="checkbox" id="hamburger"/><div id="hamburger-items"><a href=\'/lensr_blog_v1/\'">Home</a><a target="_blank" href=\'https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG\'">Donate</a><a target="_blank" href=\'https://www.youtube.com/@Lensr\'">YouTube</a><a target="_blank" href=\'https://www.twitch.tv/lens_r\'">Twitch</a><a target="_blank" href=\'https://www.github.com/LensPlaysGames\'">GitHub</a><a target="_blank" href=\'https://discord.gg/FTQsgqQEM4\'">Discord</a><a id="dark-mode" onClick={toggle_dark_mode();}>Dark Mode</a></div></nav>'+navbar_html.outerHTML,navbar_html.replaceWith(navbar_and_contents)}function main(){insert_top_banner();var cookies=decodeURIComponent(document.cookie).split(";");for(let i=0;i<cookies.length;i++){for(;" "==cookies[i].charAt(0);)cookies[i]=cookies[i].substring(1);0==cookies[i].indexOf("dark_mode")&&"true"==cookies[i].substring(name.length,cookies[i].length).split("=")[1]&&toggle_dark_mode()}}window.onload=main;</script>
 </head>
 <body>
 <div id="content" class="content">
-
 <div id="outline-container-financialcommandlinemanagement" class="outline-2">
 <h2 id="financialcommandlinemanagement">How I Manage My Finances From the Command Line</h2>
 <div class="outline-text-2" id="text-financialcommandlinemanagement">
@@ -49,10 +48,9 @@ While double-entry accounting <i>is</i> a little bit to wrap your head around, i
 Unlike most accounting software I've found, which use either a proprietary (yuck!) binary "project" format or CSV, Ledger uses a plain-text file that <b>you</b> maintain however you'd like to; the software <b>never</b> alters your ledger file. To add a new transaction, you open the file in a text editor and add an entry; it is quite a human-friendly format, once you get the basics down.
 </p>
 </div>
-
-<div id="outline-container-orgd63ff32" class="outline-3">
-<h3 id="orgd63ff32">Transactions</h3>
-<div class="outline-text-3" id="text-orgd63ff32">
+<div id="outline-container-org514ff77" class="outline-3">
+<h3 id="org514ff77">Transactions</h3>
+<div class="outline-text-3" id="text-org514ff77">
 <div class="org-src-container">
 <pre class="src src-ledger">2023/07/14 Starbucks
   Expenses:Wants:Coffee  $9.08
@@ -92,10 +90,9 @@ The date is self-explanatory, I would hope :Þ. As you can see, <i>you</i> are n
 </p>
 </div>
 </div>
-
-<div id="outline-container-org3ab63b1" class="outline-3">
-<h3 id="org3ab63b1">Generating Basic Reports</h3>
-<div class="outline-text-3" id="text-org3ab63b1">
+<div id="outline-container-org9268a42" class="outline-3">
+<h3 id="org9268a42">Generating Basic Reports</h3>
+<div class="outline-text-3" id="text-org9268a42">
 <p>
 Finally, let's get to the meat and potatoes of Ledger CLI; the reports it can generate.
 </p>
@@ -126,7 +123,7 @@ Let's imagine the following ledger file, <code>./.test.ledger</code>.
 Here is the <code>balance</code> report, which should always add up to zero; it tells you where money comes from and where money goes.
 </p>
 
-<pre class="example" id="orgb676db4">
+<pre class="example" id="org4a4c470">
 $ ledger -f ./.test.ledger bal
             $122.920  Assets:Checking
              $15.920  Expenses:Wants:Coffee
@@ -147,7 +144,7 @@ One of the most powerful features of Ledger is it's ability to <a href="https://
 As well as the <code>balance</code> report, there is also the <code>register</code> report; this mimics what you might see in a checkbook. The <code>register</code> report makes it easier to see how each transaction adds to the totals that appear in the <code>balance</code> report.
 </p>
 
-<pre class="example" id="orgf0c9146">
+<pre class="example" id="org62c2b15">
 23-Jun-17 Me                    Assets:Checking             $69.420      $69.420
                                 Income:Salary              $-69.420            0
 23-Jun-19 Starbucks             Expenses:Wants:Coffee        $6.840       $6.840
@@ -180,7 +177,7 @@ And that's how I manage my finances from the command line :). Interested in <a h
   <div class="footer-row">
     <a target="_blank" href="/lensr_blog_v1/rss.xml">Feed/RSS</a>
   </div>
-  <div class="footer-row"><span>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6)</span></div>
+  <div class="footer-row"><span>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span></div>
 </footer>
 </div>
 </body>

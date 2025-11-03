@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-07-30 Sun 09:19 -->
+<!-- 2025-11-03 Mon 12:35 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Main Blog</title>
@@ -26,15 +26,14 @@ gtag('js', new Date());
 
 gtag('config', 'G-E0F1C2XGCS');
 </script>
-<script>function toggle_dark_mode(){var element=document.getElementsByTagName("html")[0],dark_button=document.getElementById("dark-mode");element.classList.toggle("dark-mode");const d=new Date;d.setTime(d.getTime()+24192e5),element.classList.contains("dark-mode")?(document.cookie="dark_mode=true; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Light Mode"):(document.cookie="dark_mode=false; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Dark Mode")}function goto_top(){document.body.scrollTop=0,document.documentElement.scrollTop=0}function insert_top_banner(){var navbar_html='<nav class="navbar" id="navbar">';navbar_html+='<label for="hamburger">&#9776;</label>';let content_elem=document.body.firstElementChild,navbar_and_contents=document.createElement("div");navbar_and_contents.innerHTML='<nav class="navbar" id="navbar"><label for="hamburger">&#9776;</label><input type="checkbox" id="hamburger"/><div id="hamburger-items"><a href=\'/lensr_blog_v1/\'">Home</a><a target="_blank" href=\'https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG\'">Donate</a><a target="_blank" href=\'https://www.youtube.com/@Lensr\'">YouTube</a><a target="_blank" href=\'https://www.twitch.tv/lens_r\'">Twitch</a><a target="_blank" href=\'https://www.github.com/LensPlaysGames\'">GitHub</a><a target="_blank" href=\'https://discord.gg/FTQsgqQEM4\'">Discord</a><a id="dark-mode" onClick={toggle_dark_mode();}>Dark Mode</a></div></nav>'+content_elem.outerHTML,content_elem.replaceWith(navbar_and_contents)}function main(){insert_top_banner();let cookies=decodeURIComponent(document.cookie).split(";");for(let i=0;i<cookies.length;i++){for(;" "==cookies[i].charAt(0);)cookies[i]=cookies[i].substring(1);0==cookies[i].indexOf("dark_mode")&&"true"==cookies[i].substring(name.length,cookies[i].length).split("=")[1]&&toggle_dark_mode()}}window.onload=main;</script>
+<script>function toggle_dark_mode(){var element=document.getElementsByTagName("html")[0],dark_button=document.getElementById("dark-mode"),d=(element.classList.toggle("dark-mode"),new Date);d.setTime(d.getTime()+24192e5),element.classList.contains("dark-mode")?(document.cookie="dark_mode=true; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Light Mode"):(document.cookie="dark_mode=false; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Dark Mode")}function goto_top(){document.body.scrollTop=0,document.documentElement.scrollTop=0}function insert_top_banner(){var navbar_html='<nav class="navbar" id="navbar">',navbar_html=((navbar_html+='<label for="hamburger">&#9776;</label>')+'<input type="checkbox" id="hamburger"/>'+'<div id="hamburger-items">'+"<a href='/lensr_blog_v1/'\">Home</a>"+'<a target="_blank" href=\'https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG\'">Donate</a>'+'<a target="_blank" href=\'https://www.youtube.com/@Lensr\'">YouTube</a>'+'<a target="_blank" href=\'https://www.twitch.tv/lens_r\'">Twitch</a>'+'<a target="_blank" href=\'https://www.github.com/LensPlaysGames\'">GitHub</a>'+'<a target="_blank" href=\'https://discord.gg/FTQsgqQEM4\'">Discord</a>'+'<a id="dark-mode" onClick={toggle_dark_mode();}>Dark Mode</a>'+"</div></nav>",document.body.firstElementChild),navbar_and_contents=document.createElement("div");navbar_and_contents.innerHTML='<nav class="navbar" id="navbar"><label for="hamburger">&#9776;</label><input type="checkbox" id="hamburger"/><div id="hamburger-items"><a href=\'/lensr_blog_v1/\'">Home</a><a target="_blank" href=\'https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG\'">Donate</a><a target="_blank" href=\'https://www.youtube.com/@Lensr\'">YouTube</a><a target="_blank" href=\'https://www.twitch.tv/lens_r\'">Twitch</a><a target="_blank" href=\'https://www.github.com/LensPlaysGames\'">GitHub</a><a target="_blank" href=\'https://discord.gg/FTQsgqQEM4\'">Discord</a><a id="dark-mode" onClick={toggle_dark_mode();}>Dark Mode</a></div></nav>'+navbar_html.outerHTML,navbar_html.replaceWith(navbar_and_contents)}function main(){insert_top_banner();var cookies=decodeURIComponent(document.cookie).split(";");for(let i=0;i<cookies.length;i++){for(;" "==cookies[i].charAt(0);)cookies[i]=cookies[i].substring(1);0==cookies[i].indexOf("dark_mode")&&"true"==cookies[i].substring(name.length,cookies[i].length).split("=")[1]&&toggle_dark_mode()}}window.onload=main;</script>
 </head>
 <body>
 <div id="content" class="content">
 <h1 class="title">Main Blog</h1>
-
-<div id="outline-container-orgbf6d1c7" class="outline-2">
-<h2 id="orgbf6d1c7">HOW TO WRITE POSTS</h2>
-<div class="outline-text-2" id="text-orgbf6d1c7">
+<div id="outline-container-org535289f" class="outline-2">
+<h2 id="org535289f">HOW TO WRITE POSTS</h2>
+<div class="outline-text-2" id="text-org535289f">
 <p>
 First of all, a kind of overview of how this works. Each top-level heading (one star) with the "blogpost" tag will be exported by the publishing system to its own file, and have its own webpage on the website that will be linked to from the main blog page. Everything else <i>does</i> get exported to HTML, but only within the (not linked) <code>mainblog.html</code>. Which means readers of the blog won't see it :^).
 </p>
@@ -51,9 +50,9 @@ Anything within this subtree will then be a part of the blog post. For now, ther
 <pre class="src src-org">\* Ooops, out of order! :blogpost:
   <span class="org-org-drawer">:PROPERTIES:</span>
   <span class="org-org-special-keyword">:CUSTOM_ID:</span> <span class="org-org-property-value">outofordertest</span>
-  <span class="org-org-special-keyword">:CREATED:</span> <span class="org-org-date">[2023-05-29 Mon 12:40]</span>
-  <span class="org-org-special-keyword">:PUBLISHED:</span> <span class="org-org-date">[2023-05-29 Mon 12:40]</span>
-  <span class="org-org-special-keyword">:MODIFIED:</span> <span class="org-org-date">[2023-05-29 Mon 12:40]</span>
+  <span class="org-org-special-keyword">:CREATED:</span> <span class="org-org-property-value"><span class="org-org-date">[2023-05-29 Mon 12:40]</span></span>
+  <span class="org-org-special-keyword">:PUBLISHED:</span> <span class="org-org-property-value"><span class="org-org-date">[2023-05-29 Mon 12:40]</span></span>
+  <span class="org-org-special-keyword">:MODIFIED:</span> <span class="org-org-property-value"><span class="org-org-date">[2023-05-29 Mon 12:40]</span></span>
   <span class="org-org-special-keyword">:OG_IMAGE:</span> <span class="org-org-property-value">images/myimage.png</span>
   <span class="org-org-special-keyword">:OG_DESCRIPTION:</span> <span class="org-org-property-value">A short hook to make readers click the link!</span>
   <span class="org-org-special-keyword">:POST_TAGS:</span> <span class="org-org-property-value">lorem, ipsum, dolor, sit, amet</span>
@@ -64,57 +63,593 @@ Anything within this subtree will then be a part of the blog post. For now, ther
 </div>
 
 <p>
+NOTE: CUSTOM<sub>ID</sub> and PUBLISHED are always required.
+</p>
+
+<p>
 NOTE: The OG<sub>IMAGE</sub> property is optional, but, if provided, sets the open graph/twitter card image (og:image) that will be displayed when the page is linked to from social media sites. OG<sub>DESCRIPTION</sub> may also be set in order to explicitly set og:description.
 </p>
 
 <p>
 NOTE: POST<sub>TAGS</sub> property is not yet used yet, but will eventually be used for users to be able to find posts by tag.
 </p>
+
+<p>
+
+</p>
 </div>
+</div>
+<div id="outline-container-orgd8c3d68" class="outline-2">
+<h2 id="orgd8c3d68">2025 Ideas</h2>
+<div class="outline-text-2" id="text-orgd8c3d68">
+</div>
+<div id="outline-container-orgdd04c50" class="outline-3">
+<h3 id="orgdd04c50">Literate Compiler/Programming Tests with Org Mode and Emacs</h3>
+<div class="outline-text-3" id="text-orgdd04c50">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-11-03 Mon 09:53]</span></span>
+</p>
+
+<ul class="org-ul">
+<li>RunTest test suite</li>
+</ul>
+
+<p>
+Wrote first draft <span class="timestamp-wrapper"><span class="timestamp">[2025-11-03 Mon 11:02]</span></span>
+</p>
+</div>
+</div>
+<div id="outline-container-org2cf87e1" class="outline-3">
+<h3 id="org2cf87e1">Abusing the C++ Type System&#x2014;LCC's Instruction Selection Implementation</h3>
+<div class="outline-text-3" id="text-org2cf87e1">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-11-03 Mon 09:53]</span></span>
+</p>
+
+<ul class="org-ul">
+<li>isel<sub>patterns.hh</sub></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org6468b3d" class="outline-3">
+<h3 id="org6468b3d">Glint's Basic Grammar</h3>
+<div class="outline-text-3" id="text-org6468b3d">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-11-03 Mon 09:53]</span></span>
+</p>
+<ul class="org-ul">
+<li>once I flesh it out, go over the single expression, group expression, call expression stuff, and why it fundamentally is a different grammar than C or LISP or Rust.</li>
+<li>accompanying video possibly?</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orga62a0c7" class="outline-3">
+<h3 id="orga62a0c7">Formatting Glint using Emacs and Rust</h3>
+<div class="outline-text-3" id="text-orga62a0c7">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-11-03 Mon 09:53]</span></span>
+</p>
+<ul class="org-ul">
+<li>glint-ts-mode formatting implementation using tree sitter queries</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgc12d9ba" class="outline-3">
+<h3 id="orgc12d9ba">My Very Own Emacs&#x2014;How I Wrote a LISP-based Text Editor</h3>
+<div class="outline-text-3" id="text-orgc12d9ba">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-11-03 Mon 09:53]</span></span>
+</p>
+<ul class="org-ul">
+<li>LITE tree sitter and graphical implementation</li>
+<li>accompanying video possibly?</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org0dea0a8" class="outline-3">
+<h3 id="org0dea0a8">Implementing Org mode in Glint</h3>
+<div class="outline-text-3" id="text-org0dea0a8">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-11-03 Mon 09:53]</span></span>
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-2025glintcallgrammar" class="outline-2">
+<h2 id="2025glintcallgrammar">Glint's Quirky Call Syntax</h2>
+<div class="outline-text-2" id="text-2025glintcallgrammar">
+<p>
+In case you don't know, I'm the creator of and main contributor to the Lensor Compiler Collection (abbreviated <i>LCC</i>). I am also the designer and creator of a language LCC compiles, <i>Glint</i>. Herein lies the quirks of Glint's syntax, and why it took so long to put together a formal grammar (or, even a comprehensive tree-sitter one).
+</p>
+
+<p>
+Glint is, well, Glint. You know it when you see it, and there's a couple reasons for that. One is that it is quite opinionated, but also not at all. You'll see what I mean.
+</p>
+
+<p>
+Let's take a look at what is often the most noticeable difference between Glint and other popular programming languages, like C and LISP: call expressions.
+</p>
+</div>
+<div id="outline-container-org4a38b58" class="outline-3">
+<h3 id="org4a38b58">Implicit Invocation</h3>
+<div class="outline-text-3" id="text-org4a38b58">
+<p>
+Let's assume we have some function <code>foo</code> which takes no parameters, and we want to call it.
+</p>
+
+<p>
+In C:
+</p>
+<div class="org-src-container">
+<pre class="src src-c"><span class="org-function-name">foo</span>();
+</pre>
 </div>
 
-
-<div id="outline-container-org10b9dfa" class="outline-2">
-<h2 id="org10b9dfa">Fun Titles / Idea Dump</h2>
-<div class="outline-text-2" id="text-org10b9dfa">
+<p>
+In LISP:
+</p>
+<div class="org-src-container">
+<pre class="src src-lisp">(foo)
+</pre>
 </div>
-<div id="outline-container-orgc659c6a" class="outline-3">
-<h3 id="orgc659c6a">How I Built Rome in a Day</h3>
-<div class="outline-text-3" id="text-orgc659c6a">
+
+<p>
+Now, in Glint:
+</p>
+<div class="org-src-container">
+<pre class="src src-glint">foo;
+</pre>
+</div>
+
+<p>
+Uhhh&#x2026; Where are the parentheses?! Well, you see, this is one place where Glint keeps it interesting: implicit invocation. That is, the semantics of Glint state that an expression with a function type may be implicitly converted to an invocation of that function, and the type of the expression updated to the return type of the function. That's just a fancy way of saying, for a function with no parameters, you don't need to use parentheses to call it. Cool! I like typing less.
+</p>
+
+<p>
+NOTE: the idea for implicit invocation is inspired from Algol 68; LCC's test suite was originally written in Algol just for the fun of it.
+</p>
+</div>
+</div>
+<div id="outline-container-org7e50ae8" class="outline-3">
+<h3 id="org7e50ae8">Calls With Arguments</h3>
+<div class="outline-text-3" id="text-org7e50ae8">
+<p>
+Now, let's assume we have some function <code>bar</code> which takes two integer parameters, and we want to call it.
+</p>
+
+
+<p>
+In C:
+</p>
+<div class="org-src-container">
+<pre class="src src-c">bar(27, 42);
+</pre>
+</div>
+
+<p>
+In LISP:
+</p>
+<div class="org-src-container">
+<pre class="src src-lisp">(bar 27 42)
+</pre>
+</div>
+
+<p>
+Now, in Glint:
+</p>
+<div class="org-src-container">
+<pre class="src src-glint">bar 27, 42;
+</pre>
+</div>
+
+<p>
+Wait, where are the parentheses? That's right, Glint doesn't associate parentheses with call expressions in any scenario. You never need them, unless you do (more on that later).
+</p>
+
+<p>
+The reason behind this design choice was simple: I like LISP, but I hate (yet also understand) when people complain about the noise of the parentheses. So, Glint attempts to be as LISP-like as possible while not requiring any in the most common cases. Like how English changes a lot of word's hard-to-make sounds to the schwa sound (IPA ə) to make it easier and quicker to say, Glint alters the syntax of expressions to not require parentheses (or <i>noise</i>, in general) in as many places as possible.
+</p>
+</div>
+</div>
+<div id="outline-container-org803c5d5" class="outline-3">
+<h3 id="org803c5d5">When Things Get Complicated</h3>
+<div class="outline-text-3" id="text-org803c5d5">
+<p>
+Now, you may be wondering something: if a call is just (at least) two expressions next to each other, how do we parse binary operators in relation to calls?
+</p>
+
+<p>
+That is, how should the following be interpreted?
+</p>
+<div class="org-src-container">
+<pre class="src src-glint">blah 27 + 42;
+</pre>
+</div>
+
+<p>
+Is this a call expression, with callee <code>blah</code> and <i>one</i> binary expression argument <code>27 + 42</code>?
+</p>
+
+<p>
+Or, is this a binary expression, with a call expression <code>blah 27</code> on the left hand side, and <code>42</code> on the right hand side?
+</p>
+
+<pre class="example" id="org4e5a587">
+Call
+|-- identifier: blah
+`-- Binary: +
+    |-- number: 27
+    `-- number: 42
+</pre>
+
+<pre class="example" id="org5da8ff5">
+Binary: +
+|-- Call
+|   |-- identifier: blah
+|   `-- number: 27
+`-- number: 42
+</pre>
+
+<p>
+If you are familiar with writing parsers, than you are probably thinking, "Normally, we'd handle this sort of thing with precedence."
+</p>
+
+<p>
+Unfortunately, there is one more quirk of Glint we have to consider, and it's that some unary prefix expressions share the same token with binary infix expressions; of those, <code>&amp;</code> is the most common. <code>&amp;</code> as a unary prefix operator gets the address of it's contained expression. <code>&amp;</code> as a binary infix operator performs a bitwise AND operation on it's contained expressions, and returns the result.
+</p>
+
+<p>
+Now, how should the following be interpreted?:
+</p>
+<div class="org-src-container">
+<pre class="src src-glint">blah &amp;x;
+</pre>
+</div>
+
+<p>
+To most, it would make most sense, if <code>blah</code> is a function accepting a pointer argument, that this would be a call to that function with a single argument.
+</p>
+
+<p>
+Notice, however, how that interpretation <i>depends</i> on the type of the object that the identifier <i>blah</i> refers to. Information like that isn't available until after semantic analysis, which means a formal grammar can't encode that information into it. So, if we want the grammar to not be (ULTRA) ambiguous, we have to decide on a rule to parse this.
+</p>
+
+<p>
+You may be thinking, "If we already parsed the declaration of blah, doesn't the parser already know it's type?"&#x2014;and you would be correct. <i>If</i> the declaration of <code>blah</code> happens to be before this expression, then yes, we could know that. The problem is that Glint's function declarations are not in any order; you can use a function before defining it, since call expressions don't need resolved until semantic analysis (AFTER <i>everything</i> has been parsed). This means that, at the time of parsing, you cannot guarantee that you will know the type of anything (and that tracks, since parsing shouldn't really do anything based on types other than parse them). Because of this, we can't conditionally parse a call or a binary expression based on the type of the lhs, and we can't just collect these parsed expressions and figure it out in semantic analysis because each path would further change the parsed tree (i.e. precedence wouldn't apply properly).
+</p>
+
+<p>
+Okay, so, our rule (mentioned above) is as such: binary expressions are parsed <i>before</i> call arguments. So, if there is a prefix unary operator <i>that may also be a binary infix operator</i> directly following some parsed expression, it is treated as the binary infix operator. Notice that this is different from precedence, since we encounter a token that could either be a binary operator containing this expression, and should be parsed, or a unary prefix one for a further expression, that should be not parsed until parsing the next expression.
+</p>
+
+<p>
+This means, sadly, that the concession of an unambiguous grammar means we have to sacrifice this specific use case of parentheses if we want it to be a call. Do note that the parentheses have nothing to do with it being parsed as a call; they are just a way to group expressions explicitly so that precedence doesn't come into effect.
+</p>
+
+<p>
+A similar issue applies to subscript not knowing <i>how</i> tight to bind with respect to calls. Is <code>foo 42[0];</code> a subscript of the call <code>foo 42</code>, or is it a call of <code>foo</code> with a <code>42[0]</code> subscript argument?
+</p>
+
+<p>
+As you can see, there <i>would</i> be an ambiguity here if not for the following rule: a binary expression may not directly contain a call expression. If you want to apply a binary expression to a call, group the call's expressions with parentheses and subscript the paren expression.
+</p>
+
+<p>
+So, binary expressions actually only accept a subset of Glint's expressions (ones that aren't calls). This is put in practice by the simple ordering of gathering binary operators before call arguments during parsing (such that a call is parsed <i>after</i> binary expressions are, it can't directly appear as a child of one (since it hasn't yet been parsed) (because the binary expression binds more tightly)).
+</p>
+
+<pre class="example" id="orge596955">
+lhs = ParsePrimary();
+lhs = ParseBinary();
+
+if (at separator)
+  return lhs;
+
+lhs = GatherCallArguments();
+</pre>
+
+<p>
+This means, for our subscript example, <code>foo 42[0]</code>, <code>foo</code> is parsed as a primary expression (identifier), there is no valid binary operator and no expression separator, so we treat <code>foo</code> as a callee and begin gathering call arguments. We parse <code>42</code> as our primary, and, now, there <i>is</i> a valid binary operator (<code>[</code> for subscript operation), so we parse that with the lhs being <code>42</code>. As you can see, a binary operator can never have a call as it's left hand side, because a call hasn't been parsed yet. This effectively means that the lhs of a binary expression is not allowed to be a call expression, which reduces the ambiguity in the grammar.
+</p>
+
+<p>
+So, for <code>-</code> and <code>&amp;</code>, both unary prefix and binary infix operators, they "can't" appear as unary operators as the direct first argument to a function call. They <i>can</i>, however, appear as unary operators as the direct child of a paren expression, so we "escape" to the full Glint grammar using parentheses. This allows Glint to be as parentheses-less as possible, unless they are absolutely needed to disambiguate the expression.
+</p>
+
+<p>
+I am currently considering altering bitwise and operator to be <code>bit&amp;</code> instead of just <code>&amp;</code>, so that parentheses wouldn't be needed in the addressof case (since that tends to be somewhat common).
+</p>
+
+<p>
+If you are interested in how this sort of grammar would be parsed, there is the LCC implementation in C++, and a tree-sitter grammar declared in JavaScript with a very understandable structure.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-2025literatetests" class="outline-2">
+<h2 id="2025literatetests">Literate Tests with Org Mode and Emacs Lisp</h2>
+<div class="outline-text-2" id="text-2025literatetests">
+<p>
+In case you don't know, I'm the creator of and main contributor to the Lensor Compiler Collection (abbreviated <i>LCC</i>).
+</p>
+
+<p>
+LCC has design the standard: "no third party dependencies". That means that I have written the code that transforms source code into tokens, as well as the code that issues diagnostics, as well as the code that selects machine instructions to emit, as well as the code that emits said machine instructions. As well as about 18 kajillion other steps that I'm omitting (not for sake of brevity, but because they've been blocked out by my subconscious in an attempt to protect me from the horrors of the world).
+</p>
+
+<p>
+While that's all well and good, I'm only human, and humans make mistkaes; especially over the course of years, which is how much time I have sunk into this little hobby project. The issue with a compiler collection is, well, <i>finding</i> the bugs. Sometimes they are bugs of omission (i.e. not doing something that is actually required), sometimes they are bugs of logical error (i.e. my mental model is incorrect and doesn't match reality), sometimes they are off-by-one bugs, or accidentally using <code>+</code> instead of <code>+=</code>. It's not easy to just scan through code and find bugs; it often requires a deep understanding of <i>what</i> the compiler is <i>trying</i> to accomplish, not the code that is currently there (otherwise, it wouldn't be buggy code).
+</p>
+
+<p>
+On top of all that, the compiler performs many data transformations, separated and grouped into stages. This means that, if one stage is wrong, the problem often <i>appears</i> in another stage, despite <i>originating</i> from an earlier one. For example, if semantic analysis of a language fails to set the type of some node, and that language's IR code generation tries to read the type and gets <code>NULL</code>, it will crash <i>in IR generation</i>, not in semantic analysis&#x2026;
+</p>
+
+<p>
+All of <i>that</i> to say, compilers are inherently complex systems, and complex systems have lots of places for errors to be introduced, and often have lots of <i>other</i> places for errors to actually manifest.
+</p>
+
+<p>
+This is why, for compiler collections, <i>testing</i> is of the utmost importance. At it's most basic definition, a test is just an assertion of some output after some transformation is applied to some input.
+</p>
+
+<p>
+LCC has many testing frameworks in place to ensure all parts of the codebase work as expected (or, at least, I'm working on it). But, one of these frameworks is of interest today: <i>RunTest</i>.
+</p>
+</div>
+<div id="outline-container-orgcb8be7d" class="outline-3">
+<h3 id="orgcb8be7d">RunTest</h3>
+<div class="outline-text-3" id="text-orgcb8be7d">
+<p>
+You can think of RunTest as an end-to-end testing framework for LCC. That is, it treats LCC as a black box, and just pushes data through it to get an expected output. The catch is that the output is automatically compiled with LCC, linked with GCC, and then the resulting binary executed; RunTest asserts the output of <i>that</i> binary, given an input of a source language to LCC.
+</p>
+
+<p>
+Specifically, RunTest asserts the exit status and printed output of the final binary.
+</p>
+
+<p>
+So, unless we want a single test to span across multiple files (something that I abhor), we need <i>some</i> sort of polyglot file format which may contain arbitrary source code, binary data (in case of asserting the program outputs control characters, NUL bytes, etc), and a number for the exit status.
+</p>
+
+<p>
+We <i>could</i> just use a <code>.txt</code> file, but, if we include binary data, a lot of text editors (which is what <code>.txt</code> files will be opened with, by default) will crash, or display unexpected/wrong characters. This is not good for the test author, as you may imagine. On top of that, some languages that LCC supports may not support comments; that means that if we relied on defining tests within a language, the language's lexer would have to work in tandem with the test suite. That doesn't quite match our "arbitrary" source code specification, does it?
+</p>
+
+<p>
+I was writing some documentation for Glint, typing some Glint source code in a source block within an Org mode file using Emacs, when I realized that I already had the answer. <i>That</i> is when it hit me: Org mode. I write source code of arbitrary languages in Org mode <i>all the time</i>. In fact, I do it for this blog. Why not use Org mode to write tests in? We can include binary data with example blocks, and we can include source code. Obviously, we can write a number in an Org file&#x2026; It fits our specifications! On top of that, it allows the author of the test to define it <i>literately</i>, i.e. with included text to describe (any part of) the test.
+</p>
+
+<p>
+The one "downside" to this is that Org mode is deeply tied into the Emacs ecosystem; in fact, the sole implementation of Org mode <i>is</i> Emacs. There aren't really parsers available for Org mode files that don't use Emacs itself. So, if we want to extract the test data from our Org mode test files, we need to use&#x2014;you guessed it&#x2014;Emacs!
+</p>
+
+<p>
+Of course, Emacs is wonderful and provides Emacs Lisp, so we can just write a script, and Emacs will run it for us whenever we ask (just like Bash).
+Emacs is also very portable (just like Bash) ((holy heck, it even runs on my <i>phone</i> now!!)), so I think anyone who wants to hack on LCC will be able to get a working Emacs on their system.
+</p>
+
+<p>
+With that out of the way, I decided on a basic syntax for the tests; here's Glint's "Empty File" test.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-org"><span class="org-org-level-1">* Empty File</span>
+
+In Glint, an empty program is completely valid.
+
+The rules for implicit return at the top level still apply.
+So, because the last expression is not of <span class="org-org-verbatim">=int=</span> type, Glint inserts <span class="org-org-verbatim">=return 0;=</span>.
+
+<span class="org-org-meta-line">#+NAME: source</span>
+<span class="org-org-block-begin-line">#+begin_src glint
+</span><span class="org-org-block-end-line">#+end_src
+</span>
+<span class="org-org-meta-line">#+NAME: status</span>
+<span class="org-org-block-begin-line">#+begin_example
+</span><span class="org-org-block">0
+</span><span class="org-org-block-end-line">#+end_example
+</span>
+<span class="org-org-meta-line">#+NAME: output</span>
+<span class="org-org-block-begin-line">#+begin_example
+</span><span class="org-org-block-end-line">#+end_example</span>
+</pre>
+</div>
+
+<p>
+The name of the test is the top-level headline, and the following named blocks constitute the test's source code input, and the test's expected status and output when the resulting binary has been run.
+</p>
+
+<p>
+As you can see, a test author may mark up the different portions of their test with explanations, information, or whatever data is needed to understand the test case and why it is the way it is.
+</p>
+
+<p>
+Now, an LCC contributor may define some language input and assert that it properly compiles to a program with the given semantics. This asserts that the binding between language and compiler is properly aligned, and semantics are preserved. For example, if semantics are not preserved, the language may be generating IR that doesn't match their intentions, or LCC may have a bug in it where it isn't respecting some feature of the IR when applying a transformation, or it could be a cosmic ray sent by aliens, bit-flipping your RAM just for funsies.
+You never know with these computer things.
+</p>
+
+<p>
+Either way, it's good to have a system that alerts you when things are broken, rather than <i>gasp</i> <b>silently</b> producing broken code (my nightmare), and this framework does that in a (I believe) neat and tidy way.
+</p>
+</div>
+</div>
+<div id="outline-container-orgdf00b17" class="outline-3">
+<h3 id="orgdf00b17">Oh, Yeah</h3>
+<div class="outline-text-3" id="text-orgdf00b17">
+<p>
+I forgot to mention, the org syntax accepts multiple source blocks, each one compiled separately and their artifacts collected to link together properly. This means that, if your language has modules or something like that, you can define a module and a program that uses it, and RunTest will automagically compile it properly. This means that Module/Type/AST serialisation and deserialisation may be tested by RunTest as well, which is a large pain-point for a lot of language developers (binary formats tend to be annoying like that).
+</p>
+</div>
+</div>
+<div id="outline-container-orgd670ae5" class="outline-3">
+<h3 id="orgd670ae5">Deep Dive</h3>
+<div class="outline-text-3" id="text-orgd670ae5">
+<p>
+You can read actual RunTest tests at <code>runtest/corpus/</code> within the <a href="https://github.com/LensPlaysGames/LensorCompilerCollection">LCC repository</a>. This can be a good way to get a feel for a language LCC compiles, as there are lots of example programs combined with an assertion of exactly what they do.
+</p>
+
+<p>
+Still interested? Go read <code>runtest/runtest.el</code> within the <a href="https://github.com/LensPlaysGames/LensorCompilerCollection">LCC repository</a>; it showcases a lot of very LISPy things, like <code>gensym</code>, macros, asynchronous subprocesses, and more, while still being short and sweet.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgd0bcb59" class="outline-2">
+<h2 id="orgd0bcb59">empty space</h2>
+<div class="outline-text-2" id="text-orgd0bcb59">
+<p>
+
+</p>
+</div>
+</div>
+<div id="outline-container-org482d7c5" class="outline-2">
+<h2 id="org482d7c5">Fun Titles / Idea Dump</h2>
+<div class="outline-text-2" id="text-org482d7c5">
+</div>
+<div id="outline-container-org0c3d1fb" class="outline-3">
+<h3 id="org0c3d1fb">How I Built Rome in a Day</h3>
+<div class="outline-text-3" id="text-org0c3d1fb">
 <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2023-06-01 Thu 16:14]</span></span>
 </p>
 </div>
 </div>
-
-<div id="outline-container-org7e97df9" class="outline-3">
-<h3 id="org7e97df9">I Use Org Mode For Everything From Work to Play</h3>
-<div class="outline-text-3" id="text-org7e97df9">
+<div id="outline-container-org0c0db76" class="outline-3">
+<h3 id="org0c0db76">I Use Org Mode For Everything From Work to Play</h3>
+<div class="outline-text-3" id="text-org0c0db76">
 <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2023-07-07 Fri 08:42]</span></span>
 </p>
 </div>
 </div>
-
-<div id="outline-container-org65be032" class="outline-3">
-<h3 id="org65be032">Conlang Showcase: Tlai-Tli (early)</h3>
-<div class="outline-text-3" id="text-org65be032">
+<div id="outline-container-org1c43bcf" class="outline-3">
+<h3 id="org1c43bcf">Conlang Showcase: Tlai-Tli (early)</h3>
+<div class="outline-text-3" id="text-org1c43bcf">
 <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2023-07-07 Fri 08:43]</span></span>
 </p>
 </div>
 </div>
-
-<div id="outline-container-org8dbf839" class="outline-3">
-<h3 id="org8dbf839">Calculating My Content Creation Wage (it's negative)</h3>
-<div class="outline-text-3" id="text-org8dbf839">
+<div id="outline-container-org4d9afe4" class="outline-3">
+<h3 id="org4d9afe4">Calculating My Content Creation Wage (it's negative)</h3>
+<div class="outline-text-3" id="text-org4d9afe4">
 <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2023-07-07 Fri 08:43]</span></span>
 </p>
 </div>
 </div>
 </div>
+<div id="outline-container-aglintofhoep" class="outline-2">
+<h2 id="aglintofhoep">A Glint of Hope</h2>
+<div class="outline-text-2" id="text-aglintofhoep">
+<p>
+Out with the old, in with the new!
+</p>
+</div>
+<div id="outline-container-orgf9b3f23" class="outline-3">
+<h3 id="orgf9b3f23">Glint</h3>
+<div class="outline-text-3" id="text-orgf9b3f23">
+<p>
+A programming language that is somewhat usable to do very basic systems things.
+</p>
+</div>
+<div id="outline-container-org8bf86f9" class="outline-4">
+<h4 id="org8bf86f9">Sum Types</h4>
+<div class="outline-text-4" id="text-org8bf86f9">
+<p>
+Instead of repetitive type boilerplate with inheritance, use sum types.
+</p>
 
+<p>
+C++: Encoding meaning in the designation of a type itself vs within a larger encapsulating type. Best described by example.
+</p>
+<div class="org-src-container">
+<pre class="src src-c++"><span class="org-keyword">class</span> <span class="org-type">type</span> {
+  ...
+};
+<span class="org-keyword">class</span> <span class="org-type">function_type</span> : <span class="org-type">type</span> {
+  <span class="org-type">vector</span> <span class="org-variable-name">arguments</span>;
+  ...
+};
+<span class="org-keyword">class</span> <span class="org-type">integer_type</span> ...
+</pre>
+</div>
+<p>
+You get the gist. This bloats immensely fast, exponentially, where adding a trivial type like an integer requires an entire class wrapping it. And then also adding to the "kind" enum in the base class(es).
+</p>
+
+<p>
+In Glint, sum types let us represent these sort of structures with less boilerplate. Do this instead.
+</p>
+<div class="org-src-container">
+<pre class="src src-nil">type : sum {
+  function :[argument];
+  integer :int;
+};
+</pre>
+</div>
+<p>
+And I didn't even need to `&#x2026;` anything, that's all of it. No enum required. Only as many type declarations as you actually need.
+</p>
+
+
+<p>
+You can also use sum types for implementing a result type very easily.
+</p>
+<div class="org-src-container">
+<pre class="src src-nil">index_t : sum {
+  error :[byte];
+  value :uint;
+};
+</pre>
+</div>
+<p>
+Getting an index to something but don't want to require some sentinel values reserved for error state communication? Use a sum type! Return a dynamically allocated bytestring for an error message, or return a meaningful value.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org4e63be0" class="outline-3">
+<h3 id="org4e63be0">Tendency Towards Distemper</h3>
+<div class="outline-text-3" id="text-org4e63be0">
+<p>
+I have this terrible habit of being just <i>slightly</i> too ambitious such that I become increasingly frustrated with my smidgen of inability to achieve what I want to, how fast I want to. It makes me so frustrated and grows into rage, until
+I explode. Eventually, I slow down (just slightly, begrudgingly) and solve the problem. It is like pushing harder and harder when getting tired on a bike until you literally can't go anymore, collapsing, getting mad at yourself and the bike, and then eventually, after some rest, getting back on the bike and doing it all over again.
+</p>
+</div>
+</div>
+<div id="outline-container-orgc8b3dda" class="outline-3">
+<h3 id="orgc8b3dda">Glint Line Count as of 2024.07.26: 10005</h3>
+<div class="outline-text-3" id="text-orgc8b3dda">
+<p>
+Line count on Glint language only using <a href="https://github.com/AlDanial/cloc">https://github.com/AlDanial/cloc</a>.
+</p>
+<pre class="example" id="orgfecb712">
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+C++                              8           1472           1689           8123
+C/C++ Header                     7            556            421           1882
+-------------------------------------------------------------------------------
+SUM:                            15           2028           2110          10005
+-------------------------------------------------------------------------------
+</pre>
+
+<p>
+Design started on Glint on June 25, 2024, with development beginning shortly thereafter. Line count above as of July 26, 2024. It's amazing what can be done in a month.
+</p>
+</div>
+</div>
+<div id="outline-container-orgff02820" class="outline-3">
+<h3 id="orgff02820">Food for Thought</h3>
+<div class="outline-text-3" id="text-orgff02820">
+<p>
+Why are <code>enum</code> and <code>struct</code> highlighted as a keyword but <code>void</code> and <code>bool</code> are highlighted as types&#x2026;?
+</p>
+</div>
+</div>
+</div>
 <div id="outline-container-makingmistkaes" class="outline-2">
 <h2 id="makingmistkaes">Making Mistakes</h2>
 <div class="outline-text-2" id="text-makingmistkaes">
@@ -339,8 +874,6 @@ Again, I don't really know <i>why</i> this article exists, but I hope that you a
 </p>
 </div>
 </div>
-
-
 <div id="outline-container-financialcommandlinemanagement" class="outline-2">
 <h2 id="financialcommandlinemanagement">How I Manage My Finances From the Command Line</h2>
 <div class="outline-text-2" id="text-financialcommandlinemanagement">
@@ -360,10 +893,9 @@ While double-entry accounting <i>is</i> a little bit to wrap your head around, i
 Unlike most accounting software I've found, which use either a proprietary (yuck!) binary "project" format or CSV, Ledger uses a plain-text file that <b>you</b> maintain however you'd like to; the software <b>never</b> alters your ledger file. To add a new transaction, you open the file in a text editor and add an entry; it is quite a human-friendly format, once you get the basics down.
 </p>
 </div>
-
-<div id="outline-container-org5716afd" class="outline-3">
-<h3 id="org5716afd">Transactions</h3>
-<div class="outline-text-3" id="text-org5716afd">
+<div id="outline-container-org6bd6c3d" class="outline-3">
+<h3 id="org6bd6c3d">Transactions</h3>
+<div class="outline-text-3" id="text-org6bd6c3d">
 <div class="org-src-container">
 <pre class="src src-ledger">2023/07/14 Starbucks
   Expenses:Wants:Coffee  $9.08
@@ -403,10 +935,9 @@ The date is self-explanatory, I would hope :Þ. As you can see, <i>you</i> are n
 </p>
 </div>
 </div>
-
-<div id="outline-container-org7a21d0a" class="outline-3">
-<h3 id="org7a21d0a">Generating Basic Reports</h3>
-<div class="outline-text-3" id="text-org7a21d0a">
+<div id="outline-container-orge3f5832" class="outline-3">
+<h3 id="orge3f5832">Generating Basic Reports</h3>
+<div class="outline-text-3" id="text-orge3f5832">
 <p>
 Finally, let's get to the meat and potatoes of Ledger CLI; the reports it can generate.
 </p>
@@ -437,7 +968,7 @@ Let's imagine the following ledger file, <code>./.test.ledger</code>.
 Here is the <code>balance</code> report, which should always add up to zero; it tells you where money comes from and where money goes.
 </p>
 
-<pre class="example" id="org9695b47">
+<pre class="example" id="org0f2a109">
 $ ledger -f ./.test.ledger bal
             $122.920  Assets:Checking
              $15.920  Expenses:Wants:Coffee
@@ -458,7 +989,7 @@ One of the most powerful features of Ledger is it's ability to <a href="https://
 As well as the <code>balance</code> report, there is also the <code>register</code> report; this mimics what you might see in a checkbook. The <code>register</code> report makes it easier to see how each transaction adds to the totals that appear in the <code>balance</code> report.
 </p>
 
-<pre class="example" id="org720b7f6">
+<pre class="example" id="org283e210">
 23-Jun-17 Me                    Assets:Checking             $69.420      $69.420
                                 Income:Salary              $-69.420            0
 23-Jun-19 Starbucks             Expenses:Wants:Coffee        $6.840       $6.840
@@ -475,7 +1006,6 @@ And that's how I manage my finances from the command line :). Interested in <a h
 </div>
 </div>
 </div>
-
 <div id="outline-container-comfortablewhenuncomfortable" class="outline-2">
 <h2 id="comfortablewhenuncomfortable">Getting Comfortable With the Uncomfortable</h2>
 <div class="outline-text-2" id="text-comfortablewhenuncomfortable">
@@ -503,10 +1033,9 @@ I wrote an entire compiler, but that didn't teach me how to use industry-level t
 What doing those projects <i>did</i> teach me was far more important than those minute details that I've picked up in my first week or two on the job.
 </p>
 </div>
-
-<div id="outline-container-org40595b9" class="outline-3">
-<h3 id="org40595b9">Solo Dolo</h3>
-<div class="outline-text-3" id="text-org40595b9">
+<div id="outline-container-org4ae3ff3" class="outline-3">
+<h3 id="org4ae3ff3">Solo Dolo</h3>
+<div class="outline-text-3" id="text-org4ae3ff3">
 <p>
 When you're all alone, your entire mindset changes. It is either "do" or it doesn't ever get done. When writing the kernel for LensorOS, I didn't have anyone to talk to in real life about it (at least anyone that would understand what the hell a filesystem even is, haha). This meant that most of my work was done alone; chicken-scratched writings in countless notebooks, solving problems that have been solved a million times before. Obviously, I didn't just gain knowledge spontaneously; I still utilised the resources I had available (like the OSDev wiki, among other things). When I say <i>alone</i>, I'm referring to the fact that, within those first four months, the only time I asked anybody for help on how to solve an issue was through a Reddit post that got no responses. With no contributors, no one to bounce ideas off of &#x2026; just <i>me</i>, within the eternal sunshine of my spotless mind, alone and unknowing of what I might find, I meandered onto a lesson that has stuck with me through time.
 </p>
@@ -528,10 +1057,9 @@ TL;DR: Oh, you have a question about how something works? Better just go ask you
 </p>
 </div>
 </div>
-
-<div id="outline-container-orgbcec009" class="outline-3">
-<h3 id="orgbcec009">RTFM</h3>
-<div class="outline-text-3" id="text-orgbcec009">
+<div id="outline-container-org2379546" class="outline-3">
+<h3 id="org2379546">RTFM</h3>
+<div class="outline-text-3" id="text-org2379546">
 <blockquote>
 <p>
 Read The Fucking Manual
@@ -547,10 +1075,9 @@ Now, did I still take to Googling "how does modrm byte work x86_64"? Of course! 
 </p>
 </div>
 </div>
-
-<div id="outline-container-orgd2e0816" class="outline-3">
-<h3 id="orgd2e0816">A Pile Of Garbage Smells Bad, but Still Smells</h3>
-<div class="outline-text-3" id="text-orgd2e0816">
+<div id="outline-container-orgf12ac4c" class="outline-3">
+<h3 id="orgf12ac4c">A Pile Of Garbage Smells Bad, but Still Smells</h3>
+<div class="outline-text-3" id="text-orgf12ac4c">
 <p>
 <i>Something</i> is always better than nothing in the world of software engineering. GET STARTED. It doesn't matter if your whole idea of what is needed is wrong, your design is flawed, or anything like that; if you are dedicated, you will overcome all of these hurdles and get exactly where you want to go in the end (or somewhere near). For example, I had no idea how to serialise types for the Intercept compiler module description: that didn't stop me from starting up a stream and getting started on an implementation. About half-way through implementing my initial idea (Tag/Length/Value records), I realised that it wouldn't work <b>at all</b> for recursive types (i.e. a struct with a pointer to itself as a member). This didn't stop me; I continued implementing the flawed design, and then went back and thought about how I could change it to fix this new issue I've run into.
 </p>
@@ -565,7 +1092,6 @@ I am not a genius or something because my terrible designs end up working in the
 </div>
 </div>
 </div>
-
 <div id="outline-container-assemblynotwhatseems" class="outline-2">
 <h2 id="assemblynotwhatseems">Assembly Is <b>Not</b> What It Seems</h2>
 <div class="outline-text-2" id="text-assemblynotwhatseems">
@@ -573,24 +1099,22 @@ I am not a genius or something because my terrible designs end up working in the
 Assembly is as close as you can get to the hardware, right? It basically tells you the exact instructions the CPU will run &#x2026; <i>right</i>?. Well, that may be what it seems like (and what people say), but not necessarily! Modern CPUs do so much more than just read an instruction and execute it, and that is what we will be exploring in this post.
 </p>
 </div>
-
-<div id="outline-container-orgd92d246" class="outline-3">
-<h3 id="orgd92d246">Why Is This the Prevailing Assumption?</h3>
-<div class="outline-text-3" id="text-orgd92d246">
+<div id="outline-container-org32e3613" class="outline-3">
+<h3 id="org32e3613">Why Is This the Prevailing Assumption?</h3>
+<div class="outline-text-3" id="text-org32e3613">
 <p>
 Well, the reason assembly is thought of as "telling the hardware exactly what to do" is because &#x2026; well, it does, strictly from a programmer's point of view. But there's a distinction here that's important. It does not tell the CPU <i>how</i> to do it. So while, yes, you may feed it an assembly instruction to add two numbers, any one CPU may choose to do an OR operation instead, if one of the numbers is known to be zero. This sort of behaviour, where the CPU can technically do whatever it wants as long as the expected result is acquired, allows for <b><b>lots</b></b> of optimisations that would not otherwise be possible. For related reading, see <i>sequential consistency</i> and <i>unspecified behaviour</i>.
 </p>
 </div>
 </div>
-
-<div id="outline-container-org80a3bd0" class="outline-3">
-<h3 id="org80a3bd0">How Can a CPU Do More Than One Thing at Once?</h3>
-<div class="outline-text-3" id="text-org80a3bd0">
+<div id="outline-container-orgb3b9e1b" class="outline-3">
+<h3 id="orgb3b9e1b">How Can a CPU Do More Than One Thing at Once?</h3>
+<div class="outline-text-3" id="text-orgb3b9e1b">
 <p>
 Imagining a naive CPU pipeline that does one thing at a time, we may arrive at something like this:
 </p>
 
-<pre class="example" id="orgedc8d8b">
+<pre class="example" id="orgdbca20b">
 .-&gt;  Decoder -&gt; Processor  -.
 `---------------------------+
 </pre>
@@ -603,15 +1127,14 @@ The "decoder" step would decode the next instruction from memory, located by the
 NOTE: This is a whole topic in-and-of-itself. See <a href="https://en.wikipedia.org/wiki/Instruction_pipelining">Instruction Pipelining @wikipedia.org</a>
 </p>
 </div>
-
-<div id="outline-container-orgd140699" class="outline-4">
-<h4 id="orgd140699">Eliminating Dependencies</h4>
-<div class="outline-text-4" id="text-orgd140699">
+<div id="outline-container-org6998967" class="outline-4">
+<h4 id="org6998967">Eliminating Dependencies</h4>
+<div class="outline-text-4" id="text-org6998967">
 <p>
 Sitting around doing nothing is <b>never</b> good. Luckily, we can attempt to make the situation better due to one simple fact: computations within the processor can't use or modify the instruction pointer directly (most of the time). This means the decoder <i>could</i> start decoding the next instruction <b>before</b> the processor finishes processing the last instruction decoded. By the time the processor finishes processing, the decoder may already be ready with another instruction to execute. This increases the amount of time the processor spends doing valuable computations, making the CPU faster and computers go brrr.
 </p>
 
-<pre class="example" id="org62a4aff">
+<pre class="example" id="org0b164cf">
 Decoder -&gt; Decoded Instruction Queue
 Pop(Decoded Instruction Queue) -&gt; Processor
 </pre>
@@ -625,21 +1148,20 @@ Now, you might be wondering, what is the advantage of eliminating a dependency o
 </p>
 </div>
 </div>
-
-<div id="outline-container-org7d6a972" class="outline-4">
-<h4 id="org7d6a972">Out-Of-Order Execution</h4>
-<div class="outline-text-4" id="text-org7d6a972">
+<div id="outline-container-org8e5ccd8" class="outline-4">
+<h4 id="org8e5ccd8">Out-Of-Order Execution</h4>
+<div class="outline-text-4" id="text-org8e5ccd8">
 <p>
 That's right; by eliminating an instruction's dependency on a register, we can actually <b>execute</b> that instruction at the same time as another instruction, given they don't have dependencies on one another. Let's take a look at this in actual x86_64 assembly (in Intel syntax today, for funsies).
 </p>
 
 <div class="org-src-container">
-<pre class="src src-asm"><span class="org-function-name">0</span>      <span class="org-keyword">mov</span> rax, [my_ptr]           <span class="org-comment-delimiter">;;</span><span class="org-comment">#; rax := memory[my_ptr]</span>
-<span class="org-function-name">1</span>      <span class="org-keyword">add</span> rax, 2                  <span class="org-comment-delimiter">;;</span><span class="org-comment">#; rax := rax + 2</span>
-<span class="org-function-name">2</span>      <span class="org-keyword">mov</span> [my_ptr + 8], rax       <span class="org-comment-delimiter">;;</span><span class="org-comment">#; memory[my_ptr + 8] := rax</span>
-<span class="org-function-name">3</span>      <span class="org-keyword">mov</span> rax, [my_other_ptr]     <span class="org-comment-delimiter">;;</span><span class="org-comment">#; rax := memory[my_other_ptr]</span>
-<span class="org-function-name">4</span>      <span class="org-keyword">add</span> rax, 4                  <span class="org-comment-delimiter">;;</span><span class="org-comment">#; rax := rax + 4</span>
-<span class="org-function-name">5</span>      <span class="org-keyword">mov</span> [my_other_ptr + 8], rax <span class="org-comment-delimiter">;;</span><span class="org-comment">#; memory[my_other_ptr] := rax</span>
+<pre class="src src-asm"><span class="org-function-name">0</span>      <span class="org-keyword">mov</span> rax, [my_ptr]           <span class="org-comment-delimiter">;;</span><span class="org-comment">#; rax := memory[my_ptr]
+</span><span class="org-function-name">1</span>      <span class="org-keyword">add</span> rax, 2                  <span class="org-comment-delimiter">;;</span><span class="org-comment">#; rax := rax + 2
+</span><span class="org-function-name">2</span>      <span class="org-keyword">mov</span> [my_ptr + 8], rax       <span class="org-comment-delimiter">;;</span><span class="org-comment">#; memory[my_ptr + 8] := rax
+</span><span class="org-function-name">3</span>      <span class="org-keyword">mov</span> rax, [my_other_ptr]     <span class="org-comment-delimiter">;;</span><span class="org-comment">#; rax := memory[my_other_ptr]
+</span><span class="org-function-name">4</span>      <span class="org-keyword">add</span> rax, 4                  <span class="org-comment-delimiter">;;</span><span class="org-comment">#; rax := rax + 4
+</span><span class="org-function-name">5</span>      <span class="org-keyword">mov</span> [my_other_ptr + 8], rax <span class="org-comment-delimiter">;;</span><span class="org-comment">#; memory[my_other_ptr] := rax</span>
 </pre>
 </div>
 
@@ -652,12 +1174,12 @@ Attempting to eliminate dependencies in the above code without renaming register
 </p>
 
 <div class="org-src-container">
-<pre class="src src-asm"><span class="org-function-name">0</span>      <span class="org-keyword">mov</span> r1, [my_ptr]            <span class="org-comment-delimiter">;;</span><span class="org-comment">#; r1 := memory[my_ptr]</span>
-<span class="org-function-name">1</span>      <span class="org-keyword">add</span> r1, 2                   <span class="org-comment-delimiter">;;</span><span class="org-comment">#; r1 := r1 + 2</span>
-<span class="org-function-name">2</span>      <span class="org-keyword">mov</span> [my_ptr + 8], r1        <span class="org-comment-delimiter">;;</span><span class="org-comment">#; memory[my_ptr + 8] := r1</span>
-<span class="org-function-name">3</span>      <span class="org-keyword">mov</span> r2, [my_other_ptr]      <span class="org-comment-delimiter">;;</span><span class="org-comment">#; r2 := memory[my_other_ptr]</span>
-<span class="org-function-name">4</span>      <span class="org-keyword">add</span> r2, 4                   <span class="org-comment-delimiter">;;</span><span class="org-comment">#; r2 := r2 + 4</span>
-<span class="org-function-name">5</span>      <span class="org-keyword">mov</span> [my_other_ptr + 8], r2  <span class="org-comment-delimiter">;;</span><span class="org-comment">#; memory[my_other_ptr] := r2</span>
+<pre class="src src-asm"><span class="org-function-name">0</span>      <span class="org-keyword">mov</span> r1, [my_ptr]            <span class="org-comment-delimiter">;;</span><span class="org-comment">#; r1 := memory[my_ptr]
+</span><span class="org-function-name">1</span>      <span class="org-keyword">add</span> r1, 2                   <span class="org-comment-delimiter">;;</span><span class="org-comment">#; r1 := r1 + 2
+</span><span class="org-function-name">2</span>      <span class="org-keyword">mov</span> [my_ptr + 8], r1        <span class="org-comment-delimiter">;;</span><span class="org-comment">#; memory[my_ptr + 8] := r1
+</span><span class="org-function-name">3</span>      <span class="org-keyword">mov</span> r2, [my_other_ptr]      <span class="org-comment-delimiter">;;</span><span class="org-comment">#; r2 := memory[my_other_ptr]
+</span><span class="org-function-name">4</span>      <span class="org-keyword">add</span> r2, 4                   <span class="org-comment-delimiter">;;</span><span class="org-comment">#; r2 := r2 + 4
+</span><span class="org-function-name">5</span>      <span class="org-keyword">mov</span> [my_other_ptr + 8], r2  <span class="org-comment-delimiter">;;</span><span class="org-comment">#; memory[my_other_ptr] := r2</span>
 </pre>
 </div>
 
@@ -665,7 +1187,7 @@ Attempting to eliminate dependencies in the above code without renaming register
 Now, with this done, the CPU is smart enough to notice something: instructions 0 through 2 and 3 through 5 are two blocks of instructions that start with <i>no</i> register dependencies.
 </p>
 
-<pre class="example" id="orgd0fe525">
+<pre class="example" id="org52a8d4e">
 0 sets r1
 1 uses r1 and sets r1
 2 uses r1
@@ -698,8 +1220,6 @@ Anyway, thank you for reading this post on assembly. If you enjoyed it, I make T
 </div>
 </div>
 </div>
-
-
 <div id="outline-container-whatsaprogram" class="outline-2">
 <h2 id="whatsaprogram">What <i>Is</i> a Program?</h2>
 <div class="outline-text-2" id="text-whatsaprogram">
@@ -764,10 +1284,9 @@ So that C code up above? Well, it's only written with the intent that that seque
 However, this definition <i>does</i> come with its own host of caveats. For example, the source code of a program fits the definition of "instructions meant for a computer", but so does the executable file generated after compiling that code. In that case, are there <i>two</i> programs? Or just one program in two different formats? I think this is a question of philosophy, truthfully. To me, it makes the most sense that there <i>are</i> two programs, they just have a set of instructions in different formats that <i>happen</i> to tell the computer to do the same thing (unless your compiler is borked/I wrote it).
 </p>
 </div>
-
-<div id="outline-container-orge57b748" class="outline-3">
-<h3 id="orge57b748">Etymology of "program"</h3>
-<div class="outline-text-3" id="text-orge57b748">
+<div id="outline-container-orge873cb8" class="outline-3">
+<h3 id="orge873cb8">Etymology of "program"</h3>
+<div class="outline-text-3" id="text-orge873cb8">
 <p>
 The word "program" is derived from Greek <i>programma</i>, meaning "a public written notice". (See? Even the Ancient Greeks knew that software should be open to the public :Þ.) In the 1600s, it was used in concert and theatre, referring to an outline of what was going to happen that day (i.e. features presented, persons participating, etc). We can see from its early use that a program defines what is going to happen during a performance.
 </p>
@@ -789,10 +1308,9 @@ Because there was no longer a physical punch card tied to a "program", the origi
 </p>
 </div>
 </div>
-
-<div id="outline-container-org77c9895" class="outline-3">
-<h3 id="org77c9895">A Definition of "program" that I Am Comfortable With</h3>
-<div class="outline-text-3" id="text-org77c9895">
+<div id="outline-container-org866ea7b" class="outline-3">
+<h3 id="org866ea7b">A Definition of "program" that I Am Comfortable With</h3>
+<div class="outline-text-3" id="text-org866ea7b">
 <p>
 To me, there <i>isn't</i> a clear-cut definition of program. No matter which one you choose, there are unintuitive corner-cases. However! That does not stop me from <i>choosing</i> a definition that I am comfortable with.
 </p>
@@ -823,7 +1341,7 @@ As with every definition of program, there are imperfect corner cases, but this 
   <div class="footer-row">
     <a target="_blank" href="/lensr_blog_v1/rss.xml">Feed/RSS</a>
   </div>
-  <div class="footer-row"><span>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6)</span></div>
+  <div class="footer-row"><span>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span></div>
 </footer>
 </div>
 </body>
