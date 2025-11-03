@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-11-03 Mon 14:05 -->
+<!-- 2025-11-03 Mon 14:17 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Main Blog</title>
@@ -282,7 +282,7 @@ Is this a call expression, with callee <code>blah</code> and <i>one</i> binary e
 Or, is this a binary expression, with a call expression <code>blah 27</code> on the left hand side, and <code>42</code> on the right hand side?
 </p>
 
-<pre class="example" id="org2477ac2">
+<pre class="example" id="org0975fc3">
 Call
 |-- identifier: blah
 `-- Binary: +
@@ -290,7 +290,7 @@ Call
     `-- number: 42
 </pre>
 
-<pre class="example" id="org429a412">
+<pre class="example" id="org4777887">
 Binary: +
 |-- Call
 |   |-- identifier: blah
@@ -346,7 +346,7 @@ As you can see, there <i>would</i> be an ambiguity here if not for the following
 So, binary expressions actually only accept a subset of Glint's expressions (ones that aren't calls). This is put in practice by the simple ordering of gathering binary operators before call arguments during parsing (such that a call is parsed <i>after</i> binary expressions are, it can't directly appear as a child of one (since it hasn't yet been parsed) (because the binary expression binds more tightly)).
 </p>
 
-<pre class="example" id="orgb9c36a7">
+<pre class="example" id="org1e3e577">
 lhs = ParsePrimary();
 lhs = ParseBinary();
 
@@ -633,7 +633,7 @@ I explode. Eventually, I slow down (just slightly, begrudgingly) and solve the p
 <p>
 Line count on Glint language only using <a href="https://github.com/AlDanial/cloc">https://github.com/AlDanial/cloc</a>.
 </p>
-<pre class="example" id="org4b7844f">
+<pre class="example" id="orgc0071c7">
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
@@ -976,7 +976,7 @@ Let's imagine the following ledger file, <code>./.test.ledger</code>.
 Here is the <code>balance</code> report, which should always add up to zero; it tells you where money comes from and where money goes.
 </p>
 
-<pre class="example" id="org8dbf10d">
+<pre class="example" id="orgd9d703b">
 $ ledger -f ./.test.ledger bal
             $122.920  Assets:Checking
              $15.920  Expenses:Wants:Coffee
@@ -997,7 +997,7 @@ One of the most powerful features of Ledger is it's ability to <a href="https://
 As well as the <code>balance</code> report, there is also the <code>register</code> report; this mimics what you might see in a checkbook. The <code>register</code> report makes it easier to see how each transaction adds to the totals that appear in the <code>balance</code> report.
 </p>
 
-<pre class="example" id="org919b585">
+<pre class="example" id="orgaa8b222">
 23-Jun-17 Me                    Assets:Checking             $69.420      $69.420
                                 Income:Salary              $-69.420            0
 23-Jun-19 Starbucks             Expenses:Wants:Coffee        $6.840       $6.840
@@ -1122,7 +1122,7 @@ Well, the reason assembly is thought of as "telling the hardware exactly what to
 Imagining a naive CPU pipeline that does one thing at a time, we may arrive at something like this:
 </p>
 
-<pre class="example" id="org5ba568d">
+<pre class="example" id="org1b5e2a9">
 .-&gt;  Decoder -&gt; Processor  -.
 `---------------------------+
 </pre>
@@ -1142,7 +1142,7 @@ NOTE: This is a whole topic in-and-of-itself. See <a href="https://en.wikipedia.
 Sitting around doing nothing is <b>never</b> good. Luckily, we can attempt to make the situation better due to one simple fact: computations within the processor can't use or modify the instruction pointer directly (most of the time). This means the decoder <i>could</i> start decoding the next instruction <b>before</b> the processor finishes processing the last instruction decoded. By the time the processor finishes processing, the decoder may already be ready with another instruction to execute. This increases the amount of time the processor spends doing valuable computations, making the CPU faster and computers go brrr.
 </p>
 
-<pre class="example" id="org6fe02ab">
+<pre class="example" id="org4205bff">
 Decoder -&gt; Decoded Instruction Queue
 Pop(Decoded Instruction Queue) -&gt; Processor
 </pre>
@@ -1195,7 +1195,7 @@ Attempting to eliminate dependencies in the above code without renaming register
 Now, with this done, the CPU is smart enough to notice something: instructions 0 through 2 and 3 through 5 are two blocks of instructions that start with <i>no</i> register dependencies.
 </p>
 
-<pre class="example" id="orgf321add">
+<pre class="example" id="org9e05c95">
 0 sets r1
 1 uses r1 and sets r1
 2 uses r1

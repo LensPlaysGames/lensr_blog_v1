@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-11-03 Mon 14:05 -->
+<!-- 2025-11-03 Mon 14:17 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Lens_r | Glint's Quirky Call Syntax</title>
@@ -148,7 +148,7 @@ Is this a call expression, with callee <code>blah</code> and <i>one</i> binary e
 Or, is this a binary expression, with a call expression <code>blah 27</code> on the left hand side, and <code>42</code> on the right hand side?
 </p>
 
-<pre class="example" id="orgb655025">
+<pre class="example" id="org04cda6d">
 Call
 |-- identifier: blah
 `-- Binary: +
@@ -156,7 +156,7 @@ Call
     `-- number: 42
 </pre>
 
-<pre class="example" id="org9d77e8a">
+<pre class="example" id="org827b3bb">
 Binary: +
 |-- Call
 |   |-- identifier: blah
@@ -212,7 +212,7 @@ As you can see, there <i>would</i> be an ambiguity here if not for the following
 So, binary expressions actually only accept a subset of Glint's expressions (ones that aren't calls). This is put in practice by the simple ordering of gathering binary operators before call arguments during parsing (such that a call is parsed <i>after</i> binary expressions are, it can't directly appear as a child of one (since it hasn't yet been parsed) (because the binary expression binds more tightly)).
 </p>
 
-<pre class="example" id="orga879df0">
+<pre class="example" id="orgc9ea199">
 lhs = ParsePrimary();
 lhs = ParseBinary();
 

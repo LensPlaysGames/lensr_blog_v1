@@ -241,7 +241,15 @@ Passing nil will give the current time (as with any time object)."
 
   ;; For each tag, create a org/tags/TAG.org
   (make-directory "org/tags/" t)
+  ;; Sort tags by alphabetical order.
+  (sort tags-links
+        (lambda (a b)
+          (string-lessp (symbol-name (car a)) (symbol-name (car b)))))
   (mapc (lambda (tag-links-pair)
+          ;; While we are here, sort links by publish date.
+          (sort (cdr tag-links-pair)
+                (lambda (a b)
+                  (not (time-less-p (cadr a) (cadr b)))))
           (with-current-buffer (find-file-noselect (format "org/tags/%s.org" (car tag-links-pair)))
             (erase-buffer)
             (insert (format "* Blog Posts Tagged with '%s'" (car tag-links-pair)))
@@ -275,6 +283,16 @@ Passing nil will give the current time (as with any time object)."
               (newline)
               ))
           blog-links)
+
+    ;; Link to available post tags (for the explorers out there).
+    (insert "* Post Tags")
+    (newline)
+    (mapc (lambda (tag-links-pair)
+            (insert
+             (format "[[file:tags/%s.org][%s]]\n"
+                     (car tag-links-pair) (car tag-links-pair))))
+          tags-links)
+
     (save-buffer))
 
   ;; Sort rss items by publish date...
