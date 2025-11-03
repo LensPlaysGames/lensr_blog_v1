@@ -153,6 +153,7 @@ Passing nil will give the current time (as with any time object)."
 
 ;;; Create pages/links for each blog post.
 (let ((blog-links nil)
+      (tags-links nil) ;; alist
       (rss2-items nil))
   (with-current-buffer (find-file-noselect "org/mainblog.org")
     ;; Ensure "org/posts/" is a valid, empty directory.
@@ -170,6 +171,7 @@ Passing nil will give the current time (as with any time object)."
               (tags-string (nth 5 heading-components)) ;; I have no clue how else to get tags.
               (custom-id    (org-entry-get (point) "CUSTOM_ID"))
               (publish-date (org-entry-get (point) "PUBLISHED"))
+              (post-tags-text (org-entry-get (point) "POST_TAGS"))
               (post-file-name (format "posts/%s.org" custom-id)))
          (when (and (= 1 level)
                     (when (stringp tags-string) (string-match "blogpost" tags-string)))
@@ -185,8 +187,16 @@ Passing nil will give the current time (as with any time object)."
                (erase-buffer)
                (insert (format "#+title: Lens_r | %s\n" headline) ;; this shows in browser tab
                        (format "#+created: %s\n" publish-date)
-                       "#+options: title:nil\n\n"
+                       "#+options: title:nil\n"
+                       "\n"
                        contents)
+               (when (and post-tags-text (not (string-empty-p post-tags-text)))
+                 (insert "*** Explore Similar Posts Through Tags\n")
+                 (mapc (lambda (tag)
+                         ;; NOTE: "../" to exit "posts" subdirectory and reach top level of web
+                         ;; server contents (i.e. where "tags" directory is).
+                         (insert (format "[[file:../tags/%s.org][%s]]\n" tag tag)))
+                       (string-split post-tags-text ",+" t split-string-default-separators)))
                (save-buffer)))
 
            ;; Convert org timestamp string into Emacs time object.
@@ -196,6 +206,22 @@ Passing nil will give the current time (as with any time object)."
              (push `(,(format "[[file:%s][%s]]" post-file-name headline)
                      ,publish-time)
                    blog-links)
+
+             ;; Push a link to this post to each tag this post contains within
+             ;; POST_TAGS property.
+             ;; tags-links: alist of form (TAG . LINKS)
+             (when (and post-tags-text (not (string-empty-p post-tags-text)))
+               (mapc
+                (lambda (tag)
+                  ;; Utilizes generalized variables.
+                  ;; NOTE: Uses "../" to exit "tags" subdirectory and reach top level of web
+                  ;; server contents (i.e. where "posts" directory is).
+                  (setf (alist-get tag tags-links)
+                        (append `((,(format "[[file:../%s][%s]]" post-file-name headline) ,publish-time))
+                                (alist-get tag tags-links))))
+                ;; NOTE: intern to convert strings to symbols so that alist-get works with
+                ;; default 'eq' comparison.
+                (mapcar #'intern (string-split post-tags-text ",+" t split-string-default-separators))))
 
              ;; Push an item to the RSS feed, along with it's publish date.
              (push `(,(concat
@@ -212,6 +238,20 @@ Passing nil will give the current time (as with any time object)."
   (sort blog-links
         (lambda (a b)
           (not (time-less-p (cadr a) (cadr b)))))
+
+  ;; For each tag, create a org/tags/TAG.org
+  (make-directory "org/tags/" t)
+  (mapc (lambda (tag-links-pair)
+          (with-current-buffer (find-file-noselect (format "org/tags/%s.org" (car tag-links-pair)))
+            (erase-buffer)
+            (insert (format "* Blog Posts Tagged with '%s'" (car tag-links-pair)))
+            (newline)
+            (mapc (lambda (link)
+                    (insert "** " (car link))
+                    (newline))
+                  (cdr tag-links-pair))
+            (save-buffer)))
+        tags-links)
 
   ;; Save list of links to blog posts in an org file.
   (with-current-buffer (find-file-noselect "org/index.org")

@@ -53,6 +53,8 @@ Wrote first draft [2025-11-03 Mon 11:02]
 - once I flesh it out, go over the single expression, group expression, call expression stuff, and why it fundamentally is a different grammar than C or LISP or Rust.
 - accompanying video possibly?
 
+Wrote first draft [2025-11-03 Mon 12:49]
+
 ** Formatting Glint using Emacs and Rust
 [2025-11-03 Mon 09:53]
 - glint-ts-mode formatting implementation using tree sitter queries
@@ -65,6 +67,8 @@ Wrote first draft [2025-11-03 Mon 11:02]
 ** Implementing Org mode in Glint
 [2025-11-03 Mon 09:53]
 
+I haven't actually done this, yet...
+
 * Glint's Quirky Call Syntax                                       :blogpost:
 :PROPERTIES:
 :CUSTOM_ID: 2025glintcallgrammar
@@ -73,7 +77,7 @@ Wrote first draft [2025-11-03 Mon 11:02]
 :MODIFIED: [2025-11-03 Mon 12:30]
 :OG_IMAGE: /todo
 :OG_DESCRIPTION: Ambiguous? I think not.
-:POST_TAGS: LCC, compiler, testing, programming, emacs, lisp, org
+:POST_TAGS: Glint, programming, LCC
 :END:
 
 In case you don't know, I'm the creator of and main contributor to the Lensor Compiler Collection (abbreviated /LCC/). I am also the designer and creator of a language LCC compiles, /Glint/. Herein lies the quirks of Glint's syntax, and why it took so long to put together a formal grammar (or, even a comprehensive tree-sitter one).
@@ -209,7 +213,7 @@ If you are interested in how this sort of grammar would be parsed, there is the 
 :MODIFIED: [2025-11-03 Mon 12:30]
 :OG_IMAGE: /todo
 :OG_DESCRIPTION: Testing, testing... Attention, please!
-:POST_TAGS: LCC, compiler, testing, programming, emacs, lisp, org
+:POST_TAGS: LCC, programming, emacs, lisp, org
 :END:
 
 In case you don't know, I'm the creator of and main contributor to the Lensor Compiler Collection (abbreviated /LCC/).
