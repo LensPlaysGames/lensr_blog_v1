@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-11-03 Mon 14:17 -->
+<!-- 2025-11-03 Mon 16:22 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Lens_r | Literate Tests with Org Mode and Emacs Lisp</title>
@@ -64,7 +64,7 @@ LCC has many testing frameworks in place to ensure all parts of the codebase wor
 <h3 id="orgacf4e54">RunTest</h3>
 <div class="outline-text-3" id="text-orgacf4e54">
 <p>
-You can think of RunTest as an end-to-end testing framework for LCC. That is, it treats LCC as a black box, and just pushes data through it to get an expected output. The catch is that the output is automatically compiled with LCC, linked with GCC, and then the resulting binary executed; RunTest asserts the output of <i>that</i> binary, given an input of a source language to LCC.
+You can think of RunTest as an end-to-end testing framework for LCC. That is, it treats LCC as a black box, and just pushes data through it to get an expected output. The catch is that the input is compiled with LCC, linked with GCC, and then the resulting binary executed; RunTest asserts the output of <i>that</i> binary, given an input of a source language to LCC.
 </p>
 
 <p>
@@ -137,6 +137,22 @@ Either way, it's good to have a system that alerts you when things are broken, r
 </p>
 </div>
 </div>
+<div id="outline-container-org26a2f96" class="outline-3">
+<h3 id="org26a2f96">LISP-based Output Matcher</h3>
+<div class="outline-text-3" id="text-org26a2f96">
+<div class="org-src-container">
+<pre class="src src-org"><span class="org-org-meta-line">#+NAME: output</span>
+<span class="org-org-block-begin-line">#+begin_src
+</span><span class="org-org-block">(lambda (output) (string-empty-p output))
+</span><span class="org-org-block-end-line">#+end_src</span>
+</pre>
+</div>
+
+<p>
+By using a source block to define the output, instead of an example block, RunTest expects a <code>read</code>-able function that accepts one argument, and will be applied with the programs output. If it returns non-nil, then the output is seen as "expected". This means you can use things like <code>string-search</code> to ensure a <code>Glint Runtime Error</code> without knowing the exact source location it will produce (since the test runner creates test files with arbitrary names).
+</p>
+</div>
+</div>
 <div id="outline-container-org13cc766" class="outline-3">
 <h3 id="org13cc766">Oh, Yeah</h3>
 <div class="outline-text-3" id="text-org13cc766">
@@ -154,6 +170,10 @@ You can read actual RunTest tests at <code>runtest/corpus/</code> within the <a 
 
 <p>
 Still interested? Go read <code>runtest/runtest.el</code> within the <a href="https://github.com/LensPlaysGames/LensorCompilerCollection">LCC repository</a>; it showcases a lot of very LISPy things, like <code>gensym</code>, macros, asynchronous subprocesses, and more, while still being short and sweet.
+</p>
+
+<p>
+For a <i>really</i> deep dive, clone LCC, then build and run the testing suite in <code>tst/</code>. This will run RunTest, CodeTest, and LangTest.
 </p>
 </div>
 <div id="outline-container-org4fb24e0" class="outline-4">

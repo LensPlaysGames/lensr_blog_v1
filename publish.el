@@ -239,12 +239,13 @@ Passing nil will give the current time (as with any time object)."
         (lambda (a b)
           (not (time-less-p (cadr a) (cadr b)))))
 
-  ;; For each tag, create a org/tags/TAG.org
-  (make-directory "org/tags/" t)
-  ;; Sort tags by alphabetical order.
+  ;; Sort tags by alphabetical order, ignoring case.
   (sort tags-links
         (lambda (a b)
-          (string-lessp (symbol-name (car a)) (symbol-name (car b)))))
+          (string-lessp (downcase (symbol-name (car a))) (downcase (symbol-name (car b))))))
+
+  ;; For each tag, create a org/tags/TAG.org
+  (make-directory "org/tags/" t)
   (mapc (lambda (tag-links-pair)
           ;; While we are here, sort links by publish date.
           (sort (cdr tag-links-pair)

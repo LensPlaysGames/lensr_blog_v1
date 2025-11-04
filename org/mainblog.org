@@ -69,6 +69,9 @@ Wrote first draft [2025-11-03 Mon 12:49]
 
 I haven't actually done this, yet...
 
+** Glint Tutorial Series
+[2025-11-03 Mon 15:58]
+
 * Glint's Quirky Call Syntax                                       :blogpost:
 :PROPERTIES:
 :CUSTOM_ID: 2025glintcallgrammar
@@ -232,7 +235,7 @@ LCC has many testing frameworks in place to ensure all parts of the codebase wor
 
 ** RunTest
 
-You can think of RunTest as an end-to-end testing framework for LCC. That is, it treats LCC as a black box, and just pushes data through it to get an expected output. The catch is that the output is automatically compiled with LCC, linked with GCC, and then the resulting binary executed; RunTest asserts the output of /that/ binary, given an input of a source language to LCC.
+You can think of RunTest as an end-to-end testing framework for LCC. That is, it treats LCC as a black box, and just pushes data through it to get an expected output. The catch is that the input is compiled with LCC, linked with GCC, and then the resulting binary executed; RunTest asserts the output of /that/ binary, given an input of a source language to LCC.
 
 Specifically, RunTest asserts the exit status and printed output of the final binary.
 
@@ -280,6 +283,17 @@ You never know with these computer things.
 
 Either way, it's good to have a system that alerts you when things are broken, rather than /gasp/ *silently* producing broken code (my nightmare), and this framework does that in a (I believe) neat and tidy way.
 
+** LISP-based Output Matcher
+
+#+begin_src org
+  ,#+NAME: output
+  ,#+begin_src
+  (lambda (output) (string-empty-p output))
+  ,#+end_src
+#+end_src
+
+By using a source block to define the output, instead of an example block, RunTest expects a =read=-able function that accepts one argument, and will be applied with the programs output. If it returns non-nil, then the output is seen as "expected". This means you can use things like =string-search= to ensure a =Glint Runtime Error= without knowing the exact source location it will produce (since the test runner creates test files with arbitrary names).
+
 ** Oh, Yeah
 
 I forgot to mention, the org syntax accepts multiple source blocks, each one compiled separately and their artifacts collected to link together properly. This means that, if your language has modules or something like that, you can define a module and a program that uses it, and RunTest will automagically compile it properly. This means that Module/Type/AST serialisation and deserialisation may be tested by RunTest as well, which is a large pain-point for a lot of language developers (binary formats tend to be annoying like that).
@@ -289,6 +303,8 @@ I forgot to mention, the org syntax accepts multiple source blocks, each one com
 You can read actual RunTest tests at =runtest/corpus/= within the [[https://github.com/LensPlaysGames/LensorCompilerCollection][LCC repository]]. This can be a good way to get a feel for a language LCC compiles, as there are lots of example programs combined with an assertion of exactly what they do.
 
 Still interested? Go read =runtest/runtest.el= within the [[https://github.com/LensPlaysGames/LensorCompilerCollection][LCC repository]]; it showcases a lot of very LISPy things, like =gensym=, macros, asynchronous subprocesses, and more, while still being short and sweet.
+
+For a /really/ deep dive, clone LCC, then build and run the testing suite in =tst/=. This will run RunTest, CodeTest, and LangTest.
 
 * empty space
 
