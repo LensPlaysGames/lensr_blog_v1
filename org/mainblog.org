@@ -72,6 +72,126 @@ I haven't actually done this, yet...
 ** Glint Tutorial Series
 [2025-11-03 Mon 15:58]
 
+* Abusing C++'s Type System---LCC's Instruction Selection Implementation :blogpost:
+:PROPERTIES:
+:CUSTOM_ID: 2025lccisel
+:CREATED: [2025-11-03 Mon 19:01]
+:PUBLISHED: [2025-11-03 Mon 19:49]
+:MODIFIED: [2025-11-03 Mon 19:49]
+:OG_IMAGE: /todo
+:OG_DESCRIPTION: How does a compiler know what machine instructions correspond to a source language's constructs?
+:POST_TAGS: programming, LCC
+:END:
+
+In case you don't know, I'm the creator of and main contributor to the Lensor Compiler Collection (abbreviated /LCC/).
+
+LCC has no third party dependencies; we do everything from lexing to code generation in house.
+
+If you aren't familiar with the various stages of a compiler, or the general structure, I implore you to check out the [[https://github.com/LensPlaysGames/LensorCompilerCollection/blob/main/docs/lcc/compilation_overview.pdf][relevant LCC documentation]] (this isn't a bad start; everything in that directory should help put together a picture).
+
+We used to have a DSL (domain specific language) to describe the patterns---which we will talk more about here soon---which was parsed at runtime /each time/ the compiler was run. The problem is that the patterns don't really change /each time/ you run the compiler. So, to embed the patterns in the program itself, we decided to abuse the type system to store all the necessary information.
+
+You can get a hint of this by printing an LCC program's symbol table.
+#+begin_src shell
+  objdump -T lcc
+#+end_src
+
+The output of which contains a few symbols that look like this *one* symbol.
+#+begin_example
+_ZZZN3lcc4isel11PatternListIJNS0_7PatternINS0_8InstListIJNS0_4InstINS0_8ClobbersIJEEELm1067EJNS0_5LocalIJEEENS0_8RegisterILm0ENS0_9ImmediateILl0ELm0EEEEEEEENS4_IS6_Lm1066EJNS0_1oILm1EEESC_EEEEEENS3_IJNS4_IS6_Lm1066EJNSE_ILm0EEENSE_ILm3EEEEEEEEEEENS2_INS3_IJNS4_IS6_Lm11EJEEEEEENS3_IJNS4_IS6_Lm1057EJEEEEEEEENS2_INS3_IJNS4_IS6_Lm11EJSB_EEEEEENS3_IJNS4_INS5_IJNS0_1cILm1EEEEEELm1062EJSI_NS9_ILm528ENS0_6SizeofILm0EEEEEEEESP_EEEEENS2_INS3_IJNS4_IS6_Lm11EJSC_EEEEEES11_EENS2_INS3_IJNS4_IS6_Lm11EJNS0_6GlobalIJEEEEEEEEENS3_IJNS4_ISW_Lm1066EJSI_SZ_EEESP_EEEEENS2_INS3_IJNS4_IS6_Lm11EJS8_EEEEEES1B_EENS2_INS3_IJNS4_IS6_Lm6EJS17_EEEEEENS3_IJNS4_ISW_Lm1066EJSI_NS0_1iILm0EEEEEEEEEEENS2_INS3_IJNS4_IS6_Lm6EJS8_EEEEEES1L_EENS2_INS3_IJNS4_IS6_Lm6EJSC_EEEEEES1L_EENS2_INS3_IJNS4_IS6_Lm8EJSC_S8_EEEEEENS3_IJNS4_ISW_Lm1065EJSI_SF_EEEEEEEENS2_INS3_IJNS4_IS6_Lm8EJSB_S8_EEEEEES1W_EENS2_INS3_IJNS4_IS6_Lm8EJS8_S8_EEEEEENS3_IJNS4_IS6_Lm1066EJSI_NS0_1vILm0ELm1EEEEEENS4_ISW_Lm1065EJS24_SF_EEEEEEEENS2_INS3_IJNS4_IS6_Lm8EJSB_SC_EEEEEENS3_IJNS4_IS6_Lm1062EJSI_NS23_ILm0ELm0EEEEEENS4_ISW_Lm1065EJS2B_SF_EEEEEEEENS2_INS3_IJNS4_IS6_Lm8EJSB_S17_EEEEEES2E_EENS2_INS3_IJNS4_IS6_Lm8EJSC_SC_EEEEEES1W_EENS2_INS3_IJNS4_IS6_Lm2EJSC_EEEEEENS3_IJNS4_ISW_Lm1062EJSI_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm2EJS17_EEEEEENS3_IJNS4_ISW_Lm1067EJSI_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm2EJS8_EEEEEES2U_EENS2_INS3_IJNS4_IS6_Lm2EJSB_EEEEEES2P_EENS2_INS3_IJNS4_IS6_Lm14EJSC_EEEEEENS3_IJNS4_ISW_Lm1063EJSI_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm13EJSC_EEEEEENS3_IJNS4_IS6_Lm1064EJSI_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm18EJSC_EEEEEENS3_IJNS4_IS6_Lm1068EJSI_EEES2O_EEEEENS2_INS3_IJNS4_IS6_Lm26EJSB_SB_EEEEEENS3_IJS2C_NS4_IS6_Lm1074EJSF_S2B_EEENS4_ISW_Lm1062EJS2B_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm28EJSB_SB_EEEEEENS3_IJS2C_NS4_IS6_Lm1073EJSF_S2B_EEES3K_EEEEENS2_INS3_IJNS4_IS6_Lm27EJSB_SB_EEEEEENS3_IJS2C_NS4_IS6_Lm1072EJSF_S2B_EEES3K_EEEEENS2_INS3_IJNS4_IS6_Lm26EJSB_SC_EEEEEENS3_IJS2C_NS4_IS6_Lm1062EJNS0_15ResizedRegisterILm1ELm32EEENS9_ILm3ENSA_ILl32ELm0EEEEEEEENS4_IS6_Lm1074EJNS9_ILm3ENSA_ILl8ELm0EEEEES2B_EEES3K_EEEEENS2_INS3_IJNS4_IS6_Lm28EJSB_SC_EEEEEENS3_IJS2C_S43_NS4_IS6_Lm1073EJS45_S2B_EEES3K_EEEEENS2_INS3_IJNS4_IS6_Lm27EJSB_SC_EEEEEENS3_IJS2C_S43_NS4_IS6_Lm1072EJS45_S2B_EEES3K_EEEEENS2_INS3_IJNS4_IS6_Lm26EJSC_SB_EEEEEENS3_IJNS4_IS6_Lm1074EJSF_SI_EEENS4_ISW_Lm1062EJSF_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm28EJSC_SB_EEEEEENS3_IJNS4_IS6_Lm1073EJSF_SI_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm27EJSC_SB_EEEEEENS3_IJNS4_IS6_Lm1072EJSF_SI_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm26EJSC_SC_EEEEEENS3_IJNS4_IS6_Lm1062EJSF_S42_EEENS4_IS6_Lm1074EJS45_SI_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm28EJSC_SC_EEEEEENS3_IJS51_NS4_IS6_Lm1073EJS45_SI_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm27EJSC_SC_EEEEEENS3_IJS51_NS4_IS6_Lm1072EJS45_SI_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm29EJSC_SC_EEEEEENS3_IJNS4_IS6_Lm1069EJSI_SF_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm29EJSC_SB_EEEEEENS3_IJNS4_IS6_Lm1069EJSF_SI_EEES2O_EEEEENS2_INS3_IJNS4_IS6_Lm30EJSC_SC_EEEEEENS3_IJNS4_IS6_Lm1070EJSI_SF_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm30EJSC_SB_EEEEEENS3_IJNS4_IS6_Lm1070EJSF_SI_EEES2O_EEEEENS2_INS3_IJNS4_IS6_Lm19EJS8_SB_EEEEEENS3_IJNS4_ISW_Lm1067EJNS0_11OffsetLocalISI_SF_EES1J_EEEEEEEENS2_IS60_NS3_IJNS4_IS6_Lm1067EJSI_S1J_EEENS4_ISW_Lm1075EJSF_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm19EJSC_SC_EEEEEENS3_IJNS4_IS6_Lm1075EJSI_SF_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm19EJSB_SC_EEEEEENS3_IJNS4_IS6_Lm1062EJSF_S1J_EEENS4_IS6_Lm1075EJSI_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm19EJSC_SB_EEEEEENS3_IJS2O_NS4_IS6_Lm1075EJSF_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm19EJSB_SB_EEEEEES6O_EENS2_INS3_IJNS4_IS6_Lm19EJS17_SB_EEEEEES68_EENS2_INS3_IJNS4_IS6_Lm21EJSB_SC_EEEEEENS3_IJNS4_IS6_Lm1076EJSI_SF_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm21EJSC_SB_EEEEEENS3_IJNS4_IS6_Lm1076EJSF_SI_EEES2O_EEEEENS2_INS3_IJNS4_IS6_Lm21EJSB_SB_EEEEEENS3_IJS2O_NS4_IS6_Lm1076EJSF_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm20EJSC_SC_EEEEEENS3_IJNS4_IS6_Lm1077EJSF_SI_EEES2O_EEEEENS2_INS3_IJNS4_IS6_Lm20EJSC_SB_EEEEEES7E_EENS2_INS3_IJNS4_IS6_Lm22EJSB_SB_EEEEEENS3_IJNS4_ISW_Lm1062EJSF_S24_EEENS4_ISW_Lm1062EJSI_NS9_ILm1ESY_EEEEENS4_ISW_Lm1071EJNS9_ILm4ES41_EES7O_EEENS4_INS5_IJNS0_1rILm1EEENS7Q_ILm4EEEEEELm1078EJS24_EEENS4_ISW_Lm1062EJS7M_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm22EJSC_SB_EEEEEES7W_EENS2_INS3_IJNS4_IS6_Lm22EJSC_SC_EEEEEES7W_EENS2_INS3_IJNS4_IS6_Lm24EJSC_SC_EEEEEENS3_IJS7L_S7N_S7P_S7U_NS4_ISW_Lm1062EJNS9_ILm4ESY_EES1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm24EJSC_SB_EEEEEES88_EENS2_INS3_IJNS4_IS6_Lm16EJSB_EEEEEENS3_IJNS4_IS6_Lm1062EJSI_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm1EJNS0_8FunctionIJEEEEEEEEENS3_IJNS4_IS6_Lm1061EJSI_EEEEEEEENS2_INS3_IJNS4_IS6_Lm9EJNS0_5BlockIJEEEEEEEEENS3_IJNS4_IS6_Lm1060EJSI_EEEEEEEENS2_INS3_IJNS4_IS6_Lm10EJSC_S8Q_S8Q_EEEEEENS3_IJNS4_IS6_Lm1080EJSI_SI_EEENS4_IS6_Lm1081EJNSE_ILm2EEEEEENS4_IS6_Lm1060EJSF_EEEEEEEENS2_INS3_IJNS4_IS6_Lm10EJSB_S8Q_S8Q_EEEEEENS3_IJS2C_NS4_IS6_Lm1080EJS2B_S2B_EEES90_S91_EEEEENS2_INS3_IJNS4_IS6_Lm38EJSC_SC_EEEEEENS3_IJNS4_IS6_Lm1079EJSF_SI_EEENS4_IS6_Lm1062EJSB_S1J_EEENS4_INS5_IJNSU_ILm0EEEEEELm1088EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm34EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1089EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm39EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1084EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm35EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1085EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm40EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1090EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm36EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1091EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm41EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1086EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm37EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1087EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm32EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1082EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm33EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1083EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm38EJSC_SB_EEEEEES9G_EENS2_INS3_IJNS4_IS6_Lm34EJSC_SB_EEEEEES9L_EENS2_INS3_IJNS4_IS6_Lm39EJSC_SB_EEEEEES9Q_EENS2_INS3_IJNS4_IS6_Lm35EJSC_SB_EEEEEES9V_EENS2_INS3_IJNS4_IS6_Lm40EJSC_SB_EEEEEESA0_EENS2_INS3_IJNS4_IS6_Lm36EJSC_SB_EEEEEESA5_EENS2_INS3_IJNS4_IS6_Lm41EJSC_SB_EEEEEESAA_EENS2_INS3_IJNS4_IS6_Lm37EJSC_SB_EEEEEESAF_EENS2_INS3_IJNS4_IS6_Lm32EJSC_SB_EEEEEESAK_EENS2_INS3_IJNS4_IS6_Lm33EJSC_SB_EEEEEESAP_EENS2_INS3_IJNS4_IS6_Lm38EJSB_SC_EEEEEENS3_IJS2C_NS4_IS6_Lm1079EJSF_S2B_EEES9C_S9F_EEEEENS2_INS3_IJNS4_IS6_Lm34EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_S9K_EEEEENS2_INS3_IJNS4_IS6_Lm39EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_S9P_EEEEENS2_INS3_IJNS4_IS6_Lm35EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_S9U_EEEEENS2_INS3_IJNS4_IS6_Lm40EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_S9Z_EEEEENS2_INS3_IJNS4_IS6_Lm36EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_SA4_EEEEENS2_INS3_IJNS4_IS6_Lm41EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_SA9_EEEEENS2_INS3_IJNS4_IS6_Lm37EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_SAE_EEEEENS2_INS3_IJNS4_IS6_Lm32EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_SAJ_EEEEENS2_INS3_IJNS4_IS6_Lm33EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_SAO_EEEEENS2_INS3_IJNS4_IS6_Lm38EJSB_SB_EEEEEESBO_EENS2_INS3_IJNS4_IS6_Lm34EJSB_SB_EEEEEESBS_EENS2_INS3_IJNS4_IS6_Lm39EJSB_SB_EEEEEESBW_EENS2_INS3_IJNS4_IS6_Lm35EJSB_SB_EEEEEESC0_EENS2_INS3_IJNS4_IS6_Lm40EJSB_SB_EEEEEESC4_EENS2_INS3_IJNS4_IS6_Lm36EJSB_SB_EEEEEESC8_EENS2_INS3_IJNS4_IS6_Lm41EJSB_SB_EEEEEESCC_EENS2_INS3_IJNS4_IS6_Lm37EJSB_SB_EEEEEESCG_EENS2_INS3_IJNS4_IS6_Lm32EJSB_SB_EEEEEESCK_EENS2_INS3_IJNS4_IS6_Lm33EJSB_SB_EEEEEESCO_EEEE7rewriteEPNS_6ModuleERNS_9MFunctionEENKUlTyvE0_clIS2I_EEDavENKUlTyvE0_clIS2D_EEDav
+#+end_example
+
+Emacs reports that that is =7300= characters, and =1070= "words" (underscore separated). Honestly, I'm surprised the C++ implementation doesn't have some different way of hashing long enough symbols to produce a unique one, lol. Either way, you can see there's a lot of data; but what is actually going on here?
+
+(Relevant: [[https://github.com/LensPlaysGames/LensorCompilerCollection/blob/ebc417ca535aec027739a1154e8ace3942930109/include/lcc/codegen/isel.hh][isel.hh]])
+
+In C++11, we gained the ability to create "packs" of either function or template parameters (see [[https://en.cppreference.com/w/cpp/language/parameter_pack.html][cppreference]]). A "pack" is just an arbitrary list of parameters. To operate on the items in that list, there are ways to apply folds to the pack using different operators. With this, we can use LISP-like ways of defining a working =While= and =Foreach=
+
+#+begin_src c++
+  template <typename... pack>
+  constexpr void While(bool& cond, auto&& lambda) {
+      auto impl = [&]<typename t>() {
+          if (not cond) return false;
+          lambda.template operator()<t>();
+          return true;
+      };
+
+      (impl.template operator()<pack>() and ...);
+  }
+
+  template <typename... pack>
+  constexpr void Foreach(auto&& lambda) {
+      (lambda.template operator()<pack>(), ...);
+  }
+#+end_src
+
+(In case you didn't already get the hint, you might need to know a little bit about C++ to understand what's going on here).
+
+So, lets go over a couple pain points in C++.
+
+The explicit =template operator()= is UGLY. And it makes things /very/ hard to read. If you didn't know, C++ implements (prety much) every single operator as an overloadable function, so that the user may overload it for any type they wish (to some extents). The problem is that, for lambdas, the grammar becomes ambiguous if you allow template arguments after calling them (i.e. is a =<= following a =)= a binary less than or the beginning of a template parameter pack?). So, we need to get down to a subset of the grammar where template arguments are expected; to do that, we have to /explicitly/ call the /templated/ =operator()=. Note that, to call =operator()= in C++, you have to put parentheses after it to actually call that operator. This is why we have the noisy =operator()()=. In fact, there's a template argument list between them, so it is kind of easy to get lost in your mental context. But, that's all it is; calling the lambda with template arguments. The syntax is verbose and messy, but it's effectively just =lambda<pack>()= with lots of noise.
+
+Now that you know that, attempting to understand =Foreach= becomes a lot easier.
+
+If you aren't familiar, /folding/ is a mathematical operation (not just a laundry one). It applies to lists and trees and lists of trees and trees of lists and so on and so forth and such as.
+
+Folding refers to /applying/ each element of a list to some operator. In the case of =Foreach=, that operator is =,=. So, we apply each pair of elements of the pack to =operator,=, which really just means laying out all the elements, comma-separated. For an expression, this simply evaluates each in a row. That's exactly what we want.
+
+I'll leave understanding =While= as an exercise for the reader.
+
+(Relevant: [[https://github.com/LensPlaysGames/LensorCompilerCollection/blob/ebc417ca535aec027739a1154e8ace3942930109/docs/lcc/isel.org][docs/lcc/isel.org]])
+
+Alright, now why in the world did we just learn math, of all things? Oh, yeah, instruction selection. Instruction selection refers to the stage of compilation where generic machine instructions (i.e. LCC gMIR) are transformed into lowered machine instructions (i.e. LCC lMIR). To do this, we create a list of patterns, each of which has an input and an output. The input matches on some set of gMIR instructions, possibly with some extra requirements, and tells LCC to add the pattern's output instructions to the output.
+
+Let's look at a pattern for x86_64:
+#+begin_src c++
+using ret = Pattern<
+    InstList<Inst<Clobbers<>, usz(MKind::Return)>>,
+    InstList<Inst<Clobbers<>, usz(Opcode::Return)>>>;
+#+end_src
+
+Alright, this is kind of noisy, so lets pick it apart.
+
+It's easy to see that we are defining a templated =Pattern= type, and assigning a name to it using =using=.
+
+Within the defined =Pattern=, there are two template arguments: =input= and =output=.
+
+Each of these arguments is another templated type, an =InstList= (INSTruction LIST). As you may have guessed, an =InstList= contains a list of any amount of instructions.
+
+An =Inst= (INSTruction) is another templated type that takes a list of clobbers (another templated type, who would have guessed), and an unsigned integer opcode. Following that, it accepts any amount of =Operand= (a templated type).
+
+With all that, we can kind of decode the above code: we are defining a pattern which matches on a "return" instruction with zero operands, and outputs an architecture-specific return instruction, also with no operands.
+
+This is just about the simplest a pattern can get. Patterns may also get more complex, like in the case of x86_64 not handling immediates in some places directly, and requiring an intermediate register. Or division, which, on x86_64, has /multiple/, /fixed/ output registers. Or both :^).
+
+#+begin_src c++
+  using sdiv_imm_imm = Pattern<
+      InstList<
+          Inst<Clobbers<>, usz(MKind::SDiv), Immediate<>, Immediate<>>>,
+      InstList<
+          Inst<Clobbers<c<1>>, usz(Opcode::Move), o<1>, v<0, 1>>,
+          Inst<Clobbers<c<1>>, usz(Opcode::Move), o<0>, Register<usz(RegId::RAX), Sizeof<0>>>,
+          Inst<Clobbers<c<1>>, usz(Opcode::Xor), Register<usz(RegId::RDX), Immediate<32>>, Register<usz(RegId::RDX), Immediate<32>>>,
+          Inst<Clobbers<r<usz(RegId::RAX)>, r<usz(RegId::RDX)>>, usz(Opcode::SignedDivide), v<0, 1>>,
+          Inst<Clobbers<c<1>>, usz(Opcode::Move), Register<usz(RegId::RAX), Sizeof<0>>, i<0>>>>;
+#+end_src
+
+Even this pattern, though monstrous in it's output, is not as complex as it can get. Though, as you can see, you start to forget that we are writing C++ types...
+
+All of this pattern data is collected into /yet another template parameter pack/ for each architecture, (i.e. =x86_64::PatternList=), and utilised by =select_instructions()= and our looping constructs from before from the header-only =isel.hh=.
+
+Then, each time you want to emit code for the x86_64 architecture, these patterns are used to construct the lMIR that is passed to register allocation, and then the code generation format backend (i.e. assembly or object file).
+
+As you can see, we utilise C++'s template parameter packs in an extensive way to contain arbitrary instruction information within inputs and outputs of patterns, and patterns within an architecture's pattern list that is subsequently used to generate machine instructions for a format backend to emit.
+
+** Relevant
+
+https://en.cppreference.com/w/cpp/language/parameter_pack.html
+
+https://github.com/LensPlaysGames/LensorCompilerCollection/blob/ebc417ca535aec027739a1154e8ace3942930109/docs/lcc/isel.org
+
+https://github.com/LensPlaysGames/LensorCompilerCollection/blob/ebc417ca535aec027739a1154e8ace3942930109/include/lcc/codegen/isel.hh
+
 * Glint's Quirky Call Syntax                                       :blogpost:
 :PROPERTIES:
 :CUSTOM_ID: 2025glintcallgrammar
@@ -804,6 +924,7 @@ Anyway, thank you for reading this post on assembly. If you enjoyed it, I make T
 :CUSTOM_ID: whatsaprogram
 :PUBLISHED: [2023-05-29 Mon 08:41]
 :MODIFIED: [2023-06-04 Sun 09:17]
+:POST_TAGS: programming
 :END:
 
 This may seem obvious, but it turns out to be quite ... complex.

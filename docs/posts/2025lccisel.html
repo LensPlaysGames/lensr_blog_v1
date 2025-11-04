@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2025-11-03 Mon 19:49 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lens_r | Abusing C++'s Type System&#x2014;LCC's Instruction Selection Implementation</title>
+<meta name="author" content="lens_r" />
+<meta name="generator" content="Org Mode" />
+<meta property="og:type" content="article"/>
+<meta property="og:url" content="https://lensplaysgames.github.io/lensr_blog_v1/posts/2025lccisel.html"/>
+<meta property="og:title" content="Lens_r | Abusing C++'s Type System&#x2014;LCC's Instruction Selection Implementation"/>
+<meta property="og:description" content="How does a compiler know what machine instructions correspond to a source language's constructs?"/>
+<link rel="stylesheet" href="/lensr_blog_v1/all.min.css"/>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<meta property="og:site_name" content="Lens_r's Blog"/>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-E0F1C2XGCS"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'G-E0F1C2XGCS');
+</script>
+<script>function toggle_dark_mode(){var element=document.getElementsByTagName("html")[0],dark_button=document.getElementById("dark-mode"),d=(element.classList.toggle("dark-mode"),new Date);d.setTime(d.getTime()+24192e5),element.classList.contains("dark-mode")?(document.cookie="dark_mode=true; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Light Mode"):(document.cookie="dark_mode=false; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Dark Mode")}function goto_top(){document.body.scrollTop=0,document.documentElement.scrollTop=0}function insert_top_banner(){var navbar_html='<nav class="navbar" id="navbar">',navbar_html=((navbar_html+='<label for="hamburger">&#9776;</label>')+'<input type="checkbox" id="hamburger"/>'+'<div id="hamburger-items">'+"<a href='/lensr_blog_v1/'\">Home</a>"+'<a target="_blank" href=\'https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG\'">Donate</a>'+'<a target="_blank" href=\'https://www.youtube.com/@Lensr\'">YouTube</a>'+'<a target="_blank" href=\'https://www.twitch.tv/lens_r\'">Twitch</a>'+'<a target="_blank" href=\'https://www.github.com/LensPlaysGames\'">GitHub</a>'+'<a target="_blank" href=\'https://discord.gg/FTQsgqQEM4\'">Discord</a>'+'<a id="dark-mode" onClick={toggle_dark_mode();}>Dark Mode</a>'+"</div></nav>",document.body.firstElementChild),navbar_and_contents=document.createElement("div");navbar_and_contents.innerHTML='<nav class="navbar" id="navbar"><label for="hamburger">&#9776;</label><input type="checkbox" id="hamburger"/><div id="hamburger-items"><a href=\'/lensr_blog_v1/\'">Home</a><a target="_blank" href=\'https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG\'">Donate</a><a target="_blank" href=\'https://www.youtube.com/@Lensr\'">YouTube</a><a target="_blank" href=\'https://www.twitch.tv/lens_r\'">Twitch</a><a target="_blank" href=\'https://www.github.com/LensPlaysGames\'">GitHub</a><a target="_blank" href=\'https://discord.gg/FTQsgqQEM4\'">Discord</a><a id="dark-mode" onClick={toggle_dark_mode();}>Dark Mode</a></div></nav>'+navbar_html.outerHTML,navbar_html.replaceWith(navbar_and_contents)}function main(){insert_top_banner();var cookies=decodeURIComponent(document.cookie).split(";");for(let i=0;i<cookies.length;i++){for(;" "==cookies[i].charAt(0);)cookies[i]=cookies[i].substring(1);0==cookies[i].indexOf("dark_mode")&&"true"==cookies[i].substring(name.length,cookies[i].length).split("=")[1]&&toggle_dark_mode()}}window.onload=main;</script>
+</head>
+<body>
+<div id="content" class="content">
+<div id="outline-container-2025lccisel" class="outline-2">
+<h2 id="2025lccisel">Abusing C++'s Type System&#x2014;LCC's Instruction Selection Implementation</h2>
+<div class="outline-text-2" id="text-2025lccisel">
+<p>
+In case you don't know, I'm the creator of and main contributor to the Lensor Compiler Collection (abbreviated <i>LCC</i>).
+</p>
+
+<p>
+LCC has no third party dependencies; we do everything from lexing to code generation in house.
+</p>
+
+<p>
+If you aren't familiar with the various stages of a compiler, or the general structure, I implore you to check out the <a href="https://github.com/LensPlaysGames/LensorCompilerCollection/blob/main/docs/lcc/compilation_overview.pdf">relevant LCC documentation</a> (this isn't a bad start; everything in that directory should help put together a picture).
+</p>
+
+<p>
+We used to have a DSL (domain specific language) to describe the patterns&#x2014;which we will talk more about here soon&#x2014;which was parsed at runtime <i>each time</i> the compiler was run. The problem is that the patterns don't really change <i>each time</i> you run the compiler. So, to embed the patterns in the program itself, we decided to abuse the type system to store all the necessary information.
+</p>
+
+<p>
+You can get a hint of this by printing an LCC program's symbol table.
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">objdump -T lcc
+</pre>
+</div>
+
+<p>
+The output of which contains a few symbols that look like this <b>one</b> symbol.
+</p>
+<pre class="example" id="org866675b">
+_ZZZN3lcc4isel11PatternListIJNS0_7PatternINS0_8InstListIJNS0_4InstINS0_8ClobbersIJEEELm1067EJNS0_5LocalIJEEENS0_8RegisterILm0ENS0_9ImmediateILl0ELm0EEEEEEEENS4_IS6_Lm1066EJNS0_1oILm1EEESC_EEEEEENS3_IJNS4_IS6_Lm1066EJNSE_ILm0EEENSE_ILm3EEEEEEEEEEENS2_INS3_IJNS4_IS6_Lm11EJEEEEEENS3_IJNS4_IS6_Lm1057EJEEEEEEEENS2_INS3_IJNS4_IS6_Lm11EJSB_EEEEEENS3_IJNS4_INS5_IJNS0_1cILm1EEEEEELm1062EJSI_NS9_ILm528ENS0_6SizeofILm0EEEEEEEESP_EEEEENS2_INS3_IJNS4_IS6_Lm11EJSC_EEEEEES11_EENS2_INS3_IJNS4_IS6_Lm11EJNS0_6GlobalIJEEEEEEEEENS3_IJNS4_ISW_Lm1066EJSI_SZ_EEESP_EEEEENS2_INS3_IJNS4_IS6_Lm11EJS8_EEEEEES1B_EENS2_INS3_IJNS4_IS6_Lm6EJS17_EEEEEENS3_IJNS4_ISW_Lm1066EJSI_NS0_1iILm0EEEEEEEEEEENS2_INS3_IJNS4_IS6_Lm6EJS8_EEEEEES1L_EENS2_INS3_IJNS4_IS6_Lm6EJSC_EEEEEES1L_EENS2_INS3_IJNS4_IS6_Lm8EJSC_S8_EEEEEENS3_IJNS4_ISW_Lm1065EJSI_SF_EEEEEEEENS2_INS3_IJNS4_IS6_Lm8EJSB_S8_EEEEEES1W_EENS2_INS3_IJNS4_IS6_Lm8EJS8_S8_EEEEEENS3_IJNS4_IS6_Lm1066EJSI_NS0_1vILm0ELm1EEEEEENS4_ISW_Lm1065EJS24_SF_EEEEEEEENS2_INS3_IJNS4_IS6_Lm8EJSB_SC_EEEEEENS3_IJNS4_IS6_Lm1062EJSI_NS23_ILm0ELm0EEEEEENS4_ISW_Lm1065EJS2B_SF_EEEEEEEENS2_INS3_IJNS4_IS6_Lm8EJSB_S17_EEEEEES2E_EENS2_INS3_IJNS4_IS6_Lm8EJSC_SC_EEEEEES1W_EENS2_INS3_IJNS4_IS6_Lm2EJSC_EEEEEENS3_IJNS4_ISW_Lm1062EJSI_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm2EJS17_EEEEEENS3_IJNS4_ISW_Lm1067EJSI_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm2EJS8_EEEEEES2U_EENS2_INS3_IJNS4_IS6_Lm2EJSB_EEEEEES2P_EENS2_INS3_IJNS4_IS6_Lm14EJSC_EEEEEENS3_IJNS4_ISW_Lm1063EJSI_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm13EJSC_EEEEEENS3_IJNS4_IS6_Lm1064EJSI_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm18EJSC_EEEEEENS3_IJNS4_IS6_Lm1068EJSI_EEES2O_EEEEENS2_INS3_IJNS4_IS6_Lm26EJSB_SB_EEEEEENS3_IJS2C_NS4_IS6_Lm1074EJSF_S2B_EEENS4_ISW_Lm1062EJS2B_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm28EJSB_SB_EEEEEENS3_IJS2C_NS4_IS6_Lm1073EJSF_S2B_EEES3K_EEEEENS2_INS3_IJNS4_IS6_Lm27EJSB_SB_EEEEEENS3_IJS2C_NS4_IS6_Lm1072EJSF_S2B_EEES3K_EEEEENS2_INS3_IJNS4_IS6_Lm26EJSB_SC_EEEEEENS3_IJS2C_NS4_IS6_Lm1062EJNS0_15ResizedRegisterILm1ELm32EEENS9_ILm3ENSA_ILl32ELm0EEEEEEEENS4_IS6_Lm1074EJNS9_ILm3ENSA_ILl8ELm0EEEEES2B_EEES3K_EEEEENS2_INS3_IJNS4_IS6_Lm28EJSB_SC_EEEEEENS3_IJS2C_S43_NS4_IS6_Lm1073EJS45_S2B_EEES3K_EEEEENS2_INS3_IJNS4_IS6_Lm27EJSB_SC_EEEEEENS3_IJS2C_S43_NS4_IS6_Lm1072EJS45_S2B_EEES3K_EEEEENS2_INS3_IJNS4_IS6_Lm26EJSC_SB_EEEEEENS3_IJNS4_IS6_Lm1074EJSF_SI_EEENS4_ISW_Lm1062EJSF_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm28EJSC_SB_EEEEEENS3_IJNS4_IS6_Lm1073EJSF_SI_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm27EJSC_SB_EEEEEENS3_IJNS4_IS6_Lm1072EJSF_SI_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm26EJSC_SC_EEEEEENS3_IJNS4_IS6_Lm1062EJSF_S42_EEENS4_IS6_Lm1074EJS45_SI_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm28EJSC_SC_EEEEEENS3_IJS51_NS4_IS6_Lm1073EJS45_SI_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm27EJSC_SC_EEEEEENS3_IJS51_NS4_IS6_Lm1072EJS45_SI_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm29EJSC_SC_EEEEEENS3_IJNS4_IS6_Lm1069EJSI_SF_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm29EJSC_SB_EEEEEENS3_IJNS4_IS6_Lm1069EJSF_SI_EEES2O_EEEEENS2_INS3_IJNS4_IS6_Lm30EJSC_SC_EEEEEENS3_IJNS4_IS6_Lm1070EJSI_SF_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm30EJSC_SB_EEEEEENS3_IJNS4_IS6_Lm1070EJSF_SI_EEES2O_EEEEENS2_INS3_IJNS4_IS6_Lm19EJS8_SB_EEEEEENS3_IJNS4_ISW_Lm1067EJNS0_11OffsetLocalISI_SF_EES1J_EEEEEEEENS2_IS60_NS3_IJNS4_IS6_Lm1067EJSI_S1J_EEENS4_ISW_Lm1075EJSF_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm19EJSC_SC_EEEEEENS3_IJNS4_IS6_Lm1075EJSI_SF_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm19EJSB_SC_EEEEEENS3_IJNS4_IS6_Lm1062EJSF_S1J_EEENS4_IS6_Lm1075EJSI_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm19EJSC_SB_EEEEEENS3_IJS2O_NS4_IS6_Lm1075EJSF_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm19EJSB_SB_EEEEEES6O_EENS2_INS3_IJNS4_IS6_Lm19EJS17_SB_EEEEEES68_EENS2_INS3_IJNS4_IS6_Lm21EJSB_SC_EEEEEENS3_IJNS4_IS6_Lm1076EJSI_SF_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm21EJSC_SB_EEEEEENS3_IJNS4_IS6_Lm1076EJSF_SI_EEES2O_EEEEENS2_INS3_IJNS4_IS6_Lm21EJSB_SB_EEEEEENS3_IJS2O_NS4_IS6_Lm1076EJSF_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm20EJSC_SC_EEEEEENS3_IJNS4_IS6_Lm1077EJSF_SI_EEES2O_EEEEENS2_INS3_IJNS4_IS6_Lm20EJSC_SB_EEEEEES7E_EENS2_INS3_IJNS4_IS6_Lm22EJSB_SB_EEEEEENS3_IJNS4_ISW_Lm1062EJSF_S24_EEENS4_ISW_Lm1062EJSI_NS9_ILm1ESY_EEEEENS4_ISW_Lm1071EJNS9_ILm4ES41_EES7O_EEENS4_INS5_IJNS0_1rILm1EEENS7Q_ILm4EEEEEELm1078EJS24_EEENS4_ISW_Lm1062EJS7M_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm22EJSC_SB_EEEEEES7W_EENS2_INS3_IJNS4_IS6_Lm22EJSC_SC_EEEEEES7W_EENS2_INS3_IJNS4_IS6_Lm24EJSC_SC_EEEEEENS3_IJS7L_S7N_S7P_S7U_NS4_ISW_Lm1062EJNS9_ILm4ESY_EES1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm24EJSC_SB_EEEEEES88_EENS2_INS3_IJNS4_IS6_Lm16EJSB_EEEEEENS3_IJNS4_IS6_Lm1062EJSI_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm1EJNS0_8FunctionIJEEEEEEEEENS3_IJNS4_IS6_Lm1061EJSI_EEEEEEEENS2_INS3_IJNS4_IS6_Lm9EJNS0_5BlockIJEEEEEEEEENS3_IJNS4_IS6_Lm1060EJSI_EEEEEEEENS2_INS3_IJNS4_IS6_Lm10EJSC_S8Q_S8Q_EEEEEENS3_IJNS4_IS6_Lm1080EJSI_SI_EEENS4_IS6_Lm1081EJNSE_ILm2EEEEEENS4_IS6_Lm1060EJSF_EEEEEEEENS2_INS3_IJNS4_IS6_Lm10EJSB_S8Q_S8Q_EEEEEENS3_IJS2C_NS4_IS6_Lm1080EJS2B_S2B_EEES90_S91_EEEEENS2_INS3_IJNS4_IS6_Lm38EJSC_SC_EEEEEENS3_IJNS4_IS6_Lm1079EJSF_SI_EEENS4_IS6_Lm1062EJSB_S1J_EEENS4_INS5_IJNSU_ILm0EEEEEELm1088EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm34EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1089EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm39EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1084EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm35EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1085EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm40EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1090EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm36EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1091EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm41EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1086EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm37EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1087EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm32EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1082EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm33EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1083EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm38EJSC_SB_EEEEEES9G_EENS2_INS3_IJNS4_IS6_Lm34EJSC_SB_EEEEEES9L_EENS2_INS3_IJNS4_IS6_Lm39EJSC_SB_EEEEEES9Q_EENS2_INS3_IJNS4_IS6_Lm35EJSC_SB_EEEEEES9V_EENS2_INS3_IJNS4_IS6_Lm40EJSC_SB_EEEEEESA0_EENS2_INS3_IJNS4_IS6_Lm36EJSC_SB_EEEEEESA5_EENS2_INS3_IJNS4_IS6_Lm41EJSC_SB_EEEEEESAA_EENS2_INS3_IJNS4_IS6_Lm37EJSC_SB_EEEEEESAF_EENS2_INS3_IJNS4_IS6_Lm32EJSC_SB_EEEEEESAK_EENS2_INS3_IJNS4_IS6_Lm33EJSC_SB_EEEEEESAP_EENS2_INS3_IJNS4_IS6_Lm38EJSB_SC_EEEEEENS3_IJS2C_NS4_IS6_Lm1079EJSF_S2B_EEES9C_S9F_EEEEENS2_INS3_IJNS4_IS6_Lm34EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_S9K_EEEEENS2_INS3_IJNS4_IS6_Lm39EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_S9P_EEEEENS2_INS3_IJNS4_IS6_Lm35EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_S9U_EEEEENS2_INS3_IJNS4_IS6_Lm40EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_S9Z_EEEEENS2_INS3_IJNS4_IS6_Lm36EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_SA4_EEEEENS2_INS3_IJNS4_IS6_Lm41EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_SA9_EEEEENS2_INS3_IJNS4_IS6_Lm37EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_SAE_EEEEENS2_INS3_IJNS4_IS6_Lm32EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_SAJ_EEEEENS2_INS3_IJNS4_IS6_Lm33EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_SAO_EEEEENS2_INS3_IJNS4_IS6_Lm38EJSB_SB_EEEEEESBO_EENS2_INS3_IJNS4_IS6_Lm34EJSB_SB_EEEEEESBS_EENS2_INS3_IJNS4_IS6_Lm39EJSB_SB_EEEEEESBW_EENS2_INS3_IJNS4_IS6_Lm35EJSB_SB_EEEEEESC0_EENS2_INS3_IJNS4_IS6_Lm40EJSB_SB_EEEEEESC4_EENS2_INS3_IJNS4_IS6_Lm36EJSB_SB_EEEEEESC8_EENS2_INS3_IJNS4_IS6_Lm41EJSB_SB_EEEEEESCC_EENS2_INS3_IJNS4_IS6_Lm37EJSB_SB_EEEEEESCG_EENS2_INS3_IJNS4_IS6_Lm32EJSB_SB_EEEEEESCK_EENS2_INS3_IJNS4_IS6_Lm33EJSB_SB_EEEEEESCO_EEEE7rewriteEPNS_6ModuleERNS_9MFunctionEENKUlTyvE0_clIS2I_EEDavENKUlTyvE0_clIS2D_EEDav
+</pre>
+
+<p>
+Emacs reports that that is <code>7300</code> characters, and <code>1070</code> "words" (underscore separated). Honestly, I'm surprised the C++ implementation doesn't have some different way of hashing long enough symbols to produce a unique one, lol. Either way, you can see there's a lot of data; but what is actually going on here?
+</p>
+
+<p>
+(Relevant: <a href="https://github.com/LensPlaysGames/LensorCompilerCollection/blob/ebc417ca535aec027739a1154e8ace3942930109/include/lcc/codegen/isel.hh">isel.hh</a>)
+</p>
+
+<p>
+In C++11, we gained the ability to create "packs" of either function or template parameters (see <a href="https://en.cppreference.com/w/cpp/language/parameter_pack.html">cppreference</a>). A "pack" is just an arbitrary list of parameters. To operate on the items in that list, there are ways to apply folds to the pack using different operators. With this, we can use LISP-like ways of defining a working <code>While</code> and <code>Foreach</code>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++"><span class="org-keyword">template</span> &lt;<span class="org-keyword">typename</span>... <span class="org-type">pack</span>&gt;
+<span class="org-keyword">constexpr</span> <span class="org-type">void</span> <span class="org-function-name">While</span>(<span class="org-type">bool</span>&amp; <span class="org-variable-name">cond</span>, <span class="org-keyword">auto</span>&amp;&amp; <span class="org-variable-name">lambda</span>) {
+    <span class="org-keyword">auto</span> <span class="org-variable-name">impl</span> = [&amp;]&lt;<span class="org-keyword">typename</span> <span class="org-type">t</span>&gt;() {
+        <span class="org-keyword">if</span> (<span class="org-keyword">not</span> cond) <span class="org-keyword">return</span> <span class="org-constant">false</span>;
+        lambda.<span class="org-keyword">template</span> <span class="org-keyword">operator</span>()&lt;<span class="org-type">t</span>&gt;();
+        <span class="org-keyword">return</span> <span class="org-constant">true</span>;
+    };
+
+    (impl.<span class="org-keyword">template</span> <span class="org-keyword">operator</span>()&lt;<span class="org-type">pack</span>&gt;() <span class="org-keyword">and</span> ...);
+}
+
+<span class="org-keyword">template</span> &lt;<span class="org-keyword">typename</span>... <span class="org-type">pack</span>&gt;
+<span class="org-keyword">constexpr</span> <span class="org-type">void</span> <span class="org-function-name">Foreach</span>(<span class="org-keyword">auto</span>&amp;&amp; <span class="org-variable-name">lambda</span>) {
+    (lambda.<span class="org-keyword">template</span> <span class="org-keyword">operator</span>()&lt;<span class="org-type">pack</span>&gt;(), ...);
+}
+</pre>
+</div>
+
+<p>
+(In case you didn't already get the hint, you might need to know a little bit about C++ to understand what's going on here).
+</p>
+
+<p>
+So, lets go over a couple pain points in C++.
+</p>
+
+<p>
+The explicit <code>template operator()</code> is UGLY. And it makes things <i>very</i> hard to read. If you didn't know, C++ implements (prety much) every single operator as an overloadable function, so that the user may overload it for any type they wish (to some extents). The problem is that, for lambdas, the grammar becomes ambiguous if you allow template arguments after calling them (i.e. is a <code>&lt;</code> following a <code>)</code> a binary less than or the beginning of a template parameter pack?). So, we need to get down to a subset of the grammar where template arguments are expected; to do that, we have to <i>explicitly</i> call the <i>templated</i> <code>operator()</code>. Note that, to call <code>operator()</code> in C++, you have to put parentheses after it to actually call that operator. This is why we have the noisy <code>operator()()</code>. In fact, there's a template argument list between them, so it is kind of easy to get lost in your mental context. But, that's all it is; calling the lambda with template arguments. The syntax is verbose and messy, but it's effectively just <code>lambda&lt;pack&gt;()</code> with lots of noise.
+</p>
+
+<p>
+Now that you know that, attempting to understand <code>Foreach</code> becomes a lot easier.
+</p>
+
+<p>
+If you aren't familiar, <i>folding</i> is a mathematical operation (not just a laundry one). It applies to lists and trees and lists of trees and trees of lists and so on and so forth and such as.
+</p>
+
+<p>
+Folding refers to <i>applying</i> each element of a list to some operator. In the case of <code>Foreach</code>, that operator is <code>,</code>. So, we apply each pair of elements of the pack to <code>operator,</code>, which really just means laying out all the elements, comma-separated. For an expression, this simply evaluates each in a row. That's exactly what we want.
+</p>
+
+<p>
+I'll leave understanding <code>While</code> as an exercise for the reader.
+</p>
+
+<p>
+(Relevant: <a href="https://github.com/LensPlaysGames/LensorCompilerCollection/blob/ebc417ca535aec027739a1154e8ace3942930109/docs/lcc/isel.org">docs/lcc/isel.org</a>)
+</p>
+
+<p>
+Alright, now why in the world did we just learn math, of all things? Oh, yeah, instruction selection. Instruction selection refers to the stage of compilation where generic machine instructions (i.e. LCC gMIR) are transformed into lowered machine instructions (i.e. LCC lMIR). To do this, we create a list of patterns, each of which has an input and an output. The input matches on some set of gMIR instructions, possibly with some extra requirements, and tells LCC to add the pattern's output instructions to the output.
+</p>
+
+<p>
+Let's look at a pattern for x86<sub>64</sub>:
+</p>
+<div class="org-src-container">
+<pre class="src src-c++"><span class="org-keyword">using</span> <span class="org-type">ret</span> = <span class="org-type">Pattern</span>&lt;
+    <span class="org-type">InstList</span>&lt;<span class="org-type">Inst</span>&lt;<span class="org-type">Clobbers</span>&lt;&gt;, usz(<span class="org-constant">MKind</span>::Return)&gt;&gt;,
+    <span class="org-type">InstList</span>&lt;<span class="org-type">Inst</span>&lt;<span class="org-type">Clobbers</span>&lt;&gt;, usz(<span class="org-constant">Opcode</span>::Return)&gt;&gt;&gt;;
+</pre>
+</div>
+
+<p>
+Alright, this is kind of noisy, so lets pick it apart.
+</p>
+
+<p>
+It's easy to see that we are defining a templated <code>Pattern</code> type, and assigning a name to it using <code>using</code>.
+</p>
+
+<p>
+Within the defined <code>Pattern</code>, there are two template arguments: <code>input</code> and <code>output</code>.
+</p>
+
+<p>
+Each of these arguments is another templated type, an <code>InstList</code> (INSTruction LIST). As you may have guessed, an <code>InstList</code> contains a list of any amount of instructions.
+</p>
+
+<p>
+An <code>Inst</code> (INSTruction) is another templated type that takes a list of clobbers (another templated type, who would have guessed), and an unsigned integer opcode. Following that, it accepts any amount of <code>Operand</code> (a templated type).
+</p>
+
+<p>
+With all that, we can kind of decode the above code: we are defining a pattern which matches on a "return" instruction with zero operands, and outputs an architecture-specific return instruction, also with no operands.
+</p>
+
+<p>
+This is just about the simplest a pattern can get. Patterns may also get more complex, like in the case of x86<sub>64</sub> not handling immediates in some places directly, and requiring an intermediate register. Or division, which, on x86<sub>64</sub>, has <i>multiple</i>, <i>fixed</i> output registers. Or both :^).
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++"><span class="org-keyword">using</span> <span class="org-type">sdiv_imm_imm</span> = <span class="org-type">Pattern</span>&lt;
+    <span class="org-type">InstList</span>&lt;
+        <span class="org-type">Inst</span>&lt;<span class="org-type">Clobbers</span>&lt;&gt;, usz(<span class="org-constant">MKind</span>::SDiv), <span class="org-type">Immediate</span>&lt;&gt;, <span class="org-type">Immediate</span>&lt;&gt;&gt;&gt;,
+    <span class="org-type">InstList</span>&lt;
+        <span class="org-type">Inst</span>&lt;<span class="org-type">Clobbers</span>&lt;<span class="org-type">c</span>&lt;1&gt;&gt;, usz(<span class="org-constant">Opcode</span>::Move), <span class="org-type">o</span>&lt;1&gt;, <span class="org-type">v</span>&lt;0, 1&gt;&gt;,
+        <span class="org-type">Inst</span>&lt;<span class="org-type">Clobbers</span>&lt;<span class="org-type">c</span>&lt;1&gt;&gt;, usz(<span class="org-constant">Opcode</span>::Move), <span class="org-type">o</span>&lt;0&gt;, <span class="org-type">Register</span>&lt;usz(<span class="org-constant">RegId</span>::RAX), <span class="org-type">Sizeof</span>&lt;0&gt;&gt;&gt;,
+        <span class="org-type">Inst</span>&lt;<span class="org-type">Clobbers</span>&lt;<span class="org-type">c</span>&lt;1&gt;&gt;, usz(<span class="org-constant">Opcode</span>::Xor), <span class="org-type">Register</span>&lt;usz(<span class="org-constant">RegId</span>::RDX), <span class="org-type">Immediate</span>&lt;32&gt;&gt;, <span class="org-type">Register</span>&lt;usz(<span class="org-constant">RegId</span>::RDX), <span class="org-type">Immediate</span>&lt;32&gt;&gt;&gt;,
+        <span class="org-type">Inst</span>&lt;<span class="org-type">Clobbers</span>&lt;<span class="org-type">r</span>&lt;usz(<span class="org-constant">RegId</span>::RAX)&gt;, <span class="org-type">r</span>&lt;usz(<span class="org-constant">RegId</span>::RDX)&gt;&gt;, usz(<span class="org-constant">Opcode</span>::SignedDivide), <span class="org-type">v</span>&lt;0, 1&gt;&gt;,
+        <span class="org-type">Inst</span>&lt;<span class="org-type">Clobbers</span>&lt;<span class="org-type">c</span>&lt;1&gt;&gt;, usz(<span class="org-constant">Opcode</span>::Move), <span class="org-type">Register</span>&lt;usz(<span class="org-constant">RegId</span>::RAX), <span class="org-type">Sizeof</span>&lt;0&gt;&gt;, <span class="org-type">i</span>&lt;0&gt;&gt;&gt;&gt;;
+</pre>
+</div>
+
+<p>
+Even this pattern, though monstrous in it's output, is not as complex as it can get. Though, as you can see, you start to forget that we are writing C++ types&#x2026;
+</p>
+
+<p>
+All of this pattern data is collected into <i>yet another template parameter pack</i> for each architecture, (i.e. <code>x86_64::PatternList</code>), and utilised by <code>select_instructions()</code> and our looping constructs from before from the header-only <code>isel.hh</code>.
+</p>
+
+<p>
+Then, each time you want to emit code for the x86<sub>64</sub> architecture, these patterns are used to construct the lMIR that is passed to register allocation, and then the code generation format backend (i.e. assembly or object file).
+</p>
+
+<p>
+As you can see, we utilise C++'s template parameter packs in an extensive way to contain arbitrary instruction information within inputs and outputs of patterns, and patterns within an architecture's pattern list that is subsequently used to generate machine instructions for a format backend to emit.
+</p>
+</div>
+<div id="outline-container-orgcbbac74" class="outline-3">
+<h3 id="orgcbbac74">Relevant</h3>
+<div class="outline-text-3" id="text-orgcbbac74">
+<p>
+<a href="https://en.cppreference.com/w/cpp/language/parameter_pack.html">https://en.cppreference.com/w/cpp/language/parameter_pack.html</a>
+</p>
+
+<p>
+<a href="https://github.com/LensPlaysGames/LensorCompilerCollection/blob/ebc417ca535aec027739a1154e8ace3942930109/docs/lcc/isel.org">https://github.com/LensPlaysGames/LensorCompilerCollection/blob/ebc417ca535aec027739a1154e8ace3942930109/docs/lcc/isel.org</a>
+</p>
+
+<p>
+<a href="https://github.com/LensPlaysGames/LensorCompilerCollection/blob/ebc417ca535aec027739a1154e8ace3942930109/include/lcc/codegen/isel.hh">https://github.com/LensPlaysGames/LensorCompilerCollection/blob/ebc417ca535aec027739a1154e8ace3942930109/include/lcc/codegen/isel.hh</a>
+</p>
+</div>
+<div id="outline-container-org96e231f" class="outline-4">
+<h4 id="org96e231f">Explore Similar Posts Through Tags</h4>
+<div class="outline-text-4" id="text-org96e231f">
+<p>
+<a href="../tags/programming.html">programming</a>
+<a href="../tags/LCC.html">LCC</a>
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<footer>
+  <div class="footer-row">
+    <button onClick="goto_top()" title="Go to top of page">Back to Top</button>
+  </div>
+  <div class="footer-row">
+    <a target="_blank" href="https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG">Donate</a>
+    <a target="_blank" href="https://www.youtube.com/@Lensr">YouTube</a>
+    <a target="_blank" href="https://www.twitch.tv/lens_r">Twitch</a>
+    <a target="_blank" href="https://www.github.com/LensPlaysGames">GitHub</a>
+    <a target="_blank" href="https://discord.gg/FTQsgqQEM4">Discord</a>
+  </div>
+  <div class="footer-row">
+    <a target="_blank" href="/lensr_blog_v1/rss.xml">Feed/RSS</a>
+  </div>
+  <div class="footer-row"><span>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span></div>
+</footer>
+</div>
+</body>
+</html>
