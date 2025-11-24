@@ -36,6 +36,13 @@ NOTE: POST_TAGS property is not yet used yet, but will eventually be used for us
 
 * 2025 Ideas
 
+** How It's Made: Word Search Puzzles
+[2025-11-24 Mon 12:37]
+
+SearchGen
+
+First draft [2025-11-24 Mon 13:05]
+
 ** Literate Compiler/Programming Tests with Org Mode and Emacs
 [2025-11-03 Mon 09:53]
 
@@ -48,6 +55,8 @@ Wrote first draft [2025-11-03 Mon 11:02]
 
 - isel_patterns.hh
 
+Wrote first draft [2025-11-03 Mon 20:01]
+
 ** Glint's Basic Grammar
 [2025-11-03 Mon 09:53]
 - once I flesh it out, go over the single expression, group expression, call expression stuff, and why it fundamentally is a different grammar than C or LISP or Rust.
@@ -58,6 +67,9 @@ Wrote first draft [2025-11-03 Mon 12:49]
 ** Formatting Glint using Emacs and Rust
 [2025-11-03 Mon 09:53]
 - glint-ts-mode formatting implementation using tree sitter queries
+
+** How I Use Org Mode (and Only Org Mode) to Write This Blog
+[2025-11-24 Mon 12:37]
 
 ** My Very Own Emacs---How I Wrote a LISP-based Text Editor
 [2025-11-03 Mon 09:53]
@@ -71,6 +83,53 @@ I haven't actually done this, yet...
 
 ** Glint Tutorial Series
 [2025-11-03 Mon 15:58]
+
+* How It's Made: Word Search Puzzles
+:PROPERTIES:
+:CUSTOM_ID: 2025wordsearchgen
+:CREATED: [2025-11-24 Mon 12:38]
+:PUBLISHED: [2025-11-24 Mon 12:39]
+:MODIFIED: [2025-11-24 Mon 12:39]
+:OG_IMAGE: /todo
+:OG_DESCRIPTION: A word search is something all of us did either as kids or at your most recent baby shower. But, how are they even produced in the first place?
+:POST_TAGS: curiosity, programming
+:END:
+
+A word search puzzle.
+#+begin_example
+e n n l e i n n a
+a t o l i p a r e
+o f a e t a f i r
+c e e c f e i h c
+i a d m i r a l r
+c o m m a n d e r
+n i a t p a c a h
+e r e c i f f o t
+i l e a d e r h n
+
+captain  pilot  commander  admiral  officer
+chief  leader
+#+end_example
+
+I am lucky enough to (now) have a boring job. That also means I am lucky enough to get to watch my coworkers go through minor mental breakdowns (from boredom and/or monotony) every day =:^)=. One coworker brings books full of word search puzzles, and I see them filling it out throughout the day.
+
+This got me thinking: I wonder how those are made? I mean, it's a book, chances are it's typeset with TeX. But... writing all those single-character tables by hand in TeX sounds, well, /nightmarish/, to say the least. So, chances are there is probably a program that you just give a list of words and spits out a word search in TeX. This got me thinking, "I wonder how /that/ is made?"
+
+And now, we're here. I've wrote an entire word search generation program in Emacs Lisp. It even runs on my phone!
+
+First, let's think about what the main problem the program has to solve even is. Is it generating TeX? Honestly, no, it's pretty easy to generate the proper TeX /once we have a board/. And, once the words are on the board, it'd be trivial to fill in the empty spaces with random characters. So, it seems like the main problem is, "Where do the words go?"
+
+It seems easy at first, but, the unique things about this problem are that the output is meant to be /unstructured/. If every word is just lined up on the left hand side, or the top row, people will catch on to the pattern and every word is too easy to find. So, we need to place each word at a random position. However, that means we can't guarantee there isn't already a word (or part of a word) there already. So, we have to /try/ to place a word at a given position (laid out in a given direction), and only if it is valid to place the entire word are we able to actually place the word on the board.
+
+So, for each word, for every board position, for every direction, for each corresponding board position and word character, if the board position is empty or already contains the word character, it is valid. If every board position and word character is valid for a particular direction, we place the word at that position laid out in that direction, and move on. If we are unable to place a word at any board position or any direction, we increase the size of the board by one and try all over again.
+
+More formally,
+
+Given board =B= of size =S=, for every word =W= in given list of words =words=, iterate each unique board position (coordinate pair) within =B= in random succession. For each board position =P= containing =x= and =y=, iterate each possible direction in random succession. For each direction =D= (one of =RIGHT=, =DOWN=, =DOWNRIGHT=, etc), produce a list of board positions =D_B= such that there is a unique board position in the meaningful direction corresponding to each character =C= in word =W=. For each board position =P_B= in =D_B= and character =C= from word =W=, placement is valid if the cell in board =B= at board position =P_B= is empty (nothing yet placed), or if the cell in board =B= at board position =P_B= is equal to character =C= from word =W=. If each character =C= from word =W= is valid for the board positions produced by a given direction =D= starting at board position =P=, then the word =W= is placed (the board is altered) at board position =P= laid out in direction =D=. If no combination of board position =P= and direction =D= is valid for a particular word, then the entire board is erased, increased in size by one, and the algorithm retried. Board =B= is always a square matrix; increasing in size by one means increasing each side's length by one.
+
+Again, my job is boring, I have lots of time to think =:^)=. Once I worked the above algorithm out, is was just about implementing it in a language I think would be pertinent. I chose Emacs Lisp.
+
+You can find the full source code [[https://github.com/LensPlaysGames/word-search-generator--emacs-lisp][on GitHub]].
 
 * Abusing C++'s Type System---LCC's Instruction Selection Implementation :blogpost:
 :PROPERTIES:
