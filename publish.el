@@ -486,7 +486,7 @@ Passing nil will give the current time (as with any time object)."
          :publishing-directory "docs"
          :recursive t
          :base-directory "org"
-         :base-extension "png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|svg\\|ico\\|xml\\|xsl"
+         :base-extension "png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|svg\\|ico\\|xml\\|xsl\\|webp"
          :exclude "backup\\|backup/\\|tmp\\|tmp/"
          )
         ("extra"
