@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2026-01-24 Sat 12:23 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lens_r | How It's Made: Word Search Puzzles</title>
+<meta name="author" content="lens_r" />
+<meta name="generator" content="Org Mode" />
+<meta property="og:type" content="article"/>
+<meta property="og:url" content="https://lensplaysgames.github.io/lensr_blog_v1/posts/2025wordsearchgen.html"/>
+<meta property="og:title" content="Lens_r | How It's Made: Word Search Puzzles"/>
+<meta property="og:description" content="A word search is something all of us did either as kids or at your most recent baby shower. But, how are they even produced in the first place?"/>
+<meta property="og:image" content="https://lensplaysgames.github.io/lensr_blog_v1/wordsearch2025.webp"/>
+<link rel="stylesheet" href="/lensr_blog_v1/all.min.css"/>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<meta property="og:site_name" content="Lens_r's Blog"/>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-E0F1C2XGCS"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'G-E0F1C2XGCS');
+</script>
+<script>function toggle_dark_mode(){var element=document.getElementsByTagName("html")[0],dark_button=document.getElementById("dark-mode"),d=(element.classList.toggle("dark-mode"),new Date);d.setTime(d.getTime()+24192e5),element.classList.contains("dark-mode")?(document.cookie="dark_mode=true; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Light Mode"):(document.cookie="dark_mode=false; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Dark Mode")}function goto_top(){document.body.scrollTop=0,document.documentElement.scrollTop=0}function insert_top_banner(){var navbar_html='<nav class="navbar" id="navbar">',navbar_html=((navbar_html+='<label for="hamburger">&#9776;</label>')+'<input type="checkbox" id="hamburger"/>'+'<div id="hamburger-items">'+"<a href='/lensr_blog_v1/'\">Home</a>"+'<a target="_blank" href=\'https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG\'">Donate</a>'+'<a target="_blank" href=\'https://www.youtube.com/@Lensr\'">YouTube</a>'+'<a target="_blank" href=\'https://www.twitch.tv/lens_r\'">Twitch</a>'+'<a target="_blank" href=\'https://www.github.com/LensPlaysGames\'">GitHub</a>'+'<a target="_blank" href=\'https://discord.gg/FTQsgqQEM4\'">Discord</a>'+'<a id="dark-mode" onClick={toggle_dark_mode();}>Dark Mode</a>'+"</div></nav>",document.body.firstElementChild),navbar_and_contents=document.createElement("div");navbar_and_contents.innerHTML='<nav class="navbar" id="navbar"><label for="hamburger">&#9776;</label><input type="checkbox" id="hamburger"/><div id="hamburger-items"><a href=\'/lensr_blog_v1/\'">Home</a><a target="_blank" href=\'https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG\'">Donate</a><a target="_blank" href=\'https://www.youtube.com/@Lensr\'">YouTube</a><a target="_blank" href=\'https://www.twitch.tv/lens_r\'">Twitch</a><a target="_blank" href=\'https://www.github.com/LensPlaysGames\'">GitHub</a><a target="_blank" href=\'https://discord.gg/FTQsgqQEM4\'">Discord</a><a id="dark-mode" onClick={toggle_dark_mode();}>Dark Mode</a></div></nav>'+navbar_html.outerHTML,navbar_html.replaceWith(navbar_and_contents)}function main(){insert_top_banner();var cookies=decodeURIComponent(document.cookie).split(";");for(let i=0;i<cookies.length;i++){for(;" "==cookies[i].charAt(0);)cookies[i]=cookies[i].substring(1);0==cookies[i].indexOf("dark_mode")&&"true"==cookies[i].substring(name.length,cookies[i].length).split("=")[1]&&toggle_dark_mode()}}window.onload=main;</script>
+</head>
+<body>
+<div id="content" class="content">
+<div id="outline-container-2025wordsearchgen" class="outline-2">
+<h2 id="2025wordsearchgen">How It's Made: Word Search Puzzles</h2>
+<div class="outline-text-2" id="text-2025wordsearchgen">
+<p>
+A word search puzzle.
+</p>
+<pre class="example" id="org87f9425">
+e n n l e i n n a
+a t o l i p a r e
+o f a e t a f i r
+c e e c f e i h c
+i a d m i r a l r
+c o m m a n d e r
+n i a t p a c a h
+e r e c i f f o t
+i l e a d e r h n
+
+captain  pilot  commander  admiral  officer
+chief  leader
+</pre>
+
+<p>
+I am lucky enough to (now) have a boring job. That also means I am lucky enough to get to watch my coworkers go through minor mental breakdowns (from boredom and/or monotony) every day <code>:^)</code>. One coworker brings books full of word search puzzles, and I see them filling it out throughout the day.
+</p>
+
+<p>
+This got me thinking: I wonder how those are made? I mean, it's a book, chances are it's typeset with TeX. But&#x2026; writing all those single-character tables by hand in TeX sounds, well, <i>nightmarish</i>, to say the least. So, chances are there is probably a program that you just give a list of words and spits out a word search in TeX. This got me thinking, "I wonder how <i>that</i> is made?"
+</p>
+
+<p>
+And now, we're here. I've wrote an entire word search generation program in Emacs Lisp. It even runs on my phone!
+</p>
+
+<p>
+First, let's think about what the main problem the program has to solve even is. Is it generating TeX? Honestly, no, it's pretty easy to generate the proper TeX <i>once we have a board</i>. And, once the words are on the board, it'd be trivial to fill in the empty spaces with random characters. So, it seems like the main problem is, "Where do the words go?"
+</p>
+
+<p>
+It seems easy at first, but, the unique things about this problem are that the output is meant to be <i>unstructured</i>. If every word is just lined up on the left hand side, or the top row, people will catch on to the pattern and every word is too easy to find. So, we need to place each word at a random position. However, that means we can't guarantee there isn't already a word (or part of a word) there already. So, we have to <i>try</i> to place a word at a given position (laid out in a given direction), and only if it is valid to place the entire word are we able to actually place the word on the board.
+</p>
+
+<p>
+So, for each word, for every board position, for every direction, for each corresponding board position and word character, if the board position is empty or already contains the word character, it is valid. If every board position and word character is valid for a particular direction, we place the word at that position laid out in that direction, and move on. If we are unable to place a word at any board position or any direction, we increase the size of the board by one and try all over again.
+</p>
+
+<p>
+More formally,
+</p>
+
+<p>
+Given board <code>B</code> of size <code>S</code>, for every word <code>W</code> in given list of words <code>words</code>, iterate each unique board position (coordinate pair) within <code>B</code> in random succession. For each board position <code>P</code> containing <code>x</code> and <code>y</code>, iterate each possible direction in random succession. For each direction <code>D</code> (one of <code>RIGHT</code>, <code>DOWN</code>, <code>DOWNRIGHT</code>, etc), produce a list of board positions <code>D_B</code> such that there is a unique board position in the meaningful direction corresponding to each character <code>C</code> in word <code>W</code>. For each board position <code>P_B</code> in <code>D_B</code> and character <code>C</code> from word <code>W</code>, placement is valid if the cell in board <code>B</code> at board position <code>P_B</code> is empty (nothing yet placed), or if the cell in board <code>B</code> at board position <code>P_B</code> is equal to character <code>C</code> from word <code>W</code>. If each character <code>C</code> from word <code>W</code> is valid for the board positions produced by a given direction <code>D</code> starting at board position <code>P</code>, then the word <code>W</code> is placed (the board is altered) at board position <code>P</code> laid out in direction <code>D</code>. If no combination of board position <code>P</code> and direction <code>D</code> is valid for a particular word, then the entire board is erased, increased in size by one, and the algorithm retried. Board <code>B</code> is always a square matrix; increasing in size by one means increasing each side's length by one.
+</p>
+
+<p>
+Again, my job is boring, I have lots of time to think <code>:^)</code>. Once I worked the above algorithm out, is was just about implementing it in a language I think would be pertinent. I chose Emacs Lisp.
+</p>
+
+<p>
+You can find the full source code <a href="https://github.com/LensPlaysGames/word-search-generator--emacs-lisp">on GitHub</a>.
+</p>
+</div>
+<div id="outline-container-org9c2502e" class="outline-4">
+<h4 id="org9c2502e">Explore Similar Posts Through Tags</h4>
+<div class="outline-text-4" id="text-org9c2502e">
+<p>
+<a href="../tags/curiosity.html">curiosity</a>
+<a href="../tags/programming.html">programming</a>
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<footer>
+  <div class="footer-row">
+    <button onClick="goto_top()" title="Go to top of page">Back to Top</button>
+  </div>
+  <div class="footer-row">
+    <a target="_blank" href="https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG">Donate</a>
+    <a target="_blank" href="https://www.youtube.com/@Lensr">YouTube</a>
+    <a target="_blank" href="https://www.twitch.tv/lens_r">Twitch</a>
+    <a target="_blank" href="https://www.github.com/LensPlaysGames">GitHub</a>
+    <a target="_blank" href="https://discord.gg/FTQsgqQEM4">Discord</a>
+  </div>
+  <div class="footer-row">
+    <a target="_blank" href="/lensr_blog_v1/rss.xml">Feed/RSS</a>
+  </div>
+  <div class="footer-row"><span>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span></div>
+</footer>
+</div>
+</body>
+</html>

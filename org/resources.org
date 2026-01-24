@@ -266,7 +266,6 @@ setup :eyes:.
 
   .dark-mode .org-src-container {
       background-color: #212223; /* Just slightly brighter than --dark-bg */
-
       border-color: #bbb;
   }
 
@@ -281,6 +280,11 @@ setup :eyes:.
       padding: 1vw;
       /* Hide horizontal overflow, add scroll-bar */
       overflow-x: auto;
+  }
+
+  .dark-mode pre {
+      background-color: #212223; /* Just slightly brighter than --dark-bg */
+      border-color: #bbb;
   }
 
   .dark-mode .org-builtin,.dark-mode .org-keyword {

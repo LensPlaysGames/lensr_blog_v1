@@ -19,6 +19,13 @@
 
 ;; See =org/mainblog.org=.
 
+;; TODO: I need to separate out the "generated org" from the "input org" files.
+;; Basically, how it currently works is, =org/mainblog.org= is written /by me/.
+;; This generates a /ton/ of org files in =org/posts= and =org/tags= which
+;; are /not written by me/. These all end up living "together" in =org/=,
+;; and that is very, very confusing. It's hard to get a "clean build", so
+;; to speak.
+
 ;;; Code:
 
 ;; Load minimum amount of packages.
@@ -158,7 +165,7 @@ Passing nil will give the current time (as with any time object)."
   (with-current-buffer (find-file-noselect "org/mainblog.org")
     ;; Ensure "org/posts/" is a valid, empty directory.
     (delete-directory "posts" t)
-    (make-directory "posts" t)
+    (make-directory   "posts" t)
     (org-map-entries
      ;; FUNC: Function that will be called when cursor is at beginning of each
      ;; entry's headline. No need to preserve point, but if you want to set a
@@ -195,7 +202,7 @@ Passing nil will give the current time (as with any time object)."
                  (mapc (lambda (tag)
                          ;; NOTE: "../" to exit "posts" subdirectory and reach top level of web
                          ;; server contents (i.e. where "tags" directory is).
-                         (insert (format "[[file:../tags/%s.org][%s]]\n" tag tag)))
+                         (insert (format "[[file:../tags/%s.org][%s]]\n" (downcase tag) (downcase tag))))
                        (string-split post-tags-text ",+" t split-string-default-separators)))
                (save-buffer)))
 
@@ -221,7 +228,9 @@ Passing nil will give the current time (as with any time object)."
                                 (alist-get tag tags-links))))
                 ;; NOTE: intern to convert strings to symbols so that alist-get works with
                 ;; default 'eq' comparison.
-                (mapcar #'intern (string-split post-tags-text ",+" t split-string-default-separators))))
+                (mapcar #'intern
+                        (mapcar #'downcase
+                                (string-split post-tags-text ",+" t split-string-default-separators)))))
 
              ;; Push an item to the RSS feed, along with it's publish date.
              (push `(,(concat
@@ -244,8 +253,10 @@ Passing nil will give the current time (as with any time object)."
         (lambda (a b)
           (string-lessp (downcase (symbol-name (car a))) (downcase (symbol-name (car b))))))
 
+  ;; Ensure "org/tags/" is a valid, empty directory.
+  (delete-directory "org/tags/" t)
+  (make-directory   "org/tags/" t)
   ;; For each tag, create a org/tags/TAG.org
-  (make-directory "org/tags/" t)
   (mapc (lambda (tag-links-pair)
           ;; While we are here, sort links by publish date.
           (sort (cdr tag-links-pair)
@@ -342,8 +353,9 @@ Passing nil will give the current time (as with any time object)."
 
 ;;; JS and CSS Minification
 
-;; Ensure resources subdirectory existence
-(make-directory "res" t)
+;; Ensure resources subdirectory existence.
+(delete-directory "res" t)
+(make-directory   "res" t)
 ;; Consolidate separate JS files into a single one.
 (blub-concatenate-directory-files "org/js" "res/all.js")
 ;; Consolidate separate CSS files into a single one.
@@ -389,6 +401,8 @@ Passing nil will give the current time (as with any time object)."
 (setq org-export-with-tags nil)
 
 ;; Ensure extras subdirectory existence
+;; Anything placed in "extras" will be copied into the root directory of
+;; the final site.
 (make-directory "extras" t)
 
 ;; all.js inlined into header (minified if available).
@@ -484,6 +498,10 @@ Passing nil will give the current time (as with any time object)."
          :base-extension any)
         ("lensr-blog-site" :components ("export-org" "copy" "extra"))
         ))
+
+;; Ensure a clean build of website.
+(delete-directory "docs" t)
+(make-directory   "docs" t)
 
 (org-publish "lensr-blog-site")
 (message "Lens_r blog website has been published.")

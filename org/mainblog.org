@@ -84,13 +84,15 @@ I haven't actually done this, yet...
 ** Glint Tutorial Series
 [2025-11-03 Mon 15:58]
 
-* How It's Made: Word Search Puzzles
+
+
+* How It's Made: Word Search Puzzles :blogpost:
 :PROPERTIES:
 :CUSTOM_ID: 2025wordsearchgen
 :CREATED: [2025-11-24 Mon 12:38]
 :PUBLISHED: [2025-11-24 Mon 12:39]
 :MODIFIED: [2025-11-24 Mon 12:39]
-:OG_IMAGE: /todo
+:OG_IMAGE: wordsearch2025.webp
 :OG_DESCRIPTION: A word search is something all of us did either as kids or at your most recent baby shower. But, how are they even produced in the first place?
 :POST_TAGS: curiosity, programming
 :END:
@@ -139,7 +141,7 @@ You can find the full source code [[https://github.com/LensPlaysGames/word-searc
 :MODIFIED: [2025-11-03 Mon 19:49]
 :OG_IMAGE: /todo
 :OG_DESCRIPTION: How does a compiler know what machine instructions correspond to a source language's constructs?
-:POST_TAGS: programming, LCC
+:POST_TAGS: programming, LCC, cpp
 :END:
 
 In case you don't know, I'm the creator of and main contributor to the Lensor Compiler Collection (abbreviated /LCC/).
@@ -259,7 +261,7 @@ https://github.com/LensPlaysGames/LensorCompilerCollection/blob/ebc417ca535aec02
 :MODIFIED: [2025-11-03 Mon 12:30]
 :OG_IMAGE: /todo
 :OG_DESCRIPTION: Ambiguous? I think not.
-:POST_TAGS: Glint, programming, LCC
+:POST_TAGS: glint, programming, LCC
 :END:
 
 In case you don't know, I'm the creator of and main contributor to the Lensor Compiler Collection (abbreviated /LCC/). I am also the designer and creator of a language LCC compiles, /Glint/. Herein lies the quirks of Glint's syntax, and why it took so long to put together a formal grammar (or, even a comprehensive tree-sitter one).
@@ -893,6 +895,7 @@ I am not a genius or something because my terrible designs end up working in the
 :PUBLISHED: [2023-06-03 Sat 12:39]
 :MODIFIED: [2023-06-04 Sun 09:17]
 :OG_DESCRIPTION: Exploring Assembly from a CPU's Point of View
+:POST_TAGS: programming, cpu, assembly, hardware
 :END:
 
 Assembly is as close as you can get to the hardware, right? It basically tells you the exact instructions the CPU will run ... /right/?. Well, that may be what it seems like (and what people say), but not necessarily! Modern CPUs do so much more than just read an instruction and execute it, and that is what we will be exploring in this post.
@@ -983,7 +986,7 @@ Anyway, thank you for reading this post on assembly. If you enjoyed it, I make T
 :CUSTOM_ID: whatsaprogram
 :PUBLISHED: [2023-05-29 Mon 08:41]
 :MODIFIED: [2023-06-04 Sun 09:17]
-:POST_TAGS: programming
+:POST_TAGS: programming, c
 :END:
 
 This may seem obvious, but it turns out to be quite ... complex.
