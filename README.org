@@ -14,7 +14,7 @@ The included ~publish.el~ will populate the ~web~ subdirectory with servable con
 
 Run it using the following shell command:
 #+begin_src sh
-  emacs --chdir path/to/this/folder --script publish.el
+  emacs --chdir path/to/this/folder --batch ./publish.el --eval "(eval-buffer)"
 #+end_src
 
 *** Testing

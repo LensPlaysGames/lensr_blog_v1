@@ -438,27 +438,29 @@ Passing nil will give the current time (as with any time object)."
   ;; stylesheet) into the ~extras~ directory.
   (if (>= (blub-file-size-in-bytes css-filepath) 4096)
       (let ((css-basename (file-name-nondirectory css-filepath)))
-        (setq org-html-head (format "<link rel=\"stylesheet\" href=\"/lensr_blog_v1/%s\"/>\n" css-basename))
+        (setq org-html-head
+              (format "<link rel=\"stylesheet\" href=\"/lensr_blog_v1/%s\"/>\n" css-basename))
         ;; Copy "res/all[.min].css" to "extras/all[.min].css"
         (copy-file css-filepath (expand-file-name css-basename "extras") t))
     (setq org-html-head (format "<style>%s</style>\n" (blub-file-string css-filepath)))))
 
 
-(setq org-html-head (concat org-html-head
-                            "<link rel=\"icon\" type=\"image/x-icon\" href=\"favicon.ico\">\n"
-                            "<meta property=\"og:site_name\" content=\"Lens_r's Blog\"/>\n"
+(setq org-html-head
+      (concat org-html-head
+              "<link rel=\"icon\" type=\"image/x-icon\" href=\"favicon.ico\">\n"
+              "<meta property=\"og:site_name\" content=\"Lens_r's Blog\"/>\n"
 
-                            "<!-- Google tag (gtag.js) -->\n"
-                            "<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-E0F1C2XGCS\"></script>\n"
-                            "<script>\n"
-                            "window.dataLayer = window.dataLayer || [];\n"
-                            "function gtag(){dataLayer.push(arguments);}\n"
-                            "gtag('js', new Date());\n"
-                            "\n"
-                            "gtag('config', 'G-E0F1C2XGCS');\n"
-                            "</script>\n"
+              "<!-- Google tag (gtag.js) -->\n"
+              "<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-E0F1C2XGCS\"></script>\n"
+              "<script>\n"
+              "window.dataLayer = window.dataLayer || [];\n"
+              "function gtag(){dataLayer.push(arguments);}\n"
+              "gtag('js', new Date());\n"
+              "\n"
+              "gtag('config', 'G-E0F1C2XGCS');\n"
+              "</script>\n"
 
-                            ))
+              ))
 
 (setq org-publish-project-alist
       `(("export-org"
@@ -486,7 +488,7 @@ Passing nil will give the current time (as with any time object)."
          :publishing-directory "docs"
          :recursive t
          :base-directory "org"
-         :base-extension "png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|svg\\|ico\\|xml\\|xsl\\|webp"
+         :base-extension "png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|svg\\|ico\\|xml\\|xsl\\|webp\\|txt"
          :exclude "backup\\|backup/\\|tmp\\|tmp/"
          )
         ("extra"

@@ -7,10 +7,15 @@
     <description>Lens_r sometimes writes things down.</description>
     <language>en-us</language>
     <pubDate>Mon, 29 May 2023 20:08:15 PDT</pubDate>
-    <lastBuildDate>Sat, 24 Jan 2026 12:23:49 PDT</lastBuildDate>
+    <lastBuildDate>Tue, 19 May 2026 12:49:02 PDT</lastBuildDate>
     <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
     <generator>Lens_r's Pile of Elisp</generator>
     <atom:link href="https://lensplaysgames.github.io/lensr_blog_v1/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Begrudgingly Trying AI</title>
+      <link>https://lensplaysgames.github.io/lensr_blog_v1/posts/2026aiexploration.html</link>
+      <pubDate>Tue, 19 May 2026 12:20:00 PDT</pubDate>
+    </item>
     <item>
       <title>How It's Made: Word Search Puzzles</title>
       <link>https://lensplaysgames.github.io/lensr_blog_v1/posts/2025wordsearchgen.html</link>

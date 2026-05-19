@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-01-24 Sat 12:23 -->
+<!-- 2026-05-19 Tue 12:49 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Main Blog</title>
@@ -203,13 +203,134 @@ I haven't actually done this, yet&#x2026;
 </div>
 </div>
 </div>
+<div id="outline-container-2026aiexploration" class="outline-2">
+<h2 id="2026aiexploration">Begrudgingly Trying AI</h2>
+<div class="outline-text-2" id="text-2026aiexploration">
+<p>
+I don't like "AI".  More specifically, I don't like whatever is being marketed as AI these days.  I do, however, like technology, progress, and innovation.  And, I hear ignorance in my own voice when I speak on these topics.  So, I want to learn&#x2014;even though I don't like it.
+</p>
+
+<p>
+If I'm going to do this at all, it has to be run locally on my own hardware; no corporation is going to have that much insight into my thought process for free, and never will I trust anything they put in front of me as "fact" blindly.  So, to trust the model's output <i>at all</i>, <b>it has to be an open model, running on my own hardware</b>: enter <code>Ollama</code>.
+</p>
+</div>
+<div id="outline-container-org5f59535" class="outline-3">
+<h3 id="org5f59535">Ollama</h3>
+<div class="outline-text-3" id="text-org5f59535">
+<p>
+Ollama is a CLI that is based on the <code>llama.cpp</code> library, which can "run" AI models from a serialised GGUF format in a file, for example.
+The CLI is easy enough to use, as well.
+</p>
+
+<p>
+This is where I made my first mistake.  I installed <code>ollama</code> through <code>dnf</code>, my system's package manager.  It was available when I searched for it, after all.
+</p>
+
+<p>
+Unfortunately, with how quickly things are changing, the <code>ollama</code> package on my system was a little out of date, and therefore couldn't take advantage of my very-old hardware.  This meant all the models were running directly on my CPU, which, while not a lemon by any means (13th Gen Intel(R) Core(TM) i7-13700K), was still not state-of-the-art.
+</p>
+
+<p>
+This meant I was limited to small parameter models (&lt;5b), lest they take ten seconds to emit a single word.
+</p>
+
+<p>
+Off I went, trying out different models that were compatible and seemed interesting.
+</p>
+</div>
+<div id="outline-container-orgd32d9ba" class="outline-4">
+<h4 id="orgd32d9ba"><code>ollama run qwen3.5:0.8b</code></h4>
+<div class="outline-text-4" id="text-orgd32d9ba">
+<p>
+Trash.  "thinking" takes up the entire output, never generates a result for <code>Why is the sky blue?</code>, <code>2 + 2 = ?</code>, etc.. Lots of <code>Remember to mention "blue"...</code>
+</p>
+</div>
+</div>
+<div id="outline-container-org9a2b301" class="outline-4">
+<h4 id="org9a2b301"><code>ollama run granite4.1:3b</code></h4>
+<div class="outline-text-4" id="text-org9a2b301">
+<p>
+Oh, that's actually impressive. It generated an answer for <code>Why is the sky blue?</code> that was reasonably accurate, and the answer was given within ten to fifteen words, which only took a second or so to generate. This &#x2026; <i>this</i> is usable.
+</p>
+
+<p>
+It seems IBM has cooked up something very nice.  I like it.
+</p>
+</div>
+</div>
+<div id="outline-container-orgd5b3586" class="outline-4">
+<h4 id="orgd5b3586">Utilising the GPU</h4>
+<div class="outline-text-4" id="text-orgd5b3586">
+<p>
+After lots of fiddling around, I just downloaded the install script from <code>ollama</code> themselves, vetted it, then removed the <code>dnf</code> package and ran the script on my system to install <code>ollama</code> locally.  During install, <code>NVidia GPU detected</code> or something appeared in the output.  Yay.
+</p>
+
+<p>
+After that, it "just worked" to run models and have <code>ollama</code> utilise my GPU.
+</p>
+</div>
+</div>
+<div id="outline-container-org965f579" class="outline-4">
+<h4 id="org965f579"><code>ollama run granite4.1:8b</code></h4>
+<div class="outline-text-4" id="text-org965f579">
+<p>
+Impressive.  Hallucinates for industry-specific details, or things that don't appear in the training data over and over (like the workings of the packages of Emacs, or the <code>Go</code> language).  Despite that, it provides quick answers, displays impressively cohesive reasoning, and I'd say is a very "usable" model if you have quick questions, need help planning a project&#x2014;things of that nature.
+</p>
+</div>
+</div>
+<div id="outline-container-org123c258" class="outline-4">
+<h4 id="org123c258"><code>ollama run nemotron-3-nano:4b</code></h4>
+<div class="outline-text-4" id="text-org123c258">
+<p>
+Holy crap, a thinking model you can run locally that isn't trash.  Provides quick answers to <code>Why is the sky blue?</code>, <code>2 + 2 = ?</code>, etc. without getting stuck.  Cohesive reasoning, despite the low parameter count.  Whatever NVidia is cooking here, it's <b>good</b>.
+</p>
+</div>
+</div>
+<div id="outline-container-orgd9c032f" class="outline-4">
+<h4 id="orgd9c032f"><code>ollama run rnj-1:8b</code></h4>
+<div class="outline-text-4" id="text-orgd9c032f">
+<p>
+Similar to granite4.1, but seems to be more "deterministic". Repeats itself, has "one way" of solving problems and sticks to it, and if it doesn't know how to solve your exact problem it tries to adapt the solution it does know to your problem. Overall, responsive, reasonable, and usable. Lump it in with Granite4.1.
+</p>
+
+<p>
+I appreciate the plain-text style output, vs over-using markdown elements.
+</p>
+</div>
+</div>
+<div id="outline-container-orgdbb36a9" class="outline-4">
+<h4 id="orgdbb36a9"><code>ollama run ministral-3:8b</code></h4>
+<div class="outline-text-4" id="text-orgdbb36a9">
+<p>
+Ew. Too many emojis, too much markdown (in every line?!), but not inaccurate or unusable. Just unlikable, to me.
+</p>
+
+<p>
+Impressive to get an 8.9b parameter model to fit in 8gb of VRAM.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org7351199" class="outline-3">
+<h3 id="org7351199"><span class="todo TODO">TODO</span> AnythingLLM</h3>
+<div class="outline-text-3" id="text-org7351199">
+<p>
+I've heard anything-llm is an open source tool that is oriented towards RAG (basically, using larger documents as input to AI, and asking the model specific questions about the document). I'd be very interested if I could feed it the intel manual, and ask about things like the shadow stack, byte encoding of certain instructions, etc. That could actually be really helpful when writing a compiler, to be able to get specific answers to your questions about how certain hardware works.
+</p>
+
+<p>
+I may update this post with more info, or make a new post, depending on how it goes.
+</p>
+</div>
+</div>
+</div>
 <div id="outline-container-2025wordsearchgen" class="outline-2">
 <h2 id="2025wordsearchgen">How It's Made: Word Search Puzzles</h2>
 <div class="outline-text-2" id="text-2025wordsearchgen">
 <p>
 A word search puzzle.
 </p>
-<pre class="example" id="org4c8bf04">
+<pre class="example" id="org4ac1bdc">
 e n n l e i n n a
 a t o l i p a r e
 o f a e t a f i r
@@ -295,7 +416,7 @@ You can get a hint of this by printing an LCC program's symbol table.
 <p>
 The output of which contains a few symbols that look like this <b>one</b> symbol.
 </p>
-<pre class="example" id="orgc21686d">
+<pre class="example" id="org4cf2451">
 _ZZZN3lcc4isel11PatternListIJNS0_7PatternINS0_8InstListIJNS0_4InstINS0_8ClobbersIJEEELm1067EJNS0_5LocalIJEEENS0_8RegisterILm0ENS0_9ImmediateILl0ELm0EEEEEEEENS4_IS6_Lm1066EJNS0_1oILm1EEESC_EEEEEENS3_IJNS4_IS6_Lm1066EJNSE_ILm0EEENSE_ILm3EEEEEEEEEEENS2_INS3_IJNS4_IS6_Lm11EJEEEEEENS3_IJNS4_IS6_Lm1057EJEEEEEEEENS2_INS3_IJNS4_IS6_Lm11EJSB_EEEEEENS3_IJNS4_INS5_IJNS0_1cILm1EEEEEELm1062EJSI_NS9_ILm528ENS0_6SizeofILm0EEEEEEEESP_EEEEENS2_INS3_IJNS4_IS6_Lm11EJSC_EEEEEES11_EENS2_INS3_IJNS4_IS6_Lm11EJNS0_6GlobalIJEEEEEEEEENS3_IJNS4_ISW_Lm1066EJSI_SZ_EEESP_EEEEENS2_INS3_IJNS4_IS6_Lm11EJS8_EEEEEES1B_EENS2_INS3_IJNS4_IS6_Lm6EJS17_EEEEEENS3_IJNS4_ISW_Lm1066EJSI_NS0_1iILm0EEEEEEEEEEENS2_INS3_IJNS4_IS6_Lm6EJS8_EEEEEES1L_EENS2_INS3_IJNS4_IS6_Lm6EJSC_EEEEEES1L_EENS2_INS3_IJNS4_IS6_Lm8EJSC_S8_EEEEEENS3_IJNS4_ISW_Lm1065EJSI_SF_EEEEEEEENS2_INS3_IJNS4_IS6_Lm8EJSB_S8_EEEEEES1W_EENS2_INS3_IJNS4_IS6_Lm8EJS8_S8_EEEEEENS3_IJNS4_IS6_Lm1066EJSI_NS0_1vILm0ELm1EEEEEENS4_ISW_Lm1065EJS24_SF_EEEEEEEENS2_INS3_IJNS4_IS6_Lm8EJSB_SC_EEEEEENS3_IJNS4_IS6_Lm1062EJSI_NS23_ILm0ELm0EEEEEENS4_ISW_Lm1065EJS2B_SF_EEEEEEEENS2_INS3_IJNS4_IS6_Lm8EJSB_S17_EEEEEES2E_EENS2_INS3_IJNS4_IS6_Lm8EJSC_SC_EEEEEES1W_EENS2_INS3_IJNS4_IS6_Lm2EJSC_EEEEEENS3_IJNS4_ISW_Lm1062EJSI_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm2EJS17_EEEEEENS3_IJNS4_ISW_Lm1067EJSI_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm2EJS8_EEEEEES2U_EENS2_INS3_IJNS4_IS6_Lm2EJSB_EEEEEES2P_EENS2_INS3_IJNS4_IS6_Lm14EJSC_EEEEEENS3_IJNS4_ISW_Lm1063EJSI_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm13EJSC_EEEEEENS3_IJNS4_IS6_Lm1064EJSI_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm18EJSC_EEEEEENS3_IJNS4_IS6_Lm1068EJSI_EEES2O_EEEEENS2_INS3_IJNS4_IS6_Lm26EJSB_SB_EEEEEENS3_IJS2C_NS4_IS6_Lm1074EJSF_S2B_EEENS4_ISW_Lm1062EJS2B_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm28EJSB_SB_EEEEEENS3_IJS2C_NS4_IS6_Lm1073EJSF_S2B_EEES3K_EEEEENS2_INS3_IJNS4_IS6_Lm27EJSB_SB_EEEEEENS3_IJS2C_NS4_IS6_Lm1072EJSF_S2B_EEES3K_EEEEENS2_INS3_IJNS4_IS6_Lm26EJSB_SC_EEEEEENS3_IJS2C_NS4_IS6_Lm1062EJNS0_15ResizedRegisterILm1ELm32EEENS9_ILm3ENSA_ILl32ELm0EEEEEEEENS4_IS6_Lm1074EJNS9_ILm3ENSA_ILl8ELm0EEEEES2B_EEES3K_EEEEENS2_INS3_IJNS4_IS6_Lm28EJSB_SC_EEEEEENS3_IJS2C_S43_NS4_IS6_Lm1073EJS45_S2B_EEES3K_EEEEENS2_INS3_IJNS4_IS6_Lm27EJSB_SC_EEEEEENS3_IJS2C_S43_NS4_IS6_Lm1072EJS45_S2B_EEES3K_EEEEENS2_INS3_IJNS4_IS6_Lm26EJSC_SB_EEEEEENS3_IJNS4_IS6_Lm1074EJSF_SI_EEENS4_ISW_Lm1062EJSF_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm28EJSC_SB_EEEEEENS3_IJNS4_IS6_Lm1073EJSF_SI_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm27EJSC_SB_EEEEEENS3_IJNS4_IS6_Lm1072EJSF_SI_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm26EJSC_SC_EEEEEENS3_IJNS4_IS6_Lm1062EJSF_S42_EEENS4_IS6_Lm1074EJS45_SI_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm28EJSC_SC_EEEEEENS3_IJS51_NS4_IS6_Lm1073EJS45_SI_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm27EJSC_SC_EEEEEENS3_IJS51_NS4_IS6_Lm1072EJS45_SI_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm29EJSC_SC_EEEEEENS3_IJNS4_IS6_Lm1069EJSI_SF_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm29EJSC_SB_EEEEEENS3_IJNS4_IS6_Lm1069EJSF_SI_EEES2O_EEEEENS2_INS3_IJNS4_IS6_Lm30EJSC_SC_EEEEEENS3_IJNS4_IS6_Lm1070EJSI_SF_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm30EJSC_SB_EEEEEENS3_IJNS4_IS6_Lm1070EJSF_SI_EEES2O_EEEEENS2_INS3_IJNS4_IS6_Lm19EJS8_SB_EEEEEENS3_IJNS4_ISW_Lm1067EJNS0_11OffsetLocalISI_SF_EES1J_EEEEEEEENS2_IS60_NS3_IJNS4_IS6_Lm1067EJSI_S1J_EEENS4_ISW_Lm1075EJSF_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm19EJSC_SC_EEEEEENS3_IJNS4_IS6_Lm1075EJSI_SF_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm19EJSB_SC_EEEEEENS3_IJNS4_IS6_Lm1062EJSF_S1J_EEENS4_IS6_Lm1075EJSI_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm19EJSC_SB_EEEEEENS3_IJS2O_NS4_IS6_Lm1075EJSF_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm19EJSB_SB_EEEEEES6O_EENS2_INS3_IJNS4_IS6_Lm19EJS17_SB_EEEEEES68_EENS2_INS3_IJNS4_IS6_Lm21EJSB_SC_EEEEEENS3_IJNS4_IS6_Lm1076EJSI_SF_EEES4M_EEEEENS2_INS3_IJNS4_IS6_Lm21EJSC_SB_EEEEEENS3_IJNS4_IS6_Lm1076EJSF_SI_EEES2O_EEEEENS2_INS3_IJNS4_IS6_Lm21EJSB_SB_EEEEEENS3_IJS2O_NS4_IS6_Lm1076EJSF_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm20EJSC_SC_EEEEEENS3_IJNS4_IS6_Lm1077EJSF_SI_EEES2O_EEEEENS2_INS3_IJNS4_IS6_Lm20EJSC_SB_EEEEEES7E_EENS2_INS3_IJNS4_IS6_Lm22EJSB_SB_EEEEEENS3_IJNS4_ISW_Lm1062EJSF_S24_EEENS4_ISW_Lm1062EJSI_NS9_ILm1ESY_EEEEENS4_ISW_Lm1071EJNS9_ILm4ES41_EES7O_EEENS4_INS5_IJNS0_1rILm1EEENS7Q_ILm4EEEEEELm1078EJS24_EEENS4_ISW_Lm1062EJS7M_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm22EJSC_SB_EEEEEES7W_EENS2_INS3_IJNS4_IS6_Lm22EJSC_SC_EEEEEES7W_EENS2_INS3_IJNS4_IS6_Lm24EJSC_SC_EEEEEENS3_IJS7L_S7N_S7P_S7U_NS4_ISW_Lm1062EJNS9_ILm4ESY_EES1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm24EJSC_SB_EEEEEES88_EENS2_INS3_IJNS4_IS6_Lm16EJSB_EEEEEENS3_IJNS4_IS6_Lm1062EJSI_S1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm1EJNS0_8FunctionIJEEEEEEEEENS3_IJNS4_IS6_Lm1061EJSI_EEEEEEEENS2_INS3_IJNS4_IS6_Lm9EJNS0_5BlockIJEEEEEEEEENS3_IJNS4_IS6_Lm1060EJSI_EEEEEEEENS2_INS3_IJNS4_IS6_Lm10EJSC_S8Q_S8Q_EEEEEENS3_IJNS4_IS6_Lm1080EJSI_SI_EEENS4_IS6_Lm1081EJNSE_ILm2EEEEEENS4_IS6_Lm1060EJSF_EEEEEEEENS2_INS3_IJNS4_IS6_Lm10EJSB_S8Q_S8Q_EEEEEENS3_IJS2C_NS4_IS6_Lm1080EJS2B_S2B_EEES90_S91_EEEEENS2_INS3_IJNS4_IS6_Lm38EJSC_SC_EEEEEENS3_IJNS4_IS6_Lm1079EJSF_SI_EEENS4_IS6_Lm1062EJSB_S1J_EEENS4_INS5_IJNSU_ILm0EEEEEELm1088EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm34EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1089EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm39EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1084EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm35EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1085EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm40EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1090EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm36EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1091EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm41EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1086EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm37EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1087EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm32EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1082EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm33EJSC_SC_EEEEEENS3_IJS9B_S9C_NS4_IS9E_Lm1083EJS1J_EEEEEEEENS2_INS3_IJNS4_IS6_Lm38EJSC_SB_EEEEEES9G_EENS2_INS3_IJNS4_IS6_Lm34EJSC_SB_EEEEEES9L_EENS2_INS3_IJNS4_IS6_Lm39EJSC_SB_EEEEEES9Q_EENS2_INS3_IJNS4_IS6_Lm35EJSC_SB_EEEEEES9V_EENS2_INS3_IJNS4_IS6_Lm40EJSC_SB_EEEEEESA0_EENS2_INS3_IJNS4_IS6_Lm36EJSC_SB_EEEEEESA5_EENS2_INS3_IJNS4_IS6_Lm41EJSC_SB_EEEEEESAA_EENS2_INS3_IJNS4_IS6_Lm37EJSC_SB_EEEEEESAF_EENS2_INS3_IJNS4_IS6_Lm32EJSC_SB_EEEEEESAK_EENS2_INS3_IJNS4_IS6_Lm33EJSC_SB_EEEEEESAP_EENS2_INS3_IJNS4_IS6_Lm38EJSB_SC_EEEEEENS3_IJS2C_NS4_IS6_Lm1079EJSF_S2B_EEES9C_S9F_EEEEENS2_INS3_IJNS4_IS6_Lm34EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_S9K_EEEEENS2_INS3_IJNS4_IS6_Lm39EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_S9P_EEEEENS2_INS3_IJNS4_IS6_Lm35EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_S9U_EEEEENS2_INS3_IJNS4_IS6_Lm40EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_S9Z_EEEEENS2_INS3_IJNS4_IS6_Lm36EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_SA4_EEEEENS2_INS3_IJNS4_IS6_Lm41EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_SA9_EEEEENS2_INS3_IJNS4_IS6_Lm37EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_SAE_EEEEENS2_INS3_IJNS4_IS6_Lm32EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_SAJ_EEEEENS2_INS3_IJNS4_IS6_Lm33EJSB_SC_EEEEEENS3_IJS2C_SBN_S9C_SAO_EEEEENS2_INS3_IJNS4_IS6_Lm38EJSB_SB_EEEEEESBO_EENS2_INS3_IJNS4_IS6_Lm34EJSB_SB_EEEEEESBS_EENS2_INS3_IJNS4_IS6_Lm39EJSB_SB_EEEEEESBW_EENS2_INS3_IJNS4_IS6_Lm35EJSB_SB_EEEEEESC0_EENS2_INS3_IJNS4_IS6_Lm40EJSB_SB_EEEEEESC4_EENS2_INS3_IJNS4_IS6_Lm36EJSB_SB_EEEEEESC8_EENS2_INS3_IJNS4_IS6_Lm41EJSB_SB_EEEEEESCC_EENS2_INS3_IJNS4_IS6_Lm37EJSB_SB_EEEEEESCG_EENS2_INS3_IJNS4_IS6_Lm32EJSB_SB_EEEEEESCK_EENS2_INS3_IJNS4_IS6_Lm33EJSB_SB_EEEEEESCO_EEEE7rewriteEPNS_6ModuleERNS_9MFunctionEENKUlTyvE0_clIS2I_EEDavENKUlTyvE0_clIS2D_EEDav
 </pre>
 
@@ -569,7 +690,7 @@ Is this a call expression, with callee <code>blah</code> and <i>one</i> binary e
 Or, is this a binary expression, with a call expression <code>blah 27</code> on the left hand side, and <code>42</code> on the right hand side?
 </p>
 
-<pre class="example" id="org09a592a">
+<pre class="example" id="org472bf6d">
 Call
 |-- identifier: blah
 `-- Binary: +
@@ -577,7 +698,7 @@ Call
     `-- number: 42
 </pre>
 
-<pre class="example" id="orgfa429db">
+<pre class="example" id="org1a91eee">
 Binary: +
 |-- Call
 |   |-- identifier: blah
@@ -633,7 +754,7 @@ As you can see, there <i>would</i> be an ambiguity here if not for the following
 So, binary expressions actually only accept a subset of Glint's expressions (ones that aren't calls). This is put in practice by the simple ordering of gathering binary operators before call arguments during parsing (such that a call is parsed <i>after</i> binary expressions are, it can't directly appear as a child of one (since it hasn't yet been parsed) (because the binary expression binds more tightly)).
 </p>
 
-<pre class="example" id="orgc5d95da">
+<pre class="example" id="org2a9b9dc">
 lhs = ParsePrimary();
 lhs = ParseBinary();
 
@@ -940,7 +1061,7 @@ I explode. Eventually, I slow down (just slightly, begrudgingly) and solve the p
 <p>
 Line count on Glint language only using <a href="https://github.com/AlDanial/cloc">https://github.com/AlDanial/cloc</a>.
 </p>
-<pre class="example" id="orgaf576a7">
+<pre class="example" id="org29e7e84">
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
@@ -1283,7 +1404,7 @@ Let's imagine the following ledger file, <code>./.test.ledger</code>.
 Here is the <code>balance</code> report, which should always add up to zero; it tells you where money comes from and where money goes.
 </p>
 
-<pre class="example" id="org63b3d37">
+<pre class="example" id="orge9e7a71">
 $ ledger -f ./.test.ledger bal
             $122.920  Assets:Checking
              $15.920  Expenses:Wants:Coffee
@@ -1304,7 +1425,7 @@ One of the most powerful features of Ledger is it's ability to <a href="https://
 As well as the <code>balance</code> report, there is also the <code>register</code> report; this mimics what you might see in a checkbook. The <code>register</code> report makes it easier to see how each transaction adds to the totals that appear in the <code>balance</code> report.
 </p>
 
-<pre class="example" id="org0b06c51">
+<pre class="example" id="orgf1d7a8d">
 23-Jun-17 Me                    Assets:Checking             $69.420      $69.420
                                 Income:Salary              $-69.420            0
 23-Jun-19 Starbucks             Expenses:Wants:Coffee        $6.840       $6.840
@@ -1429,7 +1550,7 @@ Well, the reason assembly is thought of as "telling the hardware exactly what to
 Imagining a naive CPU pipeline that does one thing at a time, we may arrive at something like this:
 </p>
 
-<pre class="example" id="org1fc49c8">
+<pre class="example" id="org88bb901">
 .-&gt;  Decoder -&gt; Processor  -.
 `---------------------------+
 </pre>
@@ -1449,7 +1570,7 @@ NOTE: This is a whole topic in-and-of-itself. See <a href="https://en.wikipedia.
 Sitting around doing nothing is <b>never</b> good. Luckily, we can attempt to make the situation better due to one simple fact: computations within the processor can't use or modify the instruction pointer directly (most of the time). This means the decoder <i>could</i> start decoding the next instruction <b>before</b> the processor finishes processing the last instruction decoded. By the time the processor finishes processing, the decoder may already be ready with another instruction to execute. This increases the amount of time the processor spends doing valuable computations, making the CPU faster and computers go brrr.
 </p>
 
-<pre class="example" id="org9e95c31">
+<pre class="example" id="orgad71a99">
 Decoder -&gt; Decoded Instruction Queue
 Pop(Decoded Instruction Queue) -&gt; Processor
 </pre>
@@ -1502,7 +1623,7 @@ Attempting to eliminate dependencies in the above code without renaming register
 Now, with this done, the CPU is smart enough to notice something: instructions 0 through 2 and 3 through 5 are two blocks of instructions that start with <i>no</i> register dependencies.
 </p>
 
-<pre class="example" id="orgd8daa13">
+<pre class="example" id="org0dac3c2">
 0 sets r1
 1 uses r1 and sets r1
 2 uses r1

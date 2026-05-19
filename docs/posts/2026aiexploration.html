@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2026-05-19 Tue 12:49 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lens_r | Begrudgingly Trying AI</title>
+<meta name="author" content="lens_r" />
+<meta name="generator" content="Org Mode" />
+<meta property="og:type" content="article"/>
+<meta property="og:url" content="https://lensplaysgames.github.io/lensr_blog_v1/posts/2026aiexploration.html"/>
+<meta property="og:title" content="Lens_r | Begrudgingly Trying AI"/>
+<meta property="og:description" content="Lens_r's exploration into AI, using old hardware to run local models."/>
+<link rel="stylesheet" href="/lensr_blog_v1/all.min.css"/>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<meta property="og:site_name" content="Lens_r's Blog"/>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-E0F1C2XGCS"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'G-E0F1C2XGCS');
+</script>
+<script>function toggle_dark_mode(){var element=document.getElementsByTagName("html")[0],dark_button=document.getElementById("dark-mode"),d=(element.classList.toggle("dark-mode"),new Date);d.setTime(d.getTime()+24192e5),element.classList.contains("dark-mode")?(document.cookie="dark_mode=true; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Light Mode"):(document.cookie="dark_mode=false; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Dark Mode")}function goto_top(){document.body.scrollTop=0,document.documentElement.scrollTop=0}function insert_top_banner(){var navbar_html='<nav class="navbar" id="navbar">',navbar_html=((navbar_html+='<label for="hamburger">&#9776;</label>')+'<input type="checkbox" id="hamburger"/>'+'<div id="hamburger-items">'+"<a href='/lensr_blog_v1/'\">Home</a>"+'<a target="_blank" href=\'https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG\'">Donate</a>'+'<a target="_blank" href=\'https://www.youtube.com/@Lensr\'">YouTube</a>'+'<a target="_blank" href=\'https://www.twitch.tv/lens_r\'">Twitch</a>'+'<a target="_blank" href=\'https://www.github.com/LensPlaysGames\'">GitHub</a>'+'<a target="_blank" href=\'https://discord.gg/FTQsgqQEM4\'">Discord</a>'+'<a id="dark-mode" onClick={toggle_dark_mode();}>Dark Mode</a>'+"</div></nav>",document.body.firstElementChild),navbar_and_contents=document.createElement("div");navbar_and_contents.innerHTML='<nav class="navbar" id="navbar"><label for="hamburger">&#9776;</label><input type="checkbox" id="hamburger"/><div id="hamburger-items"><a href=\'/lensr_blog_v1/\'">Home</a><a target="_blank" href=\'https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG\'">Donate</a><a target="_blank" href=\'https://www.youtube.com/@Lensr\'">YouTube</a><a target="_blank" href=\'https://www.twitch.tv/lens_r\'">Twitch</a><a target="_blank" href=\'https://www.github.com/LensPlaysGames\'">GitHub</a><a target="_blank" href=\'https://discord.gg/FTQsgqQEM4\'">Discord</a><a id="dark-mode" onClick={toggle_dark_mode();}>Dark Mode</a></div></nav>'+navbar_html.outerHTML,navbar_html.replaceWith(navbar_and_contents)}function main(){insert_top_banner();var cookies=decodeURIComponent(document.cookie).split(";");for(let i=0;i<cookies.length;i++){for(;" "==cookies[i].charAt(0);)cookies[i]=cookies[i].substring(1);0==cookies[i].indexOf("dark_mode")&&"true"==cookies[i].substring(name.length,cookies[i].length).split("=")[1]&&toggle_dark_mode()}}window.onload=main;</script>
+</head>
+<body>
+<div id="content" class="content">
+<div id="outline-container-2026aiexploration" class="outline-2">
+<h2 id="2026aiexploration">Begrudgingly Trying AI</h2>
+<div class="outline-text-2" id="text-2026aiexploration">
+<p>
+I don't like "AI".  More specifically, I don't like whatever is being marketed as AI these days.  I do, however, like technology, progress, and innovation.  And, I hear ignorance in my own voice when I speak on these topics.  So, I want to learn&#x2014;even though I don't like it.
+</p>
+
+<p>
+If I'm going to do this at all, it has to be run locally on my own hardware; no corporation is going to have that much insight into my thought process for free, and never will I trust anything they put in front of me as "fact" blindly.  So, to trust the model's output <i>at all</i>, <b>it has to be an open model, running on my own hardware</b>: enter <code>Ollama</code>.
+</p>
+</div>
+<div id="outline-container-org7b7f96c" class="outline-3">
+<h3 id="org7b7f96c">Ollama</h3>
+<div class="outline-text-3" id="text-org7b7f96c">
+<p>
+Ollama is a CLI that is based on the <code>llama.cpp</code> library, which can "run" AI models from a serialised GGUF format in a file, for example.
+The CLI is easy enough to use, as well.
+</p>
+
+<p>
+This is where I made my first mistake.  I installed <code>ollama</code> through <code>dnf</code>, my system's package manager.  It was available when I searched for it, after all.
+</p>
+
+<p>
+Unfortunately, with how quickly things are changing, the <code>ollama</code> package on my system was a little out of date, and therefore couldn't take advantage of my very-old hardware.  This meant all the models were running directly on my CPU, which, while not a lemon by any means (13th Gen Intel(R) Core(TM) i7-13700K), was still not state-of-the-art.
+</p>
+
+<p>
+This meant I was limited to small parameter models (&lt;5b), lest they take ten seconds to emit a single word.
+</p>
+
+<p>
+Off I went, trying out different models that were compatible and seemed interesting.
+</p>
+</div>
+<div id="outline-container-org2ee525d" class="outline-4">
+<h4 id="org2ee525d"><code>ollama run qwen3.5:0.8b</code></h4>
+<div class="outline-text-4" id="text-org2ee525d">
+<p>
+Trash.  "thinking" takes up the entire output, never generates a result for <code>Why is the sky blue?</code>, <code>2 + 2 = ?</code>, etc.. Lots of <code>Remember to mention "blue"...</code>
+</p>
+</div>
+</div>
+<div id="outline-container-orgd35463a" class="outline-4">
+<h4 id="orgd35463a"><code>ollama run granite4.1:3b</code></h4>
+<div class="outline-text-4" id="text-orgd35463a">
+<p>
+Oh, that's actually impressive. It generated an answer for <code>Why is the sky blue?</code> that was reasonably accurate, and the answer was given within ten to fifteen words, which only took a second or so to generate. This &#x2026; <i>this</i> is usable.
+</p>
+
+<p>
+It seems IBM has cooked up something very nice.  I like it.
+</p>
+</div>
+</div>
+<div id="outline-container-org38f641f" class="outline-4">
+<h4 id="org38f641f">Utilising the GPU</h4>
+<div class="outline-text-4" id="text-org38f641f">
+<p>
+After lots of fiddling around, I just downloaded the install script from <code>ollama</code> themselves, vetted it, then removed the <code>dnf</code> package and ran the script on my system to install <code>ollama</code> locally.  During install, <code>NVidia GPU detected</code> or something appeared in the output.  Yay.
+</p>
+
+<p>
+After that, it "just worked" to run models and have <code>ollama</code> utilise my GPU.
+</p>
+</div>
+</div>
+<div id="outline-container-org304b8bd" class="outline-4">
+<h4 id="org304b8bd"><code>ollama run granite4.1:8b</code></h4>
+<div class="outline-text-4" id="text-org304b8bd">
+<p>
+Impressive.  Hallucinates for industry-specific details, or things that don't appear in the training data over and over (like the workings of the packages of Emacs, or the <code>Go</code> language).  Despite that, it provides quick answers, displays impressively cohesive reasoning, and I'd say is a very "usable" model if you have quick questions, need help planning a project&#x2014;things of that nature.
+</p>
+</div>
+</div>
+<div id="outline-container-org270271f" class="outline-4">
+<h4 id="org270271f"><code>ollama run nemotron-3-nano:4b</code></h4>
+<div class="outline-text-4" id="text-org270271f">
+<p>
+Holy crap, a thinking model you can run locally that isn't trash.  Provides quick answers to <code>Why is the sky blue?</code>, <code>2 + 2 = ?</code>, etc. without getting stuck.  Cohesive reasoning, despite the low parameter count.  Whatever NVidia is cooking here, it's <b>good</b>.
+</p>
+</div>
+</div>
+<div id="outline-container-org4d2c6e4" class="outline-4">
+<h4 id="org4d2c6e4"><code>ollama run rnj-1:8b</code></h4>
+<div class="outline-text-4" id="text-org4d2c6e4">
+<p>
+Similar to granite4.1, but seems to be more "deterministic". Repeats itself, has "one way" of solving problems and sticks to it, and if it doesn't know how to solve your exact problem it tries to adapt the solution it does know to your problem. Overall, responsive, reasonable, and usable. Lump it in with Granite4.1.
+</p>
+
+<p>
+I appreciate the plain-text style output, vs over-using markdown elements.
+</p>
+</div>
+</div>
+<div id="outline-container-orga93903f" class="outline-4">
+<h4 id="orga93903f"><code>ollama run ministral-3:8b</code></h4>
+<div class="outline-text-4" id="text-orga93903f">
+<p>
+Ew. Too many emojis, too much markdown (in every line?!), but not inaccurate or unusable. Just unlikable, to me.
+</p>
+
+<p>
+Impressive to get an 8.9b parameter model to fit in 8gb of VRAM.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org211a4d4" class="outline-3">
+<h3 id="org211a4d4"><span class="todo TODO">TODO</span> AnythingLLM</h3>
+<div class="outline-text-3" id="text-org211a4d4">
+<p>
+I've heard anything-llm is an open source tool that is oriented towards RAG (basically, using larger documents as input to AI, and asking the model specific questions about the document). I'd be very interested if I could feed it the intel manual, and ask about things like the shadow stack, byte encoding of certain instructions, etc. That could actually be really helpful when writing a compiler, to be able to get specific answers to your questions about how certain hardware works.
+</p>
+
+<p>
+I may update this post with more info, or make a new post, depending on how it goes.
+</p>
+</div>
+<div id="outline-container-orgf747e5d" class="outline-4">
+<h4 id="orgf747e5d">Explore Similar Posts Through Tags</h4>
+<div class="outline-text-4" id="text-orgf747e5d">
+<p>
+<a href="../tags/ai.html">ai</a>
+<a href="../tags/curiosity.html">curiosity</a>
+<a href="../tags/programming.html">programming</a>
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<footer>
+  <div class="footer-row">
+    <button onClick="goto_top()" title="Go to top of page">Back to Top</button>
+  </div>
+  <div class="footer-row">
+    <a target="_blank" href="https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG">Donate</a>
+    <a target="_blank" href="https://www.youtube.com/@Lensr">YouTube</a>
+    <a target="_blank" href="https://www.twitch.tv/lens_r">Twitch</a>
+    <a target="_blank" href="https://www.github.com/LensPlaysGames">GitHub</a>
+    <a target="_blank" href="https://discord.gg/FTQsgqQEM4">Discord</a>
+  </div>
+  <div class="footer-row">
+    <a target="_blank" href="/lensr_blog_v1/rss.xml">Feed/RSS</a>
+  </div>
+  <div class="footer-row"><span>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span></div>
+</footer>
+</div>
+</body>
+</html>
