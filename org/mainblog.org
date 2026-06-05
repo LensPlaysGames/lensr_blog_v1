@@ -88,7 +88,7 @@ I haven't actually done this, yet...
 
 * Glint Design Blog 000                                            :blogpost:
 :PROPERTIES:
-:CUSTOM_ID: glintdesignblog001
+:CUSTOM_ID: glintdesignblog000
 :CREATED: [2026-06-05 Fri 01:35]
 :PUBLISHED: [2026-06-05 Fri 01:35]
 :MODIFIED: [2026-06-05 Fri 01:35]
