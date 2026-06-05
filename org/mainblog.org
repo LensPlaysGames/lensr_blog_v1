@@ -86,6 +86,40 @@ I haven't actually done this, yet...
 
 
 
+* Glint Design Blog 000                                            :blogpost:
+:PROPERTIES:
+:CUSTOM_ID: glintdesignblog001
+:CREATED: [2026-06-05 Fri 01:35]
+:PUBLISHED: [2026-06-05 Fri 01:35]
+:MODIFIED: [2026-06-05 Fri 01:35]
+:OG_DESCRIPTION: Aren't you curious how languages end up being the way they are?
+:POST_TAGS: LCC, glint, programming
+:END:
+
+THERE IS ONLY EVER A MAXIMUM OF ONE GLINT PROGRAM.
+
+THERE IS ONLY EVER A MAXIMUM OF ONE INSTANCE OF EACH GLINT MODULE.
+
+A Glint program (currently) /implicitly/ accesses the /global/ scope.
+
+mod.g:
+#+begin_src
+module foo;
+export foo :: 69;
+#+end_src
+
+exe.g:
+#+begin_src
+import foo;
+foo;
+#+end_src
+
+I think Glint source code should not have access to the /global/ scope. To use an external symbol, i.e. one defined in C, declare it in your program as =external=!. This causes issues with current symbol resolution algorithm, as functions and such are defined only in the global scope---this should be rather fixable, though.
+
+I guess, what I'm saying is that *the only valid identifiers at the top level should appear in the file it is used in*.
+
+In the example above, it is clear that anyone reading the file would assume (and reasonably so), that =foo;= refers to the imported module, not some variable that module happens to export...
+
 * Begrudgingly Trying AI :blogpost:
 :PROPERTIES:
 :CUSTOM_ID: 2026aiexploration

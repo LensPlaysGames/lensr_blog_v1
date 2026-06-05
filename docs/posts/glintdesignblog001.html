@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2026-06-05 Fri 01:43 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lens_r | Glint Design Blog 000</title>
+<meta name="author" content="lens_r" />
+<meta name="generator" content="Org Mode" />
+<meta property="og:type" content="article"/>
+<meta property="og:url" content="https://lensplaysgames.github.io/lensr_blog_v1/posts/glintdesignblog001.html"/>
+<meta property="og:title" content="Lens_r | Glint Design Blog 000"/>
+<meta property="og:description" content="Aren't you curious how languages end up being the way they are?"/>
+<link rel="stylesheet" href="/lensr_blog_v1/all.min.css"/>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<meta property="og:site_name" content="Lens_r's Blog"/>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-E0F1C2XGCS"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'G-E0F1C2XGCS');
+</script>
+<script>function toggle_dark_mode(){var element=document.getElementsByTagName("html")[0],dark_button=document.getElementById("dark-mode"),d=(element.classList.toggle("dark-mode"),new Date);d.setTime(d.getTime()+24192e5),element.classList.contains("dark-mode")?(document.cookie="dark_mode=true; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Light Mode"):(document.cookie="dark_mode=false; expires="+d.toUTCString()+"; path=/",dark_button.innerHTML="Dark Mode")}function goto_top(){document.body.scrollTop=0,document.documentElement.scrollTop=0}function insert_top_banner(){var navbar_html='<nav class="navbar" id="navbar">',navbar_html=((navbar_html+='<label for="hamburger">&#9776;</label>')+'<input type="checkbox" id="hamburger"/>'+'<div id="hamburger-items">'+"<a href='/lensr_blog_v1/'\">Home</a>"+'<a target="_blank" href=\'https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG\'">Donate</a>'+'<a target="_blank" href=\'https://www.youtube.com/@Lensr\'">YouTube</a>'+'<a target="_blank" href=\'https://www.twitch.tv/lens_r\'">Twitch</a>'+'<a target="_blank" href=\'https://www.github.com/LensPlaysGames\'">GitHub</a>'+'<a target="_blank" href=\'https://discord.gg/FTQsgqQEM4\'">Discord</a>'+'<a id="dark-mode" onClick={toggle_dark_mode();}>Dark Mode</a>'+"</div></nav>",document.body.firstElementChild),navbar_and_contents=document.createElement("div");navbar_and_contents.innerHTML='<nav class="navbar" id="navbar"><label for="hamburger">&#9776;</label><input type="checkbox" id="hamburger"/><div id="hamburger-items"><a href=\'/lensr_blog_v1/\'">Home</a><a target="_blank" href=\'https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG\'">Donate</a><a target="_blank" href=\'https://www.youtube.com/@Lensr\'">YouTube</a><a target="_blank" href=\'https://www.twitch.tv/lens_r\'">Twitch</a><a target="_blank" href=\'https://www.github.com/LensPlaysGames\'">GitHub</a><a target="_blank" href=\'https://discord.gg/FTQsgqQEM4\'">Discord</a><a id="dark-mode" onClick={toggle_dark_mode();}>Dark Mode</a></div></nav>'+navbar_html.outerHTML,navbar_html.replaceWith(navbar_and_contents)}function main(){insert_top_banner();var cookies=decodeURIComponent(document.cookie).split(";");for(let i=0;i<cookies.length;i++){for(;" "==cookies[i].charAt(0);)cookies[i]=cookies[i].substring(1);0==cookies[i].indexOf("dark_mode")&&"true"==cookies[i].substring(name.length,cookies[i].length).split("=")[1]&&toggle_dark_mode()}}window.onload=main;</script>
+</head>
+<body>
+<div id="content" class="content">
+<div id="outline-container-glintdesignblog001" class="outline-2">
+<h2 id="glintdesignblog001">Glint Design Blog 000</h2>
+<div class="outline-text-2" id="text-glintdesignblog001">
+<p>
+THERE IS ONLY EVER A MAXIMUM OF ONE GLINT PROGRAM.
+</p>
+
+<p>
+THERE IS ONLY EVER A MAXIMUM OF ONE INSTANCE OF EACH GLINT MODULE.
+</p>
+
+<p>
+A Glint program (currently) <i>implicitly</i> accesses the <i>global</i> scope.
+</p>
+
+<p>
+mod.g:
+</p>
+<div class="org-src-container">
+<pre class="src src-nil">module foo;
+export foo :: 69;
+</pre>
+</div>
+
+<p>
+exe.g:
+</p>
+<div class="org-src-container">
+<pre class="src src-nil">import foo;
+foo;
+</pre>
+</div>
+
+<p>
+I think Glint source code should not have access to the <i>global</i> scope. To use an external symbol, i.e. one defined in C, declare it in your program as <code>external</code>!. This causes issues with current symbol resolution algorithm, as functions and such are defined only in the global scope&#x2014;this should be rather fixable, though.
+</p>
+
+<p>
+I guess, what I'm saying is that <b>the only valid identifiers at the top level should appear in the file it is used in</b>.
+</p>
+
+<p>
+In the example above, it is clear that anyone reading the file would assume (and reasonably so), that <code>foo;</code> refers to the imported module, not some variable that module happens to export&#x2026;
+</p>
+</div>
+<div id="outline-container-org44c2b18" class="outline-4">
+<h4 id="org44c2b18">Explore Similar Posts Through Tags</h4>
+<div class="outline-text-4" id="text-org44c2b18">
+<p>
+<a href="../tags/lcc.html">lcc</a>
+<a href="../tags/glint.html">glint</a>
+<a href="../tags/programming.html">programming</a>
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<footer>
+  <div class="footer-row">
+    <button onClick="goto_top()" title="Go to top of page">Back to Top</button>
+  </div>
+  <div class="footer-row">
+    <a target="_blank" href="https://www.paypal.com/donate/?hosted_button_id=62KQ4GX6HFTNG">Donate</a>
+    <a target="_blank" href="https://www.youtube.com/@Lensr">YouTube</a>
+    <a target="_blank" href="https://www.twitch.tv/lens_r">Twitch</a>
+    <a target="_blank" href="https://www.github.com/LensPlaysGames">GitHub</a>
+    <a target="_blank" href="https://discord.gg/FTQsgqQEM4">Discord</a>
+  </div>
+  <div class="footer-row">
+    <a target="_blank" href="/lensr_blog_v1/rss.xml">Feed/RSS</a>
+  </div>
+  <div class="footer-row"><span>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span></div>
+</footer>
+</div>
+</body>
+</html>
