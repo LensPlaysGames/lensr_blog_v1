@@ -86,6 +86,32 @@ I haven't actually done this, yet...
 
 
 
+* Link Dump, October 2026 :blogpost:
+:PROPERTIES:
+:CUSTOM_ID: linkdump102026
+:CREATED: [2026-10-28 Wed 16:26]
+:PUBLISHED: [2026-10-28 Wed 16:26]
+:MODIFIED: [2026-10-28 Wed 16:26]
+:OG_DESCRIPTION: October 2026 Link Dump
+:POST_TAGS: linkdump, programming, FOSS
+:END:
+
+** Blogs / Articles
+
+*** https://utcc.utoronto.ca/~cks/space/blog/programming/CompilerBootstrappingVsOSChanges
+
+*** https://utcc.utoronto.ca/~cks/space/blog/unix/ProcWhyAlternativesToo
+
+*** https://krinkinmu.github.io/
+
+*** https://far.chickenkiller.com/categories/computing/
+
+** Softwares / Services
+
+*** https://freedomnames.org/guide/what-is-freedom-names
+
+*** https://www.crowdsupply.com/wafer-space/gf180mcu-run-3
+
 * Glint Design Blog 000                                            :blogpost:
 :PROPERTIES:
 :CUSTOM_ID: glintdesignblog000
